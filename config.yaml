@@ -1,0 +1,4 @@
+output: "test_results/"
+
+reads: "data/raw/"
+ref_genome: "data/reference/final_swine_virus_baitset_11June2021.fasta"
