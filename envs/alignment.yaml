@@ -1,0 +1,8 @@
+name: alignment
+channels:
+  - bioconda
+dependencies:
+  - python=3.8
+  - minimap2=2.24
+  - samtools=1.9
+  - bedtools=2.30.0
