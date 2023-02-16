@@ -50,7 +50,7 @@ rule host_sam_to_bam:
     envmodules:
         "samtools/1.9"
     threads:
-        10
+        32
     shell:
         "samtools view -Sb {input} | "
         "samtools sort -@ {threads} -o {output}"
@@ -123,7 +123,7 @@ rule viruses_sam_to_bam:
     envmodules:
         "samtools/1.9"
     threads:
-        10
+        32
     shell:
         "samtools view -Sb {input} | "
         "samtools sort -@ {threads} -o {output}; "
