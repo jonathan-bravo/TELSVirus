@@ -5,8 +5,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=1gb
-#SBATCH --output=AmrPlusPlus_%j.log
-#SBATCH --error=AmrPlusPlus_error_%j.log
+#SBATCH --output=TELSVirus_%j.log
+#SBATCH --error=TELSVirus_error_%j.log
 
 module load snakemake
 
