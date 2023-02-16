@@ -3,7 +3,7 @@ configfile: "config.yaml"
 READS = config["reads"]
 OUTDIR = config["output"]
 HOST_FILE = config["host_genome"]
-BAITS = config["baits"]
+#BAITS = config["baits"]
 VIRUSES = config["viral_genomes"]
 BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
 
@@ -36,7 +36,7 @@ rule align_reads_to_host: # check minimap flags from telseq
     envmodules:
         "minimap2/2.24"
     threads:
-        12
+        32
     shell:
         "minimap2 -t {threads} -a {input.host} {input.barcodes} -o {output}"
 
@@ -98,26 +98,26 @@ rule non_host_reads:
         "bedtools bamtofastq -i {input} -fq {output}"
 
 ## CALCULATE GENOME FRACTION
-rule align_to_baits:
+rule align_to_viruses:
     input:
-        baits = VIRUSES,
+        viruses = VIRUSES,
         barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
     output:
-        temp(OUTDIR + "{barcode}/{barcode}.baits.sam")
+        temp(OUTDIR + "{barcode}/{barcode}.viruses.sam")
     conda:
         "envs/alignment.yaml"
     envmodules:
         "minimap2/2.24"
     threads:
-        12
+        32
     shell:
-        "minimap2 -t {threads} -a {input.baits} {input.barcodes} -o {output}"
+        "minimap2 -t {threads} -a {input.viruses} {input.barcodes} -o {output}"
 
-rule baits_sam_to_bam:
+rule viruses_sam_to_bam:
     input:
-        OUTDIR + "{barcode}/{barcode}.baits.sam"
+        OUTDIR + "{barcode}/{barcode}.viruses.sam"
     output:
-        OUTDIR + "{barcode}/{barcode}.baits.sorted.bam"
+        OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -131,8 +131,7 @@ rule baits_sam_to_bam:
 
 rule temp_pileup:
     input:
-        bam = OUTDIR + "{barcode}/{barcode}.baits.sorted.bam",
-        baits = BAITS
+        bam = OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
     output:
         OUTDIR + "{barcode}/{barcode}.mpileup"
     conda:
@@ -144,6 +143,3 @@ rule temp_pileup:
     shell:
         "samtools mpileup -aa --output-QNAME -o {output} {input.bam}"
 
-
-
-# -f {input.baits}
