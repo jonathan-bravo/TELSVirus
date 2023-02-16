@@ -1,0 +1,45 @@
+{
+    "__default__": {
+        "account": "<account>",
+        "qos": "<account qos>",
+        "cpus-per-task": "1",
+        "Nodes": 1,
+        "mem": "32gb",
+        "runtime": "72:00:00",
+        "jobname": "TELSVirus-job",
+        "mail": "<email>",
+        "mail_type": "NONE",
+        "out": "logs/log_%j.log",
+        "err": "logs/err_%j.log"
+    },
+
+    "align_reads_to_host": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+    
+    "host_sam_to_bam": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+    
+    "remove_host_dna": {
+        "cpus-per-task": "10",
+        "mem": "32gb"
+    },
+
+    "align_to_viruses": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+
+    "viruses_sam_to_bam": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+
+    "temp_pileup": {
+        "cpus-per-task": "10",
+        "mem": "32gb"
+    }
+}
