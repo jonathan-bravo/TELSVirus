@@ -1,4 +1,6 @@
 output: "test_results/"
 
+host_genome: "data/host/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz"
+viral_genomes: "data/viruses/all_swine_viruses_concat.fasta"
+baits: "data/baits/final_swine_virus_baitset_11June2021.fasta"
 reads: "data/raw/"
-ref_genome: "data/reference/final_swine_virus_baitset_11June2021.fasta"
