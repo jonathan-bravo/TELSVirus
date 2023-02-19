@@ -31,7 +31,8 @@ rule get_rvhaplo:
         "git clone {params.repo}; "
         "mv RVHaplo/src/ ../scripts/; "
         "chmod +x RVHaplo/rvhaplo.sh; "
-        "mv RVHaplo/rvhaplo.sh ../scripts/"
+        "mv RVHaplo/rvhaplo.sh ../scripts/; "
+        "rm -rf RVHaplo/"
 
 rule concat_parts:
     input:
