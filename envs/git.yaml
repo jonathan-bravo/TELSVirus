@@ -1,0 +1,5 @@
+name: git
+channels:
+  - defaults
+dependencies:
+  - git
