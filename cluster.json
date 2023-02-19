@@ -6,11 +6,11 @@
         "Nodes": 1,
         "mem": "32gb",
         "runtime": "72:00:00",
-        "jobname": "TELSVirus-job",
+        "jobname": "TLS-virl",
         "mail": "<email>",
         "mail_type": "NONE",
-        "out": "logs/log_%j.log",
-        "err": "logs/err_%j.log"
+        "out": "/dev/null",
+        "err": "/dev/null"
     },
 
     "align_reads_to_host": {
