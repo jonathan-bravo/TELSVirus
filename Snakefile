@@ -8,13 +8,30 @@ VIRUSES = config["viral_genomes"]
 BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
 
 all_input = [
+    "get_rvhaplo.done",
     OUTDIR + "host.removal.stats",
-    expand(OUTDIR + "{barcode}/{barcode}.mpileup", barcode = BARCODES)
+    expand(OUTDIR + "{barcode}/{barcode}.mpileup", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}_rvhaplo_out/", barcode = BARCODES)
 ]
 
 rule all:
     input:
         all_input
+
+rule get_rvhaplo:
+    output:
+        touch("get_rvhaplo.done")
+    params:
+        repo = config["rvhaplo_repo"]
+    conda:
+        "envs/git.yaml"
+    envmodules:
+        "git/2.30.1"
+    shell:
+        "git clone {params.repo}; "
+        "mv RVHaplo/src/ ../scripts/; "
+        "chmod +x RVHaplo/rvhaplo.sh; "
+        "mv RVHaplo/rvhaplo.sh ../scripts/"
 
 rule concat_parts:
     input:
@@ -103,7 +120,7 @@ rule align_to_viruses:
         viruses = VIRUSES,
         barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
     output:
-        temp(OUTDIR + "{barcode}/{barcode}.viruses.sam")
+        OUTDIR + "{barcode}/{barcode}.viruses.sam"
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -129,11 +146,11 @@ rule viruses_sam_to_bam:
         "samtools sort -@ {threads} -o {output}; "
         "samtools index {output}"
 
-rule temp_pileup:
+rule mpileup:
     input:
-        bam = OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
+        OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
     output:
-        OUTDIR + "{barcode}/{barcode}.mpileup"
+        temp(OUTDIR + "{barcode}/{barcode}.mpileup")
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -141,5 +158,64 @@ rule temp_pileup:
     threads:
         10
     shell:
-        "samtools mpileup -aa --output-QNAME -o {output} {input.bam}"
+        "samtools mpileup -d 1 --output-QNAME {input} | "
+        "awk '{{print $1\"\t\"$4}}' - > {output}"
 
+rule all_virus_bed:
+    input:
+        VIRUSES
+    output:
+        OUTDIR + "all.viral.targets.bed"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "samtools/1.9"
+    shell:
+        "samtools faidx {input}; "
+        "cat {input.fasta}.fai | "
+        "awk '{{print $1\"\t0\t\"$2}}' >  {output}; "
+        "rm {input.fasta}.fai"
+
+rule find_viral_tagets:
+    input:
+        pileup = OUTDIR + "{barcode}/{barcode}.mpileup",
+        all_viruses_bed = OUTDIR + "all.viral.targets.bed"
+    output:
+        OUTDIR + "{barcode}/{barcode}.viral.targets.bed"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/find_viral_targets.py "
+        "--mpileup {input.pileup} "
+        "--bed {input.all_viruses_bed}"
+        "--outfile {output}"
+        
+        # "grep -Ff {params.target_list} - > {output}; "
+
+rule get_viral_genomes:
+    input:
+        fasta = VIRUSES,
+        bed = OUTDIR + "{barcode}/{barcode}.viral.targets.bed"
+    output:
+        OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "bedtools/2.30.0"
+    shell:
+        "bedtools getfasta -fi {input.fasta} -bed {input.bed} -fo {output}"
+
+rule run_rvhaplo:
+    input:
+        sam = OUTDIR + "{barcode}/{barcode}.host.sam",
+        viral_ref = OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
+    output:
+        OUTDIR + "{barcode}/{barcode}_rvhaplo_out/"
+    shell:
+        "scripts/rvhaplo.sh "
+        "-i {input.sam} "
+        "-r {inpput.viral_ref}"
+        "-l 0 "
+        "-o {output}"
