@@ -214,6 +214,8 @@ rule run_rvhaplo:
         viral_ref = OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
     output:
         OUTDIR + "{barcode}/{barcode}_rvhaplo_out/"
+    conda:
+        "envs/rvhaplo.yaml"
     shell:
         "scripts/rvhaplo.sh "
         "-i {input.sam} "
