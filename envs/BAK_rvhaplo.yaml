@@ -1,0 +1,15 @@
+name: rvhaplo
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - python=3.8
+  - samtools=1.9
+  - mcl
+  - pip
+  - pip:
+    - medaka
+    - scipy
+    - pandas
+    - tqdm
+    - pysam
