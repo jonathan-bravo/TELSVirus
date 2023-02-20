@@ -1,0 +1,12 @@
+name: strainline
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.8
+  - minimap2=2.24
+  - samtools=1.9
+  - spoa
+  - dazz_db
+  - daligner
+  - metabat2
