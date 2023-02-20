@@ -6,3 +6,4 @@ baits: "data/baits/final_swine_virus_baitset_11June2021.fasta"
 reads: "data/raw/"
 
 rvhaplo_repo: "https://github.com/dhcai21/RVHaplo.git"
+strainline_repo: "https://github.com/HaploKit/Strainline.git"
