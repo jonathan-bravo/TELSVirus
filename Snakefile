@@ -3,15 +3,17 @@ configfile: "config.yaml"
 READS = config["reads"]
 OUTDIR = config["output"]
 HOST_FILE = config["host_genome"]
-#BAITS = config["baits"]
 VIRUSES = config["viral_genomes"]
 BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
 
 all_input = [
-    "get_rvhaplo.done",
+    #"get_rvhaplo.done",
+    #"get_strainline.done",
+    #"daccord_linked.done",
     OUTDIR + "host.removal.stats",
-    expand(OUTDIR + "{barcode}/{barcode}.mpileup", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/{barcode}_rvhaplo_out/", barcode = BARCODES)
+    #expand(OUTDIR + "{barcode}/{barcode}.mpileup", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}_rvhaplo_out/", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
 ]
 
 rule all:
@@ -28,11 +30,31 @@ rule get_rvhaplo:
     envmodules:
         "git/2.30.1"
     shell:
-        "git clone {params.repo}; "
-        "mv RVHaplo/src/ ../scripts/; "
-        "chmod +x RVHaplo/rvhaplo.sh; "
-        "mv RVHaplo/rvhaplo.sh ../scripts/; "
-        "rm -rf RVHaplo/"
+        "scripts/get_rvhaplo.sh {params.repo}"
+
+rule get_strainline:
+    output:
+        touch("get_strainline.done")
+    params:
+        repo = config["strainline_repo"]
+    conda:
+        "envs/git.yaml"
+    envmodules:
+        "git/2.30.1"
+    shell:
+        "scripts/get_strainline.sh {params.repo}; "
+        "scripts/get_daccord.sh" 
+
+rule link_daccord:
+    input:
+        "get_strainline.done"
+    output:
+        touch("daccord_linked.done")
+    conda:
+        "env/strainline.yaml"
+    shell:
+        "ln -fs scripts/daccord/bin/daccord "
+        "$CONDA_PREFIX/bin/daccord"
 
 rule concat_parts:
     input:
@@ -173,9 +195,9 @@ rule all_virus_bed:
         "samtools/1.9"
     shell:
         "samtools faidx {input}; "
-        "cat {input.fasta}.fai | "
+        "cat {input}.fai | "
         "awk '{{print $1\"\t0\t\"$2}}' >  {output}; "
-        "rm {input.fasta}.fai"
+        "rm {input}.fai"
 
 rule find_viral_tagets:
     input:
@@ -210,6 +232,7 @@ rule get_viral_genomes:
 
 rule run_rvhaplo:
     input:
+        "get_rvhaplo.done",
         sam = OUTDIR + "{barcode}/{barcode}.host.sam",
         viral_ref = OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
     output:
@@ -217,8 +240,25 @@ rule run_rvhaplo:
     conda:
         "envs/rvhaplo.yaml"
     shell:
-        "scripts/rvhaplo.sh "
+        "scripts/RVHaplo/rvhaplo.sh "
         "-i {input.sam} "
         "-r {inpput.viral_ref}"
         "-l 0 "
         "-o {output}"
+
+rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
+    input:
+        "daccord_linked.done",
+        fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+    output:
+        OUTDIR + "{barcode}/{barcode}_strainline_out/"
+    threads:
+        10
+    conda:
+        "envs/strainline.yaml"
+    shell:
+        "scripts/Strainline/src/strainline.sh "
+        "-i {input.fasta} "
+        "-o {output} "
+        "-t {threads} "
+        "-p ont"
