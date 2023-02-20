@@ -51,7 +51,7 @@ rule link_daccord:
     output:
         touch("daccord_linked.done")
     conda:
-        "env/strainline.yaml"
+        "envs/strainline.yaml"
     shell:
         "ln -fs scripts/daccord/bin/daccord "
         "$CONDA_PREFIX/bin/daccord"
