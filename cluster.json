@@ -9,8 +9,8 @@
         "jobname": "TLS-virl",
         "mail": "<email>",
         "mail_type": "NONE",
-        "out": "/dev/null",
-        "err": "/dev/null"
+        "out": "logs/log_%j.log",
+        "err": "logs/err_%j.log"
     },
 
     "align_reads_to_host": {
