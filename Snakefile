@@ -12,8 +12,8 @@ all_input = [
     #"daccord_linked.done",
     OUTDIR + "host.removal.stats",
     #expand(OUTDIR + "{barcode}/{barcode}.mpileup", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/{barcode}_rvhaplo_out/", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
+    expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES)
+    ##expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
 ]
 
 rule all:
@@ -32,29 +32,29 @@ rule get_rvhaplo:
     shell:
         "scripts/get_rvhaplo.sh {params.repo}"
 
-rule get_strainline:
-    output:
-        touch("get_strainline.done")
-    params:
-        repo = config["strainline_repo"]
-    conda:
-        "envs/git.yaml"
-    envmodules:
-        "git/2.30.1"
-    shell:
-        "scripts/get_strainline.sh {params.repo}; "
-        "scripts/get_daccord.sh" 
+# rule get_strainline:
+#     output:
+#         touch("get_strainline.done")
+#     params:
+#         repo = config["strainline_repo"]
+#     conda:
+#         "envs/git.yaml"
+#     envmodules:
+#         "git/2.30.1"
+#     shell:
+#         "scripts/get_strainline.sh {params.repo}; "
+#         "scripts/get_daccord.sh" 
 
-rule link_daccord:
-    input:
-        "get_strainline.done"
-    output:
-        touch("daccord_linked.done")
-    conda:
-        "envs/strainline.yaml"
-    shell:
-        "ln -fs scripts/daccord/bin/daccord "
-        "$CONDA_PREFIX/bin/daccord"
+# rule link_daccord:
+#     input:
+#         "get_strainline.done"
+#     output:
+#         touch("daccord_linked.done")
+#     conda:
+#         "envs/strainline.yaml"
+#     shell:
+#         "ln -fs scripts/daccord/bin/daccord "
+#         "$CONDA_PREFIX/bin/daccord"
 
 rule concat_parts:
     input:
@@ -63,6 +63,10 @@ rule concat_parts:
         temp(OUTDIR + "{barcode}/concat_{barcode}.fastq.gz")
     shell:
         "cat {input}/* > {output}"
+
+## REMOVE ADAPTERS
+## FIRST 5bp NEED TO BE TRIMMED OFF
+## TRIMMOMATIC
 
 ## REMOVE HOST DNA
 rule align_reads_to_host: # check minimap flags from telseq
@@ -143,7 +147,7 @@ rule align_to_viruses:
         viruses = VIRUSES,
         barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
     output:
-        OUTDIR + "{barcode}/{barcode}.viruses.sam"
+        temp(OUTDIR + "{barcode}/{barcode}.viruses.sam")
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -181,14 +185,14 @@ rule mpileup:
     threads:
         10
     shell:
-        "samtools mpileup -d 1 --output-QNAME {input} | "
+        "samtools mpileup --output-QNAME {input} | "
         "awk '{{print $1\"\t\"$4}}' - > {output}"
 
 rule all_virus_bed:
     input:
         VIRUSES
     output:
-        OUTDIR + "all.viral.targets.bed"
+        temp(OUTDIR + "all.viral.targets.bed")
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -204,7 +208,7 @@ rule find_viral_tagets:
         pileup = OUTDIR + "{barcode}/{barcode}.mpileup",
         all_viruses_bed = OUTDIR + "all.viral.targets.bed"
     output:
-        OUTDIR + "{barcode}/{barcode}.viral.targets.bed"
+        temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed")
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -212,7 +216,7 @@ rule find_viral_tagets:
     shell:
         "scripts/find_viral_targets.py "
         "--mpileup {input.pileup} "
-        "--bed {input.all_viruses_bed}"
+        "--bed {input.all_viruses_bed} "
         "--outfile {output}"
         
         # "grep -Ff {params.target_list} - > {output}; "
@@ -222,7 +226,7 @@ rule get_viral_genomes:
         fasta = VIRUSES,
         bed = OUTDIR + "{barcode}/{barcode}.viral.targets.bed"
     output:
-        OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
+        temp(OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta")
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -230,35 +234,85 @@ rule get_viral_genomes:
     shell:
         "bedtools getfasta -fi {input.fasta} -bed {input.bed} -fo {output}"
 
+rule split_viral_genomes:
+    input:
+        OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
+    output:
+        touch(OUTDIR + "{barcode}/viral_refs.done")
+    params:
+        outdir = OUTDIR + "{barcode}/viral_refs/"
+    shell:
+        "scripts/split_target_viruses.sh {input} {params.outådir}"
+
+# [x] align non.host.fastas to ALL the split viral genomes
+# [ ] Then run rvhaplo on THOSE sam files
+# [x] can then mark the other sam file as temp()
+# [ ] minimap2 -a -x map-ont MT269879.fasta cat_barcode04.fastq.gz -o barcode04_2_map2.sam
+
+rule align_to_target_virus:
+    input:
+        OUTDIR + "{barcode}/viral_refs.done",
+        reads = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+    output:
+        touch(OUTDIR + "{barcode}/align_to_targets.done")
+    params:
+        indir = OUTDIR + "{barcode}/viral_refs/",
+        outdir = OUTDIR + "{barcode}/target_aligned/",
+        barcode = "{barcode}"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "minimap2/2.24"
+    threads:
+        32
+    shell:
+        "scripts/align_to_targets.sh "
+        "{params.outdir} "
+        "{params.indir} "
+        "{params.barcode} "
+        "{input.reads} "
+        "{threads}"
+
 rule run_rvhaplo:
     input:
         "get_rvhaplo.done",
-        sam = OUTDIR + "{barcode}/{barcode}.host.sam",
-        viral_ref = OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
+        OUTDIR + "{barcode}/align_to_targets.done"
     output:
-        OUTDIR + "{barcode}/{barcode}_rvhaplo_out/"
+        touch(OUTDIR + "{barcode}/rvhaplo.done")
+    params:
+        barcode = "{barcode}",
+        vir_indir = OUTDIR + "{barcode}/viral_refs/",
+        sam_indir = OUTDIR + "{barcode}/target_aligned/",
+        outdir = OUTDIR + "{barcode}/rvhaplo_out/"
     conda:
         "envs/rvhaplo.yaml"
-    shell:
-        "scripts/RVHaplo/rvhaplo.sh "
-        "-i {input.sam} "
-        "-r {inpput.viral_ref}"
-        "-l 0 "
-        "-o {output}"
-
-rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
-    input:
-        "daccord_linked.done",
-        fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
-    output:
-        OUTDIR + "{barcode}/{barcode}_strainline_out/"
     threads:
         10
-    conda:
-        "envs/strainline.yaml"
     shell:
-        "scripts/Strainline/src/strainline.sh "
-        "-i {input.fasta} "
-        "-o {output} "
-        "-t {threads} "
-        "-p ont"
+        "scripts/run_rvhaplo.sh "
+        "{params.outdir} "
+        "{params.vir_indir} "
+        "{params.sam_indir} "
+        "{params.barcode} "
+        "{threads}"
+
+# LAS error, not able to read fatsa file, need to figure out why
+# On Hipergator the `daccord` command isn't being found in some samples
+## even after the command has been linked correctly to the bin
+
+# rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
+#     input:
+#         "daccord_linked.done",
+#         fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+#     output:
+#         OUTDIR + "{barcode}/{barcode}_strainline_out/"
+#     threads:
+#         10
+#     conda:
+#         "envs/strainline.yaml"
+#     shell:
+#         "scripts/Strainline/src/strainline.sh "
+#         "-i {input.fasta} "
+#         "-o {output} "
+#         "-t {threads} "
+#         "-p ont"
