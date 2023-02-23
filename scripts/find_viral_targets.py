@@ -8,8 +8,8 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mpileup', required = True)
-    parser.add_argument('--bed', required = False)
-    parser.add_argument('--outfile', required = False)
+    parser.add_argument('--bed', required = True)
+    parser.add_argument('--outfile', required = True)
     return parser.parse_args()
 
 def get_counts(pileup):

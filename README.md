@@ -10,8 +10,8 @@
 
 - [x] Update alignment to host (swine) to include `--secondary=no`
   - This will improve the alignments stats removing the ~9% read inflation
-- [ ] Add additional alignment step with `--secondary=no` to viral db for read stats
-- [ ] Create an on-target reads summary -> Total Reads, Reads Mapped to Host, Reads Mapped to All Viral DB
+- [x] Add additional alignment step with `--secondary=no` to viral db for read stats
+- [x] Create an on-target reads summary -> Total Reads, Reads Mapped to Host, Reads Mapped to All Viral DB
 - [ ] Use alignment WITH `--secondary=yes` to generate read stats for all strains per sample
 
 ## Improving target strain selection

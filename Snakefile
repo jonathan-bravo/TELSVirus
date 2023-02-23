@@ -120,7 +120,7 @@ rule host_removal_stats: ## ADD THE SCRIPT FROM AMR++, maybe modify
     input:
         expand(OUTDIR + "{barcode}/{barcode}.remove.host.samtools.idxstats", barcode = BARCODES)
     output:
-        OUTDIR + "host.removal.stats"
+        temp(OUTDIR + "host.removal.stats")
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -154,7 +154,29 @@ rule align_to_viruses:
     threads:
         32
     shell:
-        "minimap2 -t {threads} -a {input.viruses} {input.barcodes} -o {output}"
+        "minimap2 "
+        "-t {threads} "
+        "-o {output} "
+        "-a {input.viruses} {input.barcodes}"
+
+rule align_to_viruses_for_stats:
+    input:
+        viruses = VIRUSES,
+        barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+    output:
+        temp(OUTDIR + "{barcode}/{barcode}.stats.viruses.sam")
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "minimap2/2.24"
+    threads:
+        32
+    shell:
+        "minimap2 "
+        "--secondary=no "
+        "-t {threads} "
+        "-o {output} "
+        "-a {input.viruses} {input.barcodes}"
 
 rule viruses_sam_to_bam:
     input:
@@ -171,6 +193,55 @@ rule viruses_sam_to_bam:
         "samtools view -Sb {input} | "
         "samtools sort -@ {threads} -o {output}; "
         "samtools index {output}"
+
+rule viruses_alignment_stats:
+    input:
+        OUTDIR + "{barcode}/{barcode}.stats.viruses.sam"
+    output:
+        temp(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats")
+    params:
+        bam = "{barcode}.stats.viruses.sorted.bam"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "samtools/1.9"
+    threads:
+        32
+    shell:
+        "samtools view -Sb {input} | "
+        "samtools sort -@ {threads} -o {params.bam}; "
+        "samtools index {params.bam}; "
+        "samtools idxstats {params.bam} > {output}; "
+        "rm {params.bam}.bai; "
+        "rm {params.bam}"
+
+rule merge_alignment_stats: ## ADD THE SCRIPT FROM AMR++, maybe modify
+    input:
+        expand(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats", barcode = BARCODES)
+    output:
+        temp(OUTDIR + "all.viruses.stats")
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/samtools_idxstats.py -i {input} -o {output}"
+
+rule on_target_stats:
+    input:
+        viral_stats = OUTDIR + "all.viruses.stats",
+        host_stats = OUTDIR + "host.removal.stats"
+    output:
+        OUTDIR + "on.target.stats"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/merge_stats.py "
+        "--host_stats {input.host_stats}"
+        "--viral_stats {input.viral_stats}"
+        "--outfile {output}"
 
 rule mpileup:
     input:

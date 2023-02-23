@@ -33,7 +33,17 @@
         "mem": "64gb"
     },
 
+    "align_to_viruses_for_stats": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+
     "viruses_sam_to_bam": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+
+    "viruses_alignment_stats": {
         "cpus-per-task": "32",
         "mem": "64gb"
     },

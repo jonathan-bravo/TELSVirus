@@ -17,7 +17,6 @@ def parse_cmdline_params():
 def header(output_file):
     with open(output_file, 'a') as o:
         o.write('Sample\tNumberOfInputReads\tMapped\tUnmapped\n')
-    o.close()
 
 def mapping_stats(input_list, output_file):
     for f in input_list:
@@ -31,10 +30,8 @@ def mapping_stats(input_list, output_file):
                 mapped += int(columns[2])
                 unmapped += int(columns[3])
             number_of_reads += mapped + unmapped
-        fp.close()
         with open(output_file, 'a') as o:
-            o.write(sample_name + '\t' + str(number_of_reads) + '\t' + str(mapped) + '\t' + str(unmapped) + '\n')
-        o.close()
+            o.write(f'{sample_name}\t{number_of_reads}\t{mapped}\t{unmapped}\n')
 
 def main():
     opts = parse_cmdline_params()
