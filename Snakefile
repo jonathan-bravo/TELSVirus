@@ -8,6 +8,7 @@ BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
 
 all_input = [
     OUTDIR + "host.removal.stats",
+    expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES)
     ##expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
 ]
@@ -182,7 +183,8 @@ rule viruses_sam_to_bam:
     input:
         OUTDIR + "{barcode}/{barcode}.viruses.sam"
     output:
-        OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
+        bam = OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam",
+        idx = OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats"
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -191,8 +193,9 @@ rule viruses_sam_to_bam:
         32
     shell:
         "samtools view -Sb {input} | "
-        "samtools sort -@ {threads} -o {output}; "
-        "samtools index {output}"
+        "samtools sort -@ {threads} -o {output.bam}; "
+        "samtools index {output.bam}; "
+        "samtools idxstats {output.bam} > {output.idx}"
 
 rule viruses_alignment_stats:
     input:

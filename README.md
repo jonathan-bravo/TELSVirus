@@ -12,7 +12,7 @@
   - This will improve the alignments stats removing the ~9% read inflation
 - [x] Add additional alignment step with `--secondary=no` to viral db for read stats
 - [x] Create an on-target reads summary -> Total Reads, Reads Mapped to Host, Reads Mapped to All Viral DB
-- [ ] Use alignment WITH `--secondary=yes` to generate read stats for all strains per sample
+- [x] Use alignment WITH `--secondary=yes` to generate read stats for all strains per sample
 
 ## Improving target strain selection
 
