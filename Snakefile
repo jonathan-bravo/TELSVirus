@@ -7,11 +7,7 @@ VIRUSES = config["viral_genomes"]
 BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
 
 all_input = [
-    #"get_rvhaplo.done",
-    #"get_strainline.done",
-    #"daccord_linked.done",
     OUTDIR + "host.removal.stats",
-    #expand(OUTDIR + "{barcode}/{barcode}.mpileup", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES)
     ##expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
 ]
@@ -82,7 +78,10 @@ rule align_reads_to_host: # check minimap flags from telseq
     threads:
         32
     shell:
-        "minimap2 -t {threads} -a {input.host} {input.barcodes} -o {output}"
+        "minimap2 --secondary=no "
+        "-t {threads} "
+        "-o {output} "
+        "-a {input.host} {input.barcodes}"
 
 rule host_sam_to_bam:
     input:

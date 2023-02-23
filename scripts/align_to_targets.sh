@@ -11,8 +11,8 @@ do
     file="$(basename -- $r)";
     vir=${file%.fasta};
     minimap2 \
+    --secondary=no \
     -t ${threads} \
-    -a ${r} \
-    ${reads} \
+    -a ${r} ${reads} \
     -o ${outdir}${barcode}.aligned.${vir}.sam;
 done

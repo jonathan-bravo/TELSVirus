@@ -8,7 +8,7 @@
 
 ## Generate improved stats
 
-- [ ] Update alignment to host (swine) to include `--secondary=no`
+- [x] Update alignment to host (swine) to include `--secondary=no`
   - This will improve the alignments stats removing the ~9% read inflation
 - [ ] Add additional alignment step with `--secondary=no` to viral db for read stats
 - [ ] Create an on-target reads summary -> Total Reads, Reads Mapped to Host, Reads Mapped to All Viral DB
@@ -25,5 +25,5 @@
 **Putting haplotype generation on hold FOR NOW**
 
 - [ ] Reach out to HiPerGator about symlink with daccord and Strainline
-- [ ] Update the alignment to single viral strains to inlcude `--secondary=no`
+- [x] Update the alignment to single viral strains to inlcude `--secondary=no`
 - [ ] Add check for number of reads aligned to single strain and if (for some reason) the read count falls below a selected threshold (look at RVHaplo docs to confirm) don't run RVHaplo for this strain X barcode
