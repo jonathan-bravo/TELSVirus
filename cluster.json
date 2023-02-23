@@ -9,7 +9,7 @@
         "jobname": "TLS-virl",
         "mail": "<email>",
         "mail_type": "NONE",
-        "out": "logs/log_%j.log",
+        "out": "/dev/null",
         "err": "logs/err_%j.log"
     },
 
@@ -38,7 +38,22 @@
         "mem": "64gb"
     },
 
-    "temp_pileup": {
+    "mpileup": {
+        "cpus-per-task": "10",
+        "mem": "32gb"
+    },
+
+    "align_to_target_viruses": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+
+    "run_rvhaplo": {
+        "cpus-per-task": "10",
+        "mem": "32gb"
+    },
+
+    "run_strainline": {
         "cpus-per-task": "10",
         "mem": "32gb"
     }
