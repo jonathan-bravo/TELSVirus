@@ -13,13 +13,14 @@
 - [x] Add additional alignment step with `--secondary=no` to viral db for read stats
 - [x] Create an on-target reads summary -> Total Reads, Reads Mapped to Host, Reads Mapped to All Viral DB
 - [x] Use alignment WITH `--secondary=yes` to generate read stats for all strains per sample
-- [ ] Write script to summarize per strain idxstats
+- [x] Write script to summarize per strain idxstats
 
 ## Improving target strain selection
 
 - [ ] Create 'Strain DB' to associate fasta header with correct virus
 - [ ] Update `find_viral_targets.py` to select best strain for each virus with genome fraction >= 80% (using average depth to break ties)
   - Make special case for influenza as the virus has multiple segments for each strain
+  - Also make it so the script output stats for genome fraction and average depth
 
 ## Extra
 

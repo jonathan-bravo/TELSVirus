@@ -184,7 +184,7 @@ rule viruses_sam_to_bam:
         OUTDIR + "{barcode}/{barcode}.viruses.sam"
     output:
         bam = OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam",
-        idx = OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats"
+        idx = temp(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats")
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -196,6 +196,20 @@ rule viruses_sam_to_bam:
         "samtools sort -@ {threads} -o {output.bam}; "
         "samtools index {output.bam}; "
         "samtools idxstats {output.bam} > {output.idx}"
+
+rule reads_per_strain:
+    input:
+        OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats"
+    output:
+        OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/summarize_idxstats.py "
+        "--infile {input} "
+        "--outfile {output}"
 
 rule viruses_alignment_stats:
     input:
