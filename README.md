@@ -13,6 +13,7 @@
 - [x] Add additional alignment step with `--secondary=no` to viral db for read stats
 - [x] Create an on-target reads summary -> Total Reads, Reads Mapped to Host, Reads Mapped to All Viral DB
 - [x] Use alignment WITH `--secondary=yes` to generate read stats for all strains per sample
+- [ ] Write script to summarize per strain idxstats
 
 ## Improving target strain selection
 
