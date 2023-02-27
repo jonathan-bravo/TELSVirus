@@ -3,8 +3,8 @@
 ## Cleaning the data
 
 - [ ] Add read deduplication
-- [ ] Add read trimming using `trimmomatic`
 - [ ] Create custom adapter file for read trimming
+- [ ] Add read trimming using `trimmomatic`
 
 ## Generate improved stats
 
@@ -17,7 +17,7 @@
 
 ## Improving target strain selection
 
-- [ ] Create 'Strain DB' to associate fasta header with correct virus
+- [x] Create 'Strain DB' to associate fasta header with correct virus
 - [ ] Update `find_viral_targets.py` to select best strain for each virus with genome fraction >= 80% (using average depth to break ties)
   - Make special case for influenza as the virus has multiple segments for each strain
   - Also make it so the script output stats for genome fraction and average depth

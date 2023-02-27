@@ -290,10 +290,28 @@ rule all_virus_bed:
         "awk '{{print $1\"\t0\t\"$2}}' >  {output}; "
         "rm {input}.fai"
 
+rule gen_strain_db:
+    input:
+        VIRUSES
+    output:
+        OUTDIR + "strain_db.json"
+    params:
+        email = config["email"]
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/gen_strain_db.py "
+        "--infile {input} "
+        "--email {params.email} "
+        "--outfile {output}"
+
 rule find_viral_tagets:
     input:
         pileup = OUTDIR + "{barcode}/{barcode}.mpileup",
-        all_viruses_bed = OUTDIR + "all.viral.targets.bed"
+        all_viruses_bed = OUTDIR + "all.viral.targets.bed",
+        strain_db = OUTDIR + "strain_db.json"
     output:
         temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed")
     conda:
