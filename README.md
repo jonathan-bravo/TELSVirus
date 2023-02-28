@@ -2,30 +2,31 @@
 
 ## Cleaning the data
 
+- [ ] Add read trimming using [NanoFilt](https://github.com/wdecoster/nanofilt)
+  - Before deduplication
+  - Trimming will just be a static length (length of nanopore adaptor + 5 (UMI) + length of illumina adaptors) on both the head and tail of the sequence
 - [ ] Add read deduplication
-- [ ] Create custom adapter file for read trimming
-- [ ] Add read trimming using `trimmomatic`
+  - IN PROGRES:
+    - Have binning by read length done, but should add a rule to cluster binned fastas that are +- 20 bp from each other
+- [ ] Create custom adapter file for interrogating the trimmed sequences
 
 ## Generate improved stats
 
-- [x] Update alignment to host (swine) to include `--secondary=no`
-  - This will improve the alignments stats removing the ~9% read inflation
-- [x] Add additional alignment step with `--secondary=no` to viral db for read stats
-- [x] Create an on-target reads summary -> Total Reads, Reads Mapped to Host, Reads Mapped to All Viral DB
-- [x] Use alignment WITH `--secondary=yes` to generate read stats for all strains per sample
-- [x] Write script to summarize per strain idxstats
+- [ ] Need to output the total number of reads BEFORE & AFTER deduplication
+- [ ] Output read lengths before and after deduplication
+  - Could output this data and then use an `r script` to generate a histogram
 
 ## Improving target strain selection
 
-- [x] Create 'Strain DB' to associate fasta header with correct virus
 - [ ] Update `find_viral_targets.py` to select best strain for each virus with genome fraction >= 80% (using average depth to break ties)
   - Make special case for influenza as the virus has multiple segments for each strain
   - Also make it so the script output stats for genome fraction and average depth
 
 ## Extra
 
+- [ ] **Reach out to HiPerGator about symlink with daccord and Strainline**
+- [ ] Create DAG flowchart and include in README
+
 **Putting haplotype generation on hold FOR NOW**
 
-- [ ] Reach out to HiPerGator about symlink with daccord and Strainline
-- [x] Update the alignment to single viral strains to inlcude `--secondary=no`
 - [ ] Add check for number of reads aligned to single strain and if (for some reason) the read count falls below a selected threshold (look at RVHaplo docs to confirm) don't run RVHaplo for this strain X barcode
