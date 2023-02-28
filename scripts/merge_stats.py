@@ -18,14 +18,14 @@ def prep_host_stats(host_stats):
 
 def prep_viral_stats(viral_stats):
     df = pd.read_table(viral_stats)
-    df.columns=['Sample', 'ViralInReads', 'MappedToViralDB', 'Unmapped']
+    df.drop(columns=['NumberOfInputReads'], inplace=True)
+    df.columns=['Sample', 'MappedToViralDB', 'Unmapped']
     return df
 
 def on_target_stats(host_df, viral_df, outfile):
     final_df = pd.merge(host_df, viral_df, on=['Sample'])
     final_df['HostReadsPercent'] = (final_df['MappedToHost']/final_df['NumberOfInputReads'])*100
-    final_df['OnTargetPercent'] = (final_df['MappedToViralDB']/final_df['ViralInReads'])*100
-    final_df.drop(columns=['ViralInReads'], inplace=True)
+    final_df['OnTargetPercent'] = (final_df['MappedToViralDB']/final_df['NumberOfInputReads'])*100
     final_df.to_csv(outfile, index=False, sep='\t')
 
 def main():
