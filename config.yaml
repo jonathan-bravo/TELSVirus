@@ -4,6 +4,7 @@ output: "test_results/"
 host_genome: "data/host/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz"
 viral_genomes: "data/viruses/all_swine_viruses_concat.fasta"
 reads: "data/raw/"
+silimarity_threshold: 0.9
 
 rvhaplo_repo: "https://github.com/dhcai21/RVHaplo.git"
 strainline_repo: "https://github.com/HaploKit/Strainline.git"

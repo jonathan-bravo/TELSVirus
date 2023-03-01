@@ -1,0 +1,11 @@
+name: deduplication
+channels:
+  - conda-forge
+  - bioconda
+  - anaconda
+dependencies:
+  - python=3.8
+  - blat
+  - biopython
+  - scipy
+  - scikit-learn

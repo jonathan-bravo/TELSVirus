@@ -10,13 +10,14 @@ all_input = [
     OUTDIR + "host.removal.stats",
     expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES)
-    ##expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
+    # expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
 ]
 
 rule all:
     input:
         all_input
 
+## DOWNLOAD TOOLS ##############################################################
 rule get_rvhaplo:
     output:
         touch("get_rvhaplo.done")
@@ -53,6 +54,40 @@ rule get_rvhaplo:
 #         "ln -fs scripts/daccord/bin/daccord "
 #         "$CONDA_PREFIX/bin/daccord"
 
+## PREP INFO FOR TARGET STRAIN SELECTION #######################################
+rule all_virus_bed:
+    input:
+        VIRUSES
+    output:
+        temp(OUTDIR + "all.viral.targets.bed")
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "samtools/1.9"
+    shell:
+        "samtools faidx {input}; "
+        "cat {input}.fai | "
+        "awk '{{print $1\"\t0\t\"$2}}' >  {output}; "
+        "rm {input}.fai"
+
+rule gen_strain_db:
+    input:
+        VIRUSES
+    output:
+        OUTDIR + "strain_db.json"
+    params:
+        email = config["email"]
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/gen_strain_db.py "
+        "--infile {input} "
+        "--email {params.email} "
+        "--outfile {output}"
+
+## CONCAT RAW DATA #############################################################
 rule concat_parts:
     input:
         READS + "{barcode}"
@@ -61,12 +96,122 @@ rule concat_parts:
     shell:
         "cat {input}/* > {output}"
 
+## TRIM READS ##################################################################
+
 ## REMOVE ADAPTERS
 ## FIRST 5bp NEED TO BE TRIMMED OFF
 ## TRIMMOMATIC
 
-## REMOVE HOST DNA
-rule align_reads_to_host: # check minimap flags from telseq
+## DEDUPLICATE #################################################################
+rule bin_reads_by_length: # will change the input once trimming is included
+    input:
+        OUTDIR + "{barcode}/concat_{barcode}.fastq.gz"
+    output:
+        touch(OUTDIR + "{barcode}/{barcode}.bin.reads.done")
+    params:
+        outdir = OUTDIR + "{barcode}/read_bins"
+    conda:
+        "envs/deduplication.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/bin_reads.py "
+        "--infile {input} "
+        "--outdir {params.outdir}"
+
+rule cluster_reads:
+    input:
+        OUTDIR + "{barcode}/{barcode}.bin.reads.done"
+    output:
+        touch(OUTDIR + "{barcode}/{barcode}.cluster.reads.done")
+    params:
+        indir = OUTDIR + "{barcode}/read_bins"
+        outdir = OUTDIR + "{barcode}/read_clusters"
+    conda:
+        "envs/deduplication.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/cluster_reads.py "
+        "--indir {params.indir} "
+        "--outdir {params.outdir}; "
+        "rm -rf {params.outdir}; "
+        "rm {input}"
+
+rule blat_clustered_reads:
+    input:
+        OUTDIR + "{barcode}/{barcode}.cluster.reads.done"
+    output:
+        touch(OUTDIR + "{barcode}/{barcode}.blat.done")
+    params:
+        read_clusters = OUTDIR + "{barcode}/read_clusters/",
+        outdir = OUTDIR + "{barcode}/psl_files/"
+    threads:
+        32
+    conda:
+        "envs/deduplication.yaml"
+    envmodules:
+        "blat/20140318"
+    shell:
+        "scripts/run_blat.sh "
+        "{params.outdir} "
+        "{params.read_clusters}; "
+        "rm -rf {params.read_clusters}; "
+        "rm -rf {params.read_clusters}; "
+        "rm {input}"
+
+rule find_duplicates:
+    input:
+        OUTDIR + "{barcode}/{barcode}.blat.done"
+    output:
+        touch(OUTDIR + "{barcode}/{barcode}.find.duplcates.done")
+    params:
+        similarity_threshold = config["silimarity_threshold"],
+        pls_dir = OUTDIR + "{barcode}/psl_files/",
+        outdir = OUTDIR + "{barcode}/duplicate_txts/"
+    conda:
+        "envs/deduplication.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/run_find_duplicates.sh "
+        "{params.outdir} "
+        "{params.pls_dir} "
+        "{params.similarity_threshold}; "
+        "rm -rf {params.pls_dir}; "
+        "rm {input}"
+
+rule merge_duplicates_lists:
+    input:
+        OUTDIR + "{barcode}/{barcode}.find.duplcates.done"
+    output:
+        OUTDIR + "{barcode}/duplicates.txt"
+    params:
+        indir = OUTDIR + "{barcode}/duplicate_txts"
+    shell:
+        "cat {params.indir}/* > {output}; "
+        "rm -rf {params.indir}"
+
+rule deduplicate: ## WORKING ON THIS ##
+    input:
+        reads = OUTDIR + "{barcode}/concat_{barcode}.fastq.gz", ## CHANGE WHEN TRIMMING IS INCLUDED
+        duplicates_list = OUTDIR + "{barcode}/duplicates.txt"
+    output:
+        reads = OUTPUT + "{barcode}.dedup.fastq.gz",
+        dupes = OUTPUT + "{barcode}.dup.reads.fastq.gz"
+    conda:
+        "envs/deduplication.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "script/deduplicate.py "
+        "--reads {input.reads} "
+        "--duplicates {input.duplicates_list} "
+        "--out_fastq {output.reads} "
+        "--out_dupes {output.dupes}"
+
+## REMOVE HOST DNA #############################################################
+rule align_reads_to_host: # change input reads to the deduplicated ones...
     input:
         host = HOST_FILE,
         barcodes = OUTDIR + "{barcode}/concat_{barcode}.fastq.gz"
@@ -117,7 +262,7 @@ rule remove_host_dna:
         "samtools view -h -f 4 -b {input} -o {output.bam}; "
         "rm {input}.bai"
 
-rule host_removal_stats: ## ADD THE SCRIPT FROM AMR++, maybe modify
+rule host_removal_stats:
     input:
         expand(OUTDIR + "{barcode}/{barcode}.remove.host.samtools.idxstats", barcode = BARCODES)
     output:
@@ -141,25 +286,7 @@ rule non_host_reads:
     shell:
         "bedtools bamtofastq -i {input} -fq {output}"
 
-## CALCULATE GENOME FRACTION
-rule align_to_viruses:
-    input:
-        viruses = VIRUSES,
-        barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
-    output:
-        temp(OUTDIR + "{barcode}/{barcode}.viruses.sam")
-    conda:
-        "envs/alignment.yaml"
-    envmodules:
-        "minimap2/2.24"
-    threads:
-        32
-    shell:
-        "minimap2 "
-        "-t {threads} "
-        "-o {output} "
-        "-a {input.viruses} {input.barcodes}"
-
+## GET VIRAL DB STATS ##########################################################
 rule align_to_viruses_for_stats:
     input:
         viruses = VIRUSES,
@@ -175,6 +302,75 @@ rule align_to_viruses_for_stats:
     shell:
         "minimap2 "
         "--secondary=no "
+        "-t {threads} "
+        "-o {output} "
+        "-a {input.viruses} {input.barcodes}"
+
+rule viruses_alignment_stats:
+    input:
+        OUTDIR + "{barcode}/{barcode}.stats.viruses.sam"
+    output:
+        temp(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats")
+    params:
+        bam = "{barcode}.stats.viruses.sorted.bam"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "samtools/1.9"
+    threads:
+        32
+    shell:
+        "samtools view -Sb {input} | "
+        "samtools sort -@ {threads} -o {params.bam}; "
+        "samtools index {params.bam}; "
+        "samtools idxstats {params.bam} > {output}; "
+        "rm {params.bam}.bai; "
+        "rm {params.bam}"
+
+## ON TARGET STATS #############################################################
+rule merge_viral_alignment_stats:
+    input:
+        expand(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats", barcode = BARCODES)
+    output:
+        temp(OUTDIR + "all.viruses.stats")
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/samtools_idxstats.py -i {input} -o {output}"
+
+rule on_target_stats:
+    input:
+        viral_stats = OUTDIR + "all.viruses.stats",
+        host_stats = OUTDIR + "host.removal.stats"
+    output:
+        OUTDIR + "on.target.stats"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/merge_stats.py "
+        "--host_stats {input.host_stats}"
+        "--viral_stats {input.viral_stats}"
+        "--outfile {output}"
+
+## VIRAL STRAIN SELECTION ######################################################
+rule align_to_viruses:
+    input:
+        viruses = VIRUSES,
+        barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+    output:
+        temp(OUTDIR + "{barcode}/{barcode}.viruses.sam")
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "minimap2/2.24"
+    threads:
+        32
+    shell:
+        "minimap2 "
         "-t {threads} "
         "-o {output} "
         "-a {input.viruses} {input.barcodes}"
@@ -211,55 +407,6 @@ rule reads_per_strain:
         "--infile {input} "
         "--outfile {output}"
 
-rule viruses_alignment_stats:
-    input:
-        OUTDIR + "{barcode}/{barcode}.stats.viruses.sam"
-    output:
-        temp(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats")
-    params:
-        bam = "{barcode}.stats.viruses.sorted.bam"
-    conda:
-        "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
-    threads:
-        32
-    shell:
-        "samtools view -Sb {input} | "
-        "samtools sort -@ {threads} -o {params.bam}; "
-        "samtools index {params.bam}; "
-        "samtools idxstats {params.bam} > {output}; "
-        "rm {params.bam}.bai; "
-        "rm {params.bam}"
-
-rule merge_alignment_stats: ## ADD THE SCRIPT FROM AMR++, maybe modify
-    input:
-        expand(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats", barcode = BARCODES)
-    output:
-        temp(OUTDIR + "all.viruses.stats")
-    conda:
-        "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
-    shell:
-        "scripts/samtools_idxstats.py -i {input} -o {output}"
-
-rule on_target_stats:
-    input:
-        viral_stats = OUTDIR + "all.viruses.stats",
-        host_stats = OUTDIR + "host.removal.stats"
-    output:
-        OUTDIR + "on.target.stats"
-    conda:
-        "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
-    shell:
-        "scripts/merge_stats.py "
-        "--host_stats {input.host_stats}"
-        "--viral_stats {input.viral_stats}"
-        "--outfile {output}"
-
 rule mpileup:
     input:
         OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
@@ -275,39 +422,7 @@ rule mpileup:
         "samtools mpileup --output-QNAME {input} | "
         "awk '{{print $1\"\t\"$4}}' - > {output}"
 
-rule all_virus_bed:
-    input:
-        VIRUSES
-    output:
-        temp(OUTDIR + "all.viral.targets.bed")
-    conda:
-        "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
-    shell:
-        "samtools faidx {input}; "
-        "cat {input}.fai | "
-        "awk '{{print $1\"\t0\t\"$2}}' >  {output}; "
-        "rm {input}.fai"
-
-rule gen_strain_db:
-    input:
-        VIRUSES
-    output:
-        OUTDIR + "strain_db.json"
-    params:
-        email = config["email"]
-    conda:
-        "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
-    shell:
-        "scripts/gen_strain_db.py "
-        "--infile {input} "
-        "--email {params.email} "
-        "--outfile {output}"
-
-rule find_viral_tagets:
+rule find_viral_targets:
     input:
         pileup = OUTDIR + "{barcode}/{barcode}.mpileup",
         all_viruses_bed = OUTDIR + "all.viral.targets.bed",
@@ -349,11 +464,6 @@ rule split_viral_genomes:
     shell:
         "scripts/split_target_viruses.sh {input} {params.outådir}"
 
-# [x] align non.host.fastas to ALL the split viral genomes
-# [ ] Then run rvhaplo on THOSE sam files
-# [x] can then mark the other sam file as temp()
-# [ ] minimap2 -a -x map-ont MT269879.fasta cat_barcode04.fastq.gz -o barcode04_2_map2.sam
-
 rule align_to_target_virus:
     input:
         OUTDIR + "{barcode}/viral_refs.done",
@@ -378,6 +488,7 @@ rule align_to_target_virus:
         "{input.reads} "
         "{threads}"
 
+## HAPLOTYPE GENERATION ########################################################
 rule run_rvhaplo:
     input:
         "get_rvhaplo.done",

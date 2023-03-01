@@ -5,9 +5,7 @@
 - [ ] Add read trimming using [NanoFilt](https://github.com/wdecoster/nanofilt)
   - Before deduplication
   - Trimming will just be a static length (length of nanopore adaptor + 5 (UMI) + length of illumina adaptors) on both the head and tail of the sequence
-- [ ] Add read deduplication
-  - IN PROGRES:
-    - Have binning by read length done, but should add a rule to cluster binned fastas that are +- 20 bp from each other
+- [x] Add read deduplication
 - [ ] Create custom adapter file for interrogating the trimmed sequences
 
 ## Generate improved stats
