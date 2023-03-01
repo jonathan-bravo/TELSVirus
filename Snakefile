@@ -192,13 +192,13 @@ rule merge_duplicates_lists:
         "cat {params.indir}/* > {output}; "
         "rm -rf {params.indir}"
 
-rule deduplicate: ## WORKING ON THIS ##
+rule deduplicate:
     input:
         reads = OUTDIR + "{barcode}/concat_{barcode}.fastq.gz", ## CHANGE WHEN TRIMMING IS INCLUDED
         duplicates_list = OUTDIR + "{barcode}/duplicates.txt"
     output:
-        reads = OUTPUT + "{barcode}.dedup.fastq.gz",
-        dupes = OUTPUT + "{barcode}.dup.reads.fastq.gz"
+        reads = OUTPUT + "{barcode}/{barcode}.dedup.fastq.gz",
+        dupes = OUTPUT + "{barcode}/{barcode}.dup.reads.fastq.gz"
     conda:
         "envs/deduplication.yaml"
     envmodules:
@@ -211,10 +211,10 @@ rule deduplicate: ## WORKING ON THIS ##
         "--out_dupes {output.dupes}"
 
 ## REMOVE HOST DNA #############################################################
-rule align_reads_to_host: # change input reads to the deduplicated ones...
+rule align_reads_to_host:
     input:
         host = HOST_FILE,
-        barcodes = OUTDIR + "{barcode}/concat_{barcode}.fastq.gz"
+        barcodes = OUTPUT + "{barcode}/{barcode}.dedup.fastq.gz",
     output:
         temp(OUTDIR + "{barcode}/{barcode}.host.sam")
     conda:
