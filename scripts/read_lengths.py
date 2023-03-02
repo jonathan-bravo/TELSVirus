@@ -2,7 +2,6 @@
 
 import argparse
 import gzip
-from json import dump
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -10,19 +9,23 @@ def parse_args():
     parser.add_argument('--outfile', required=True)
     return parser.parse_args()
 
+def skip_lines(reads):
+    next(reads)
+    next(reads)
+
+def process_fastq_read(read, reads):
+    read_id = read.split(' ')[0][1:]
+    read_len = len(next(reads))
+    skip_lines(reads)
+    return f'{read_id}\t{read_len}\n'
+
 def get_read_lengths(reads):
-    read_lengths = {}
-    for read in reads:
-        read_id = read.split(' ')[0][1:]
-        read_len = len(next(reads))
-        next(reads)
-        next(reads)
-        read_lengths.setdefault(read_len, []).append(read_id)
-    return read_lengths
+    return [process_fastq_read(read, reads) for read in reads]
 
 def write_out(outfile, read_lengths):
     with open(outfile, 'w') as o:
-        dump(read_lengths, o)
+        o.write('ReadId\tReadLength\n')
+        [o.write(length) for length in read_lengths]
 
 def main():
     args = parse_args()

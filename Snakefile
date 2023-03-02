@@ -115,6 +115,18 @@ rule trim_reads: # want to trim nanopore (~30) + UMI (5) + illumina adaptors (~3
         "gzip > {output.trimmed_reads}"
 
 ## DEDUPLICATE #################################################################
+rule pre_dedup_read_lengths:
+    input:
+        OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
+    output:
+        OUTDIR + "{barcode}/{barcode}.pre.dedup.rl.tsv"
+    conda:
+        "envs/deduplication.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/read_lengths.py --infile {input} --outfile {outfile}"
+
 rule bin_reads_by_length:
     input:
         OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
@@ -204,13 +216,13 @@ rule merge_duplicates_lists:
         "cat {params.indir}/* > {output}; "
         "rm -rf {params.indir}"
 
-rule deduplicate:
+rule deduplicate: # find reads here?
     input:
         reads = OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz",
         duplicates_list = OUTDIR + "{barcode}/duplicates.txt"
     output:
-        reads = OUTPUT + "{barcode}/{barcode}.dedup.fastq.gz",
-        dupes = OUTPUT + "{barcode}/{barcode}.dup.reads.fastq.gz"
+        reads = OUTDUT + "{barcode}/{barcode}.dedup.fastq.gz",
+        dupes = OUTDUT + "{barcode}/{barcode}.dup.reads.fastq.gz"
     conda:
         "envs/deduplication.yaml"
     envmodules:
@@ -222,11 +234,23 @@ rule deduplicate:
         "--out_fastq {output.reads} "
         "--out_dupes {output.dupes}"
 
+rule post_dedup_read_lengths:
+    input:
+        OUTDUT + "{barcode}/{barcode}.dedup.fastq.gz"
+    output:
+        OUTDIR + "{barcode}/{barcode}.post.dedup.rl.tsv"
+    conda:
+        "envs/deduplication.yaml"
+    envmodules:
+        "python/3.8"
+    shell:
+        "scripts/read_lengths.py --infile {input} --outfile {outfile}"
+
 ## REMOVE HOST DNA #############################################################
 rule align_reads_to_host:
     input:
         host = HOST_FILE,
-        barcodes = OUTPUT + "{barcode}/{barcode}.dedup.fastq.gz",
+        barcodes = OUTDUT + "{barcode}/{barcode}.dedup.fastq.gz",
     output:
         temp(OUTDIR + "{barcode}/{barcode}.host.sam")
     conda:

@@ -10,8 +10,8 @@
 
 ## Generate improved stats
 
-- [ ] Need to output the total number of reads BEFORE & AFTER deduplication
-- [ ] Output read lengths before and after deduplication
+- [x] Need to output the total number of reads BEFORE & AFTER deduplication
+- [x] Output read lengths before and after deduplication
   - Could output this data and then use an `r script` to generate a histogram
 
 ## Improving target strain selection
