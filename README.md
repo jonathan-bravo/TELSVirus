@@ -28,3 +28,7 @@
 **Putting haplotype generation on hold FOR NOW**
 
 - [ ] Add check for number of reads aligned to single strain and if (for some reason) the read count falls below a selected threshold (look at RVHaplo docs to confirm) don't run RVHaplo for this strain X barcode
+
+## Workflow Image
+
+![Workflow Image](dag.pdf)
