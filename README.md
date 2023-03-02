@@ -31,4 +31,4 @@
 
 ## Workflow Image
 
-![Workflow Image](dag.pdf)
+![Workflow Image](dag.svg)
