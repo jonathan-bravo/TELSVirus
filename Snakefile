@@ -107,12 +107,12 @@ rule trim_reads: # want to trim nanopore (~30) + UMI (5) + illumina adaptors (~3
     conda:
         "envs/trimming.yaml"
     envmodules:
-        "gzip/1.10",
+        "samtools/1.9",
         "nanofilt/2.7.1"
     shell:
         "gunzip -c {input} | "
         "NanoFilt --headcrop 65 --tailcrop 65 --logfile {output.logfile} | "
-        "gzip > {output.trimmed_reads}"
+        "bgzip > {output.trimmed_reads}"
 
 ## DEDUPLICATE #################################################################
 rule pre_dedup_read_lengths:
