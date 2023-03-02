@@ -7,8 +7,11 @@ VIRUSES = config["viral_genomes"]
 BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
 
 all_input = [
-    OUTDIR + "host.removal.stats",
+    OUTDIR + "on.target.stats",
     expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.pre.dedup.rl.tsv", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.post.dedup.rl.tsv", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
 ]
@@ -18,41 +21,41 @@ rule all:
         all_input
 
 ## DOWNLOAD TOOLS ##############################################################
-# rule get_rvhaplo:
-#     output:
-#         touch("get_rvhaplo.done")
-#     params:
-#         repo = config["rvhaplo_repo"]
-#     conda:
-#         "envs/git.yaml"
-#     envmodules:
-#         "git/2.30.1"
-#     shell:
-#         "scripts/get_rvhaplo.sh {params.repo}"
+rule get_rvhaplo:
+    output:
+        touch("get_rvhaplo.done")
+    params:
+        repo = config["rvhaplo_repo"]
+    conda:
+        "envs/git.yaml"
+    envmodules:
+        "git/2.30.1"
+    shell:
+        "scripts/get_rvhaplo.sh {params.repo}"
 
-# rule get_strainline:
-#     output:
-#         touch("get_strainline.done")
-#     params:
-#         repo = config["strainline_repo"]
-#     conda:
-#         "envs/git.yaml"
-#     envmodules:
-#         "git/2.30.1"
-#     shell:
-#         "scripts/get_strainline.sh {params.repo}; "
-#         "scripts/get_daccord.sh" 
+rule get_strainline:
+    output:
+        touch("get_strainline.done")
+    params:
+        repo = config["strainline_repo"]
+    conda:
+        "envs/git.yaml"
+    envmodules:
+        "git/2.30.1"
+    shell:
+        "scripts/get_strainline.sh {params.repo}; "
+        "scripts/get_daccord.sh" 
 
-# rule link_daccord:
-#     input:
-#         "get_strainline.done"
-#     output:
-#         touch("daccord_linked.done")
-#     conda:
-#         "envs/strainline.yaml"
-#     shell:
-#         "ln -fs scripts/daccord/bin/daccord "
-#         "$CONDA_PREFIX/bin/daccord"
+rule link_daccord:
+    input:
+        "get_strainline.done"
+    output:
+        touch("daccord_linked.done")
+    conda:
+        "envs/strainline.yaml"
+    shell:
+        "ln -fs scripts/daccord/bin/daccord "
+        "$CONDA_PREFIX/bin/daccord"
 
 ## PREP INFO FOR TARGET STRAIN SELECTION #######################################
 rule all_virus_bed:
@@ -98,7 +101,7 @@ rule concat_parts:
 
 ## TRIM READS ##################################################################
 # gunzip -c reads.fastq.gz | NanoFilt -q 12 --headcrop 75 | gzip > trimmed-reads.fastq.gz
-rule trim_reads: # want to trim nanopore (~30) + UMI (5) + illumina adaptors (~30) 
+rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24) 
     input:
        OUTDIR + "{barcode}/{barcode}.concat.fastq.gz"
     output:
@@ -111,7 +114,7 @@ rule trim_reads: # want to trim nanopore (~30) + UMI (5) + illumina adaptors (~3
         "nanofilt/2.7.1"
     shell:
         "gunzip -c {input} | "
-        "NanoFilt --headcrop 65 --tailcrop 65 --logfile {output.logfile} | "
+        "NanoFilt --headcrop 37 --tailcrop 37 --logfile {output.logfile} | "
         "bgzip > {output.trimmed_reads}"
 
 ## DEDUPLICATE #################################################################
@@ -500,71 +503,71 @@ rule split_viral_genomes:
     shell:
         "scripts/split_target_viruses.sh {input} {params.outådir}"
 
-# rule align_to_target_virus:
-#     input:
-#         OUTDIR + "{barcode}/viral_refs.done",
-#         reads = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
-#     output:
-#         touch(OUTDIR + "{barcode}/align_to_targets.done")
-#     params:
-#         indir = OUTDIR + "{barcode}/viral_refs/",
-#         outdir = OUTDIR + "{barcode}/target_aligned/",
-#         barcode = "{barcode}"
-#     conda:
-#         "envs/alignment.yaml"
-#     envmodules:
-#         "minimap2/2.24"
-#     threads:
-#         32
-#     shell:
-#         "scripts/align_to_targets.sh "
-#         "{params.outdir} "
-#         "{params.indir} "
-#         "{params.barcode} "
-#         "{input.reads} "
-#         "{threads}"
+rule align_to_target_virus:
+    input:
+        OUTDIR + "{barcode}/viral_refs.done",
+        reads = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+    output:
+        touch(OUTDIR + "{barcode}/align_to_targets.done")
+    params:
+        indir = OUTDIR + "{barcode}/viral_refs/",
+        outdir = OUTDIR + "{barcode}/target_aligned/",
+        barcode = "{barcode}"
+    conda:
+        "envs/alignment.yaml"
+    envmodules:
+        "minimap2/2.24"
+    threads:
+        32
+    shell:
+        "scripts/align_to_targets.sh "
+        "{params.outdir} "
+        "{params.indir} "
+        "{params.barcode} "
+        "{input.reads} "
+        "{threads}"
 
 ## HAPLOTYPE GENERATION ########################################################
-# rule run_rvhaplo:
-#     input:
-#         "get_rvhaplo.done",
-#         OUTDIR + "{barcode}/align_to_targets.done"
-#     output:
-#         touch(OUTDIR + "{barcode}/rvhaplo.done")
-#     params:
-#         barcode = "{barcode}",
-#         vir_indir = OUTDIR + "{barcode}/viral_refs/",
-#         sam_indir = OUTDIR + "{barcode}/target_aligned/",
-#         outdir = OUTDIR + "{barcode}/rvhaplo_out/"
-#     conda:
-#         "envs/rvhaplo.yaml"
-#     threads:
-#         10
-#     shell:
-#         "scripts/run_rvhaplo.sh "
-#         "{params.outdir} "
-#         "{params.vir_indir} "
-#         "{params.sam_indir} "
-#         "{params.barcode} "
-#         "{threads}"
+rule run_rvhaplo:
+    input:
+        "get_rvhaplo.done",
+        OUTDIR + "{barcode}/align_to_targets.done"
+    output:
+        touch(OUTDIR + "{barcode}/rvhaplo.done")
+    params:
+        barcode = "{barcode}",
+        vir_indir = OUTDIR + "{barcode}/viral_refs/",
+        sam_indir = OUTDIR + "{barcode}/target_aligned/",
+        outdir = OUTDIR + "{barcode}/rvhaplo_out/"
+    conda:
+        "envs/rvhaplo.yaml"
+    threads:
+        10
+    shell:
+        "scripts/run_rvhaplo.sh "
+        "{params.outdir} "
+        "{params.vir_indir} "
+        "{params.sam_indir} "
+        "{params.barcode} "
+        "{threads}"
 
-# # LAS error, not able to read fatsa file, need to figure out why
-# # On Hipergator the `daccord` command isn't being found in some samples
-# ## even after the command has been linked correctly to the bin
+# LAS error, not able to read fatsa file, need to figure out why
+# On Hipergator the `daccord` command isn't being found in some samples
+## even after the command has been linked correctly to the bin
 
-# rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
-#     input:
-#         "daccord_linked.done",
-#         fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
-#     output:
-#         OUTDIR + "{barcode}/{barcode}_strainline_out/"
-#     threads:
-#         10
-#     conda:
-#         "envs/strainline.yaml"
-#     shell:
-#         "scripts/Strainline/src/strainline.sh "
-#         "-i {input.fasta} "
-#         "-o {output} "
-#         "-t {threads} "
-#         "-p ont"
+rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
+    input:
+        "daccord_linked.done",
+        fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+    output:
+        OUTDIR + "{barcode}/{barcode}_strainline_out/"
+    threads:
+        10
+    conda:
+        "envs/strainline.yaml"
+    shell:
+        "scripts/Strainline/src/strainline.sh "
+        "-i {input.fasta} "
+        "-o {output} "
+        "-t {threads} "
+        "-p ont"
