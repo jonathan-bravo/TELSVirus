@@ -9,8 +9,8 @@ BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
 all_input = [
     OUTDIR + "host.removal.stats",
     expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES)
-    # expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
+    expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
 ]
 
 rule all:
@@ -18,17 +18,17 @@ rule all:
         all_input
 
 ## DOWNLOAD TOOLS ##############################################################
-rule get_rvhaplo:
-    output:
-        touch("get_rvhaplo.done")
-    params:
-        repo = config["rvhaplo_repo"]
-    conda:
-        "envs/git.yaml"
-    envmodules:
-        "git/2.30.1"
-    shell:
-        "scripts/get_rvhaplo.sh {params.repo}"
+# rule get_rvhaplo:
+#     output:
+#         touch("get_rvhaplo.done")
+#     params:
+#         repo = config["rvhaplo_repo"]
+#     conda:
+#         "envs/git.yaml"
+#     envmodules:
+#         "git/2.30.1"
+#     shell:
+#         "scripts/get_rvhaplo.sh {params.repo}"
 
 # rule get_strainline:
 #     output:
@@ -149,7 +149,7 @@ rule cluster_reads:
     output:
         touch(OUTDIR + "{barcode}/{barcode}.cluster.reads.done")
     params:
-        indir = OUTDIR + "{barcode}/read_bins"
+        indir = OUTDIR + "{barcode}/read_bins",
         outdir = OUTDIR + "{barcode}/read_clusters"
     conda:
         "envs/deduplication.yaml"
@@ -221,8 +221,8 @@ rule deduplicate: # find reads here?
         reads = OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz",
         duplicates_list = OUTDIR + "{barcode}/duplicates.txt"
     output:
-        reads = OUTDUT + "{barcode}/{barcode}.dedup.fastq.gz",
-        dupes = OUTDUT + "{barcode}/{barcode}.dup.reads.fastq.gz"
+        reads = OUTDIR + "{barcode}/{barcode}.dedup.fastq.gz",
+        dupes = OUTDIR + "{barcode}/{barcode}.dup.reads.fastq.gz"
     conda:
         "envs/deduplication.yaml"
     envmodules:
@@ -236,7 +236,7 @@ rule deduplicate: # find reads here?
 
 rule post_dedup_read_lengths:
     input:
-        OUTDUT + "{barcode}/{barcode}.dedup.fastq.gz"
+        OUTDIR + "{barcode}/{barcode}.dedup.fastq.gz"
     output:
         OUTDIR + "{barcode}/{barcode}.post.dedup.rl.tsv"
     conda:
@@ -250,7 +250,7 @@ rule post_dedup_read_lengths:
 rule align_reads_to_host:
     input:
         host = HOST_FILE,
-        barcodes = OUTDUT + "{barcode}/{barcode}.dedup.fastq.gz",
+        barcodes = OUTDIR + "{barcode}/{barcode}.dedup.fastq.gz",
     output:
         temp(OUTDIR + "{barcode}/{barcode}.host.sam")
     conda:
@@ -500,57 +500,57 @@ rule split_viral_genomes:
     shell:
         "scripts/split_target_viruses.sh {input} {params.outådir}"
 
-rule align_to_target_virus:
-    input:
-        OUTDIR + "{barcode}/viral_refs.done",
-        reads = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
-    output:
-        touch(OUTDIR + "{barcode}/align_to_targets.done")
-    params:
-        indir = OUTDIR + "{barcode}/viral_refs/",
-        outdir = OUTDIR + "{barcode}/target_aligned/",
-        barcode = "{barcode}"
-    conda:
-        "envs/alignment.yaml"
-    envmodules:
-        "minimap2/2.24"
-    threads:
-        32
-    shell:
-        "scripts/align_to_targets.sh "
-        "{params.outdir} "
-        "{params.indir} "
-        "{params.barcode} "
-        "{input.reads} "
-        "{threads}"
+# rule align_to_target_virus:
+#     input:
+#         OUTDIR + "{barcode}/viral_refs.done",
+#         reads = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+#     output:
+#         touch(OUTDIR + "{barcode}/align_to_targets.done")
+#     params:
+#         indir = OUTDIR + "{barcode}/viral_refs/",
+#         outdir = OUTDIR + "{barcode}/target_aligned/",
+#         barcode = "{barcode}"
+#     conda:
+#         "envs/alignment.yaml"
+#     envmodules:
+#         "minimap2/2.24"
+#     threads:
+#         32
+#     shell:
+#         "scripts/align_to_targets.sh "
+#         "{params.outdir} "
+#         "{params.indir} "
+#         "{params.barcode} "
+#         "{input.reads} "
+#         "{threads}"
 
 ## HAPLOTYPE GENERATION ########################################################
-rule run_rvhaplo:
-    input:
-        "get_rvhaplo.done",
-        OUTDIR + "{barcode}/align_to_targets.done"
-    output:
-        touch(OUTDIR + "{barcode}/rvhaplo.done")
-    params:
-        barcode = "{barcode}",
-        vir_indir = OUTDIR + "{barcode}/viral_refs/",
-        sam_indir = OUTDIR + "{barcode}/target_aligned/",
-        outdir = OUTDIR + "{barcode}/rvhaplo_out/"
-    conda:
-        "envs/rvhaplo.yaml"
-    threads:
-        10
-    shell:
-        "scripts/run_rvhaplo.sh "
-        "{params.outdir} "
-        "{params.vir_indir} "
-        "{params.sam_indir} "
-        "{params.barcode} "
-        "{threads}"
+# rule run_rvhaplo:
+#     input:
+#         "get_rvhaplo.done",
+#         OUTDIR + "{barcode}/align_to_targets.done"
+#     output:
+#         touch(OUTDIR + "{barcode}/rvhaplo.done")
+#     params:
+#         barcode = "{barcode}",
+#         vir_indir = OUTDIR + "{barcode}/viral_refs/",
+#         sam_indir = OUTDIR + "{barcode}/target_aligned/",
+#         outdir = OUTDIR + "{barcode}/rvhaplo_out/"
+#     conda:
+#         "envs/rvhaplo.yaml"
+#     threads:
+#         10
+#     shell:
+#         "scripts/run_rvhaplo.sh "
+#         "{params.outdir} "
+#         "{params.vir_indir} "
+#         "{params.sam_indir} "
+#         "{params.barcode} "
+#         "{threads}"
 
-# LAS error, not able to read fatsa file, need to figure out why
-# On Hipergator the `daccord` command isn't being found in some samples
-## even after the command has been linked correctly to the bin
+# # LAS error, not able to read fatsa file, need to figure out why
+# # On Hipergator the `daccord` command isn't being found in some samples
+# ## even after the command has been linked correctly to the bin
 
 # rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
 #     input:
