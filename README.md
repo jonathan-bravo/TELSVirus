@@ -23,7 +23,7 @@
 ## Extra
 
 - [x] **Reach out to HiPerGator about symlink with daccord and Strainline**
-- [ ] Create DAG flowchart and include in README
+- [x] Create DAG flowchart and include in README
 
 **Putting haplotype generation on hold FOR NOW**
 
