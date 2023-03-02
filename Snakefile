@@ -92,20 +92,32 @@ rule concat_parts:
     input:
         READS + "{barcode}"
     output:
-        temp(OUTDIR + "{barcode}/concat_{barcode}.fastq.gz")
+        temp(OUTDIR + "{barcode}/{barcode}.concat.fastq.gz")
     shell:
         "cat {input}/* > {output}"
 
 ## TRIM READS ##################################################################
-
-## REMOVE ADAPTERS
-## FIRST 5bp NEED TO BE TRIMMED OFF
-## TRIMMOMATIC
+# gunzip -c reads.fastq.gz | NanoFilt -q 12 --headcrop 75 | gzip > trimmed-reads.fastq.gz
+rule trim_reads: # want to trim nanopore (~30) + UMI (5) + illumina adaptors (~30) 
+    input:
+       OUTDIR + "{barcode}/{barcode}.concat.fastq.gz"
+    output:
+        logfile = OUTDIR + "{barcode}/{barcode}.trimmed.log",
+        trimmed_reads = OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
+    conda:
+        "envs/trimming.yaml"
+    envmodules:
+        "gzip/1.10",
+        "nanofilt/2.7.1"
+    shell:
+        "gunzip -c {input} | "
+        "NanoFilt --headcrop 65 --tailcrop 65 --logfile {output.logfile} | "
+        "gzip > {output.trimmed_reads}"
 
 ## DEDUPLICATE #################################################################
-rule bin_reads_by_length: # will change the input once trimming is included
+rule bin_reads_by_length:
     input:
-        OUTDIR + "{barcode}/concat_{barcode}.fastq.gz"
+        OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
     output:
         touch(OUTDIR + "{barcode}/{barcode}.bin.reads.done")
     params:
@@ -194,7 +206,7 @@ rule merge_duplicates_lists:
 
 rule deduplicate:
     input:
-        reads = OUTDIR + "{barcode}/concat_{barcode}.fastq.gz", ## CHANGE WHEN TRIMMING IS INCLUDED
+        reads = OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz",
         duplicates_list = OUTDIR + "{barcode}/duplicates.txt"
     output:
         reads = OUTPUT + "{barcode}/{barcode}.dedup.fastq.gz",

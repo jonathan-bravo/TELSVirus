@@ -2,7 +2,7 @@
 
 ## Cleaning the data
 
-- [ ] Add read trimming using [NanoFilt](https://github.com/wdecoster/nanofilt)
+- [x] Add read trimming using [NanoFilt](https://github.com/wdecoster/nanofilt)
   - Before deduplication
   - Trimming will just be a static length (length of nanopore adaptor + 5 (UMI) + length of illumina adaptors) on both the head and tail of the sequence
 - [x] Add read deduplication
@@ -22,7 +22,7 @@
 
 ## Extra
 
-- [ ] **Reach out to HiPerGator about symlink with daccord and Strainline**
+- [x] **Reach out to HiPerGator about symlink with daccord and Strainline**
 - [ ] Create DAG flowchart and include in README
 
 **Putting haplotype generation on hold FOR NOW**

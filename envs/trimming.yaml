@@ -1,8 +1,9 @@
-name: deduplication
+name: trimming
 channels:
   - conda-forge
   - bioconda
   - anaconda
 dependencies:
   - python=3.8
-  - blat
+  - nanofilt
+  - gzip
