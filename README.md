@@ -13,6 +13,7 @@
 - [x] Need to output the total number of reads BEFORE & AFTER deduplication
 - [x] Output read lengths before and after deduplication
   - Could output this data and then use an `r script` to generate a histogram
+- [ ] Write r-script(s) for looking at read qc data
 
 ## Improving target strain selection
 
@@ -24,6 +25,7 @@
 
 - [x] **Reach out to HiPerGator about symlink with daccord and Strainline**
 - [x] Create DAG flowchart and include in README
+  - `snakemake --forceall --rulegraph | dot -Tpdf > dag.pdf`
 
 **Putting haplotype generation on hold FOR NOW**
 
