@@ -13,7 +13,7 @@ all_input = [
     expand(OUTDIR + "{barcode}/{barcode}.post.dedup.rl.tsv", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/{barcode}_strainline_out/", barcode = BARCODES)
+    expand(OUTDIR + "{barcode}/strainline.done", barcode = BARCODES)
 ]
 
 rule all:
@@ -77,7 +77,7 @@ rule gen_strain_db:
     input:
         VIRUSES
     output:
-        OUTDIR + "strain_db.json"
+        OUTDIR + "strain_db.tsv"
     params:
         email = config["email"]
     conda:
@@ -465,7 +465,7 @@ rule find_viral_targets:
     input:
         pileup = OUTDIR + "{barcode}/{barcode}.mpileup",
         all_viruses_bed = OUTDIR + "all.viral.targets.bed",
-        strain_db = OUTDIR + "strain_db.json"
+        strain_db = OUTDIR + "strain_db.tsv"
     output:
         temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed")
     conda:
@@ -476,9 +476,8 @@ rule find_viral_targets:
         "scripts/find_viral_targets.py "
         "--mpileup {input.pileup} "
         "--bed {input.all_viruses_bed} "
+        "--strains {input.strain_db} "
         "--outfile {output}"
-        
-        # "grep -Ff {params.target_list} - > {output}; "
 
 rule get_viral_genomes:
     input:
@@ -560,7 +559,9 @@ rule run_strainline: ## need to figure out how to link daccord to strainline con
         "daccord_linked.done",
         fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
     output:
-        OUTDIR + "{barcode}/{barcode}_strainline_out/"
+        touch(OUTDIR + "{barcode}/strainline.done")
+    params:
+        outdir = OUTDIR + "{barcode}/{barcode}_strainline_out/"
     threads:
         10
     conda:
@@ -568,6 +569,6 @@ rule run_strainline: ## need to figure out how to link daccord to strainline con
     shell:
         "scripts/Strainline/src/strainline.sh "
         "-i {input.fasta} "
-        "-o {output} "
+        "-o {params.outdir} "
         "-t {threads} "
         "-p ont"

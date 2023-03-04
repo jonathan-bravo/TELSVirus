@@ -17,7 +17,7 @@
 
 ## Improving target strain selection
 
-- [ ] Update `find_viral_targets.py` to select best strain for each virus with genome fraction >= 80% (using average depth to break ties)
+- [x] Update `find_viral_targets.py` to select best strain for each virus with genome fraction >= 80% (using average depth to break ties)
   - Make special case for influenza as the virus has multiple segments for each strain
   - Also make it so the script output stats for genome fraction and average depth
 

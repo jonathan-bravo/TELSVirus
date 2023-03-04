@@ -2,38 +2,63 @@
 
 import argparse
 
-## WHAT THE SUBSTRAIN THAT HAS HIGHEST COVERAGE
-## INCLUDE DEPTH OF COVERAGE TO BREAK TIES
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mpileup', required = True)
     parser.add_argument('--bed', required = True)
+    parser.add_argument('--strains', required = True)
     parser.add_argument('--outfile', required = True)
     return parser.parse_args()
 
-def get_counts(pileup):
+def read_pileup(pileup):
+    return (row.split('\t') for row in open(pileup))
+
+def parse_bed(bed_file):
+    bed = (row.split('\t') for row in open(bed_file))
+    return dict([(row[0], row[2]) for row in bed])
+
+def parse_strains(strain_db):
+    strains = (row.split('\t') for row in open(strain_db))
+    return dict([(row[0], row[1]) for row in strains])
+
+def parse_row(covered_counts_dict, strains, row):
+    covered_counts_dict.setdefault(row[0], [strains[row[0]].strip(), 0, 0])
+    covered_counts_dict[row[0]][1] += int(row[1])
+    if int(row[1]) > 0: covered_counts_dict[row[0]][2] += 1
+
+def get_counts(pileup, strains): 
     covered_counts = {}
-    for row in pileup:
-        if int(row[1]) > 0:
-            try: covered_counts[row[0]] += 1
-            except KeyError: covered_counts[row[0]] = 1
+    [parse_row(covered_counts, strains, row) for row in pileup]
     return covered_counts
 
-def write_viral_targets(total_counts, covered_counts, outfile):
+def genome_fraction(key, cc, tc):
+    return (cc[key][2]/int(tc[key])) * 100
+
+def mean_depth(key, cc, tc):
+    return cc[key][1]/int(tc[key])
+
+def high_match(key, cc, tc):
+    return genome_fraction(key, cc, tc) > 80.0
+
+def get_viral_targets(cc, tc):
+    best_matches = {}
+    [best_matches.setdefault(cc[key][0], []).append((genome_fraction(key, cc, tc), mean_depth(key, cc, tc), key)) for key in cc.keys() if high_match(key, cc, tc)]
+    [best_matches[key].sort(reverse=True) for key in best_matches.keys()]
+    return [best_matches[key][0] for key in best_matches.keys()]
+    
+
+def write_viral_targets(targets, tc, outfile):
     with open(outfile, "w") as o:
-        for key in covered_counts.keys():
-            percent = (covered_counts[key]/int(total_counts[key])) * 100
-            if percent > 80.0:
-                o.write(f'{key}\t0\t{total_counts[key]}')
+        [o.write(f'{t[2]}\t0\t{tc[t[2]]}') for t in targets]
 
 def main():
     args = parse_args()
-    pileup = (row.split('\t') for row in open(args.mpileup))
-    bed = (row.split('\t') for row in open(args.bed))
-    total_counts = dict([(row[0], row[2]) for row in bed])
-    covered_counts = get_counts(pileup)
-    write_viral_targets(total_counts, covered_counts, args.outfile)
+    pileup = read_pileup(args.mpileup)
+    total_counts = parse_bed(args.bed)
+    strains = parse_strains(args.strains)
+    covered_counts = get_counts(pileup, strains)
+    targets = get_viral_targets(covered_counts, total_counts)
+    write_viral_targets(targets, total_counts, args.outfile)
 
 if __name__ == '__main__':
     main()
