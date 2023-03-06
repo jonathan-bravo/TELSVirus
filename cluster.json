@@ -13,6 +13,11 @@
         "err": "logs/err_%j.log"
     },
 
+    "blat_clustered_reads": {
+        "cpus-per-task": "32",
+        "mem": "64gb"
+    },
+
     "align_reads_to_host": {
         "cpus-per-task": "32",
         "mem": "64gb"
