@@ -85,7 +85,7 @@ rule gen_strain_db:
     envmodules:
         "python/3.8"
     shell:
-        "scripts/gen_strain_db.py "
+        "scripts/gen_strain_source_db.py "
         "--infile {input} "
         "--email {params.email} "
         "--outfile {output}"
