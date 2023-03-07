@@ -107,15 +107,18 @@ rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24)
     output:
         logfile = OUTDIR + "{barcode}/{barcode}.trimmed.log",
         trimmed_reads = OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
+    params:
+        crop = config["crop_len"]
     conda:
-        "envs/trimming.yaml"
+        "envs/deduplication.yaml"
     envmodules:
-        "samtools/1.9",
-        "nanofilt/2.7.1"
+        "python/3.8"
     shell:
-        "gunzip -c {input} | "
-        "NanoFilt --headcrop 37 --tailcrop 37 --logfile {output.logfile} | "
-        "bgzip > {output.trimmed_reads}"
+        "scripts/trim.py "
+        "--infile {input} "
+        "--logfile {output.logfile} "
+        "--outfile {output.trimmed_reads} "
+        "--crop {params.crop}"
 
 ## DEDUPLICATE #################################################################
 rule pre_dedup_read_lengths:
