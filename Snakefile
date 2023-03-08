@@ -81,7 +81,7 @@ rule gen_strain_db:
     params:
         email = config["email"]
     conda:
-        "envs/alignment.yaml"
+        "envs/strain_db.yaml"
     envmodules:
         "python/3.8"
     shell:
@@ -131,7 +131,7 @@ rule pre_dedup_read_lengths:
     envmodules:
         "python/3.8"
     shell:
-        "scripts/read_lengths.py --infile {input} --outfile {outfile}"
+        "scripts/read_lengths.py --infile {input} --outfile {output}"
 
 rule bin_reads_by_length:
     input:
@@ -145,6 +145,7 @@ rule bin_reads_by_length:
     envmodules:
         "python/3.8"
     shell:
+        "mkdir -p {params.outdir}; "
         "scripts/bin_reads.py "
         "--infile {input} "
         "--outdir {params.outdir}"
@@ -162,10 +163,11 @@ rule cluster_reads:
     envmodules:
         "python/3.8"
     shell:
+        "mkdir -p {params.outdir}; "
         "scripts/cluster_reads.py "
         "--indir {params.indir} "
         "--outdir {params.outdir}; "
-        "rm -rf {params.outdir}; "
+        "rm -rf {params.indir}; "
         "rm {input}"
 
 rule blat_clustered_reads:
@@ -183,10 +185,10 @@ rule blat_clustered_reads:
     envmodules:
         "blat/20140318"
     shell:
+        "mkdir -p {params.outdir}; "
         "scripts/run_blat.sh "
         "{params.outdir} "
         "{params.read_clusters}; "
-        "rm -rf {params.read_clusters}; "
         "rm -rf {params.read_clusters}; "
         "rm {input}"
 
@@ -204,6 +206,7 @@ rule find_duplicates:
     envmodules:
         "python/3.8"
     shell:
+        "mkdir -p {params.outdir}; "
         "scripts/run_find_duplicates.sh "
         "{params.outdir} "
         "{params.pls_dir} "
@@ -234,7 +237,7 @@ rule deduplicate: # find reads here?
     envmodules:
         "python/3.8"
     shell:
-        "script/deduplicate.py "
+        "scripts/deduplicate.py "
         "--reads {input.reads} "
         "--duplicates {input.duplicates_list} "
         "--out_fastq {output.reads} "
@@ -250,7 +253,7 @@ rule post_dedup_read_lengths:
     envmodules:
         "python/3.8"
     shell:
-        "scripts/read_lengths.py --infile {input} --outfile {outfile}"
+        "scripts/read_lengths.py --infile {input} --outfile {output}"
 
 ## REMOVE HOST DNA #############################################################
 rule align_reads_to_host:
