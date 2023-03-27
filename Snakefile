@@ -507,7 +507,7 @@ rule split_viral_genomes:
     params:
         outdir = OUTDIR + "{barcode}/viral_refs/"
     shell:
-        "scripts/split_target_viruses.sh {input} {params.outådir}"
+        "scripts/split_target_viruses.sh {input} {params.outdir}"
 
 rule align_to_target_virus:
     input:
