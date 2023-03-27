@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from math import ceil
 from os import listdir, system
 
 def parse_args():
@@ -17,7 +18,7 @@ def get_bins(indir):
 def get_clusters(bins):
     clusters = []
     while bins:
-        cluster_len = bins[0]+40
+        cluster_len = ceil(bins[0]*1.09)
         cluster = [x for x in bins if x <= cluster_len]
         clusters.append(cluster)
         bins = [x for x in bins if x not in cluster]
