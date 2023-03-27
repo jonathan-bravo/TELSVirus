@@ -29,8 +29,7 @@ def mapping_stats(infile):
 def main():
     args = parse_cmdline_params()
     idxstats = mapping_stats(args.infile) # dictionary
-    [idxstats[strain].append((idxstats[strain][1]/idxstats[strain][0])*100) for strain in idxstats]
-    #print(idxstats)
+    [idxstats[strain].append((idxstats[strain][1]/idxstats[strain][0])*100) if idxstats[strain][0] != 0 else idxstats[strain].append(0) for strain in idxstats]
     write_out(idxstats, args.outfile)
 
 if __name__ == "__main__":
