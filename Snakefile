@@ -176,8 +176,8 @@ rule blat_clustered_reads:
     output:
         touch(OUTDIR + "{barcode}/{barcode}.blat.done")
     params:
-        read_clusters = OUTDIR + "{barcode}/read_clusters/",
-        outdir = OUTDIR + "{barcode}/psl_files/"
+        rc = OUTDIR + "{barcode}/read_clusters/",
+        o = OUTDIR + "{barcode}/psl_files/"
     threads:
         32
     conda:
@@ -185,11 +185,12 @@ rule blat_clustered_reads:
     envmodules:
         "blat/20140318"
     shell:
-        "mkdir -p {params.outdir}; "
-        "scripts/run_blat.sh "
-        "{params.outdir} "
-        "{params.read_clusters}; "
-        "rm -rf {params.read_clusters}; "
+        "mkdir -p {params.o}; "
+        "scripts/run_blat.py "
+        "--outdir {params.o} "
+        "--threads {threads} "
+        "--read_clusters {params.rc}; "
+        "rm -rf {params.rc}; "
         "rm {input}"
 
 rule find_duplicates:
@@ -240,7 +241,7 @@ rule deduplicate: # find reads here?
         "scripts/deduplicate.py "
         "--reads {input.reads} "
         "--duplicates {input.duplicates_list} "
-        "--out_fastq {output.reads} "
+        "--out_reads {output.reads} "
         "--out_dupes {output.dupes}"
 
 rule post_dedup_read_lengths:
