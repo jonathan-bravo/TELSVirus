@@ -15,7 +15,7 @@
 
     "blat_clustered_reads": {
         "cpus-per-task": "32",
-        "mem": "64gb"
+        "mem": "128gb"
     },
 
     "align_reads_to_host": {
