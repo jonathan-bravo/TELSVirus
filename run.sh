@@ -10,6 +10,7 @@
 #SBATCH --error=TELSVirus_error_%j.log
 
 module load snakemake
+module load conda
 
 snakemake --cluster "sbatch -A {cluster.account} -q {cluster.qos} \
 -c {cluster.cpus-per-task} -N {cluster.Nodes} -t {cluster.runtime} \
