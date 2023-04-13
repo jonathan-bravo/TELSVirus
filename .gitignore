@@ -2,3 +2,4 @@
 .snakemake/
 data/
 test_results/
+_adapter_testing/
