@@ -1,209 +1,481 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="796pt" height="1484pt" viewBox="0 0 796 1484">
-<g>
-<path d="M0 0H796V1484H0Z" fill="#ffffff"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d9ba" d="M457.441 1444H427.441C421.441 1444 415.441 1450 415.441 1456V1468C415.441 1474 421.441 1480 427.441 1480H457.441C463.441 1480 469.441 1474 469.441 1468V1456C469.441 1450 463.441 1444 457.441 1444"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1464.5" x="437.4414 442.69129 444.94123">all</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d9bc57" d="M722.441 1012H644.441C638.441 1012 632.441 1018 632.441 1024V1036C632.441 1042 638.441 1048 644.441 1048H722.441C728.441 1048 734.441 1042 734.441 1036V1024C734.441 1018 728.441 1012 722.441 1012"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1032.5" x="640.4414 645.6913 650.94119 656.19107 659.18099 664.43087 667.4307 672.6806 680.93038 686.18026 691.4301 696.67 698.92 704.16989 709.41976 712.40969 717.65957 720.6495">host_removal_stats</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M677.223 1048.68C668.438 1075.293 653.441 1127.395 653.441 1173V1319C653.441 1400.449 543.887 1438.25 482.66 1453.012"/>
-<path d="M483.504 1456.41 472.977 1455.227 481.945 1449.586ZM483.504 1456.41" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M483.504 1456.41 472.977 1455.227 481.945 1449.586ZM483.504 1456.41"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d97b" d="M582.441 1084H522.441C516.441 1084 510.441 1090 510.441 1096V1108C510.441 1114 516.441 1120 522.441 1120H582.441C588.441 1120 594.441 1114 594.441 1108V1096C594.441 1090 588.441 1084 582.441 1084"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1104.5" x="518.4414 523.6913 528.94119 534.19107 537.18099 542.43087 545.4307 550.6706 555.9205 558.9204 564.1603 569.41018 572.4101 577.64999 580.6499">on_target_stats</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M650.043 1048.844C633.875 1057.484 614.242 1067.977 596.832 1077.277"/>
-<path d="M598.914 1080.137 588.445 1081.762 595.613 1073.961ZM598.914 1080.137" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M598.914 1080.137 588.445 1081.762 595.613 1073.961ZM598.914 1080.137"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d9a557" d="M528.441 724H458.441C452.441 724 446.441 730 446.441 736V748C446.441 754 452.441 760 458.441 760H528.441C534.441 760 540.441 754 540.441 748V736C540.441 730 534.441 724 528.441 724"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="744.5" x="454.4414 457.44136 462.69123 470.94105 476.19093 481.4408 486.69068 491.93055 497.18043 502.4303 507.68019 510.6701 515.92 521.16989 526.41976">remove_host_dna</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M514.012 760.754C539.473 783.555 582.941 825.305 611.441 868 639.652 910.266 661.547 965.398 673.457 998.949"/>
-<path d="M676.703 997.637 676.672 1008.23 670.09 999.926ZM676.703 997.637" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M676.703 997.637 676.672 1008.23 670.09 999.926ZM676.703 997.637"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#b7d957" d="M437.441 796H375.441C369.441 796 363.441 802 363.441 808V820C363.441 826 369.441 832 375.441 832H437.441C443.441 832 449.441 826 449.441 820V808C449.441 802 443.441 796 437.441 796"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="816.5" x="371.4414 376.69129 381.94117 387.19105 392.4309 397.6808 402.93067 408.18055 411.17048 416.42036 419.4203 424.67018 429.92005 435.16993">non_host_reads</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M471.484 760.664C461.566 768.645 449.648 778.234 438.742 787.012"/>
-<path d="M441.031 789.66 431.047 793.199 436.645 784.203ZM441.031 789.66" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M441.031 789.66 431.047 793.199 436.645 784.203ZM441.031 789.66"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d99557" d="M529.941 652H456.941C450.941 652 444.941 658 444.941 664V676C444.941 682 450.941 688 456.941 688H529.941C535.941 688 541.941 682 541.941 676V664C541.941 658 535.941 652 529.941 652"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="672.5" x="452.9414 458.19129 463.44117 468.69105 471.68098 476.93086 482.18074 487.4306 495.68043 500.9303 503.92024 509.1701 514.41 519.65988 524.9097">host_sam_to_bam</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M493.441 688.664C493.441 695.246 493.441 702.922 493.441 710.332"/>
-<path d="M496.941 710.07 493.441 720.07 489.941 710.07ZM496.941 710.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M496.941 710.07 493.441 720.07 489.941 710.07ZM496.941 710.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d96657" d="M533.441 580H453.441C447.441 580 441.441 586 441.441 592V604C441.441 610 447.441 616 453.441 616H533.441C539.441 616 545.441 610 545.441 604V592C545.441 586 539.441 580 533.441 580"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="600.5" x="449.4414 454.69129 456.94123 459.19117 464.43104 469.6809 474.9308 477.93074 483.1806 488.43049 493.68037 498.93025 504.1801 507.17005 512.4199 517.6598 522.90969 528.15957 533.4094">align_reads_to_host</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M493.441 616.664C493.441 623.246 493.441 630.922 493.441 638.332"/>
-<path d="M496.941 638.07 493.441 648.07 489.941 638.07ZM496.941 638.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M496.941 638.07 493.441 648.07 489.941 638.07ZM496.941 638.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d95757" d="M514.441 508H472.441C466.441 508 460.441 514 460.441 520V532C460.441 538 466.441 544 472.441 544H514.441C520.441 544 526.441 538 526.441 532V520C526.441 514 520.441 508 514.441 508"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="528.5" x="468.4414 473.69129 478.94117 484.19105 489.4309 494.6808 496.93074 499.18067 504.43055 509.68043 512.67037">deduplicate</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M493.441 544.664C493.441 551.246 493.441 558.922 493.441 566.332"/>
-<path d="M496.941 566.07 493.441 576.07 489.941 566.07ZM496.941 566.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M496.941 566.07 493.441 576.07 489.941 566.07ZM496.941 566.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d1d9" d="M182.441 652H78.441C72.441 652 66.441 658 66.441 664V676C66.441 682 72.441 688 78.441 688H182.441C188.441 688 194.441 682 194.441 676V664C194.441 658 188.441 652 182.441 652"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="672.5" x="74.44141 79.691287 84.94116 90.19103 93.18096 98.43084 103.68072 108.92059 114.17047 119.42035 124.67023 129.92009 132.92003 138.16989 143.41976 148.66962 153.90949 156.15943 161.40929 166.65915 171.90901 174.89894 180.1488">post_dedup_read_lengths</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M459.617 540.23C397.551 564.512 264.828 616.43 188.223 646.398"/>
-<path d="M189.836 649.523 179.246 649.906 187.285 643.004ZM189.836 649.523" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M189.836 649.523 179.246 649.906 187.285 643.004ZM189.836 649.523"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d9ad57" d="M598.441 76H560.441C554.441 76 548.441 82 548.441 88V100C548.441 106 554.441 112 560.441 112H598.441C604.441 112 610.441 106 610.441 100V88C610.441 82 604.441 76 598.441 76"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="96.5" x="556.4414 559.43136 562.4312 564.6812 572.93099 578.18087 581.1807 586.4306 591.6805 596.92037">trim_reads</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M579.441 112.934C579.441 139.871 579.441 192.379 579.441 237V383C579.441 423.445 581.785 437.645 560.441 472 553.875 482.566 544.422 491.898 534.676 499.668"/>
-<path d="M537.074 502.246 526.953 505.387 532.906 496.621ZM537.074 502.246" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M537.074 502.246 526.953 505.387 532.906 496.621ZM537.074 502.246"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#5783d9" d="M538.441 148H456.441C450.441 148 444.441 154 444.441 160V172C444.441 178 450.441 184 456.441 184H538.441C544.441 184 550.441 178 550.441 172V160C550.441 154 544.441 148 538.441 148"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="168.5" x="452.4414 457.69129 459.94123 465.1911 470.43098 473.4309 478.6808 483.93067 489.18055 494.43043 499.6803 504.93019 510.18006 515.42996 517.6499 522.9198 528.1697 533.41958 536.4095">bin_reads_by_length</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M558.746 112.664C549.496 120.562 538.398 130.035 528.203 138.738"/>
-<path d="M530.59 141.301 520.711 145.133 526.047 135.977ZM530.59 141.301" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M530.59 141.301 520.711 145.133 526.047 135.977ZM530.59 141.301"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#98d957" d="M780.441 220H682.441C676.441 220 670.441 226 670.441 232V244C670.441 250 676.441 256 682.441 256H780.441C786.441 256 792.441 250 792.441 244V232C792.441 226 786.441 220 780.441 220"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="240.5" x="678.4414 683.6913 686.69119 691.94107 697.1909 702.4308 707.68069 712.93057 718.1804 723.4303 728.6802 731.68008 736.92996 742.1698 747.4197 752.66958 754.91958 760.16946 765.4193 770.6692 773.6591 778.909">pre_dedup_read_lengths</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M598.691 112.984C625.074 137.633 672.652 182.082 703.109 210.531"/>
-<path d="M705.215 207.711 710.133 217.094 700.438 212.824ZM705.215 207.711" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M705.215 207.711 710.133 217.094 700.438 212.824ZM705.215 207.711"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#79d957" d="M603.941 4H554.941C548.941 4 542.941 10 542.941 16V28C542.941 34 548.941 40 554.941 40H603.941C609.941 40 615.941 34 615.941 28V16C615.941 10 609.941 4 603.941 4"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="24.5" x="550.9414 556.1913 561.44119 566.69107 571.9409 577.1908 580.1807 585.4306 590.6805 595.92037 598.9202 601.92019">concat_parts</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M579.441 40.664C579.441 47.246 579.441 54.922 579.441 62.332"/>
-<path d="M582.941 62.07 579.441 72.07 575.941 62.07ZM582.941 62.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M582.941 62.07 579.441 72.07 575.941 62.07ZM582.941 62.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#5764d9" d="M539.441 436H447.441C441.441 436 435.441 442 435.441 448V460C435.441 466 441.441 472 447.441 472H539.441C545.441 472 551.441 466 551.441 460V448C551.441 442 545.441 436 539.441 436"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="456.5" x="443.4414 451.69123 456.9411 459.94105 465.19093 470.4408 475.68067 480.93055 486.18043 491.4303 493.68025 495.93019 501.18006 506.42994 509.41987 514.66976 519.9196 525.1595 527.4095 529.6595 534.90939 537.8993">merge_duplicates_lists</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M493.441 472.664C493.441 479.246 493.441 486.922 493.441 494.332"/>
-<path d="M496.941 494.07 493.441 504.07 489.941 494.07ZM496.941 494.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M496.941 494.07 493.441 504.07 489.941 494.07ZM496.941 494.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#88d957" d="M524.441 364H466.441C460.441 364 454.441 370 454.441 376V388C454.441 394 460.441 400 466.441 400H524.441C530.441 400 536.441 394 536.441 388V376C536.441 370 530.441 364 524.441 364"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="384.5" x="462.4414 464.94136">fi</tspan></text>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="384.5" x="467.69129 472.94117 478.19105 483.44093 488.6808 493.93067 499.18055 501.43049 503.68043 508.9303 514.1802 517.1701 522.42">nd_duplicates</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M494.934 400.664C494.746 407.246 494.527 414.922 494.316 422.332"/>
-<path d="M497.82 422.176 494.039 432.074 490.824 421.977ZM497.82 422.176" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M497.82 422.176 494.039 432.074 490.824 421.977ZM497.82 422.176"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d96c" d="M537.941 292H454.941C448.941 292 442.941 298 442.941 304V316C442.941 322 448.941 328 454.941 328H537.941C543.941 328 549.941 322 549.941 316V304C549.941 298 543.941 292 537.941 292"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="312.5" x="450.9414 456.19129 458.44123 463.6911 466.68104 471.9309 477.1808 479.40074 484.67063 489.9205 492.91044 498.1603 501.16026 506.41014 511.66 516.90988 519.9097 525.1596 530.4095 535.65939">blat_clustered_reads</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M496.188 328.664C496.094 335.246 495.984 342.922 495.879 350.332"/>
-<path d="M499.383 350.121 495.738 360.07 492.383 350.023ZM499.383 350.121" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M499.383 350.121 495.738 360.07 492.383 350.023ZM499.383 350.121"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#5773d9" d="M521.941 220H470.941C464.941 220 458.941 226 458.941 232V244C458.941 250 464.941 256 470.941 256H521.941C527.941 256 533.941 250 533.941 244V232C533.941 226 527.941 220 521.941 220"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="240.5" x="466.9414 472.19129 474.44123 479.6911 484.94099 487.9309 493.1808 496.18074 501.4306 504.43055 509.6704 514.9203 520.17019">cluster_reads</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M496.441 256.664C496.441 263.246 496.441 270.922 496.441 278.332"/>
-<path d="M499.941 278.07 496.441 288.07 492.941 278.07ZM499.941 278.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M499.941 278.07 496.441 288.07 492.941 278.07ZM499.941 278.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M497.188 184.664C497.094 191.246 496.984 198.922 496.879 206.332"/>
-<path d="M500.383 206.121 496.738 216.07 493.383 206.023ZM500.383 206.121" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M500.383 206.121 496.738 216.07 493.383 206.023ZM500.383 206.121"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d9d9" d="M449.441 940H363.441C357.441 940 351.441 946 351.441 952V964C351.441 970 357.441 976 363.441 976H449.441C455.441 976 461.441 970 461.441 964V952C461.441 946 455.441 940 449.441 940"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="960.5" x="359.4414 364.69129 366.94123 369.94117 375.19105 380.44093 385.6908 390.94068 396.18055 401.43043 406.6803 414.9301 420.18 423.16993 428.4198 433.66969 438.91957 444.16944">viruses_sam_to_bam</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M406.441 976.934C406.441 1003.871 406.441 1056.379 406.441 1101V1319C406.441 1358.918 419.973 1403.27 430.445 1431.609"/>
-<path d="M433.582 1430.016 433.895 1440.605 427.047 1432.523ZM433.582 1430.016" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M433.582 1430.016 433.895 1440.605 427.047 1432.523ZM433.582 1430.016"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57c1d9" d="M511.941 1156H446.941C440.941 1156 434.941 1162 434.941 1168V1180C434.941 1186 440.941 1192 446.941 1192H511.941C517.941 1192 523.941 1186 523.941 1180V1168C523.941 1162 517.941 1156 511.941 1156"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1176.5" x="442.9414 445.94136 451.19123 456.4411 461.69099 466.94087 472.18074 477.4306 482.68049 485.68043 490.9303 496.18019 499.1701 502.17005 507.41993 509.66987">reads_per_strain</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M412.539 976.879C425.043 1013.539 453.715 1097.59 469.152 1142.84"/>
-<path d="M472.414 1141.562 472.328 1152.156 465.789 1143.824ZM472.414 1141.562" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M472.414 1141.562 472.328 1152.156 465.789 1143.824ZM472.414 1141.562"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#a7d957" d="M366.441 1012H336.441C330.441 1012 324.441 1018 324.441 1024V1036C324.441 1042 330.441 1048 336.441 1048H366.441C372.441 1048 378.441 1042 378.441 1036V1024C378.441 1018 372.441 1012 366.441 1012"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1032.5" x="334.4414 342.69123 347.9411 350.19105 352.44099 357.68086 362.93074">mpileup</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M392.562 976.664C386.742 984.066 379.836 992.855 373.363 1001.098"/>
-<path d="M376.305 1003.016 367.375 1008.719 370.801 998.691ZM376.305 1003.016" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M376.305 1003.016 367.375 1008.719 370.801 998.691ZM376.305 1003.016"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d98657" d="M437.941 868H374.941C368.941 868 362.941 874 362.941 880V892C362.941 898 368.941 904 374.941 904H437.941C443.941 904 449.941 898 449.941 892V880C449.941 874 443.941 868 437.941 868"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="888.5" x="370.9414 376.19129 378.44123 380.69117 385.93104 391.1809 396.4308 399.42073 404.6706 409.92048 415.17036 417.4203 420.42024 425.6701 430.91999 436.16987">align_to_viruses</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M406.441 904.664C406.441 911.246 406.441 918.922 406.441 926.332"/>
-<path d="M409.941 926.07 406.441 936.07 402.941 926.07ZM409.941 926.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M409.941 926.07 406.441 936.07 402.941 926.07ZM409.941 926.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M406.441 832.664C406.441 839.246 406.441 846.922 406.441 854.332"/>
-<path d="M409.941 854.07 406.441 864.07 402.941 854.07ZM409.941 854.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M409.941 854.07 406.441 864.07 402.941 854.07ZM409.941 854.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d9c9" d="M590.941 868H483.941C477.941 868 471.941 874 471.941 880V892C471.941 898 477.941 904 483.941 904H590.941C596.941 904 602.941 898 602.941 892V880C602.941 874 596.941 868 590.941 868"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="888.5" x="479.9414 485.19129 487.44123 489.69117 494.93104 500.1809 505.4308 508.42073 513.6706 518.9205 524.17037 526.42037 529.4202 534.6701 539.92 545.16989 550.41976 555.6596 558.65957 563.9094 566.9093 572.1492 577.39907 580.399 585.63888 588.6388">align_to_viruses_for_stats</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M439.836 832.844C456.004 841.484 475.637 851.977 493.047 861.277"/>
-<path d="M494.266 857.961 501.434 865.762 490.965 864.137ZM494.266 857.961" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M494.266 857.961 501.434 865.762 490.965 864.137ZM494.266 857.961"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d97657" d="M308.941 1300H225.941C219.941 1300 213.941 1306 213.941 1312V1324C213.941 1330 219.941 1336 225.941 1336H308.941C314.941 1336 320.941 1330 320.941 1324V1312C320.941 1306 314.941 1300 308.941 1300"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1320.5" x="221.9414 227.19127 229.44121 231.69115 236.93102 242.18088 247.43074 250.42067 255.67053 260.9204 263.91035 269.16023 272.16017 277.41004 282.6599 285.64985 290.89973 296.1496 298.39955 301.39949 306.64936">align_to_target_virus</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M363.332 832.984C300.902 861.367 186.375 922.66 127.441 1012 105.168 1045.762 108.441 1060.555 108.441 1101V1175C108.441 1231.176 164.336 1270.656 209.844 1293.492"/>
-<path d="M211.23 1290.273 218.723 1297.766 208.195 1296.582ZM211.23 1290.273" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M211.23 1290.273 218.723 1297.766 208.195 1296.582ZM211.23 1290.273"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57a2d9" d="M95.441 868H45.441C39.441 868 33.441 874 33.441 880V892C33.441 898 39.441 904 45.441 904H95.441C101.441 904 107.441 898 107.441 892V880C107.441 874 101.441 868 95.441 868"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="888.5" x="41.441408 44.441335 49.691205 54.941076 60.190946 65.44082 68.43075 71.43067 76.68055 78.9005 84.17037 86.42032 88.670269 93.92014">run_strainline</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M362.574 821.234C306.258 829.676 205.738 846.223 121.441 868 121.176 868.07 120.906 868.137 120.641 868.207"/>
-<path d="M121.91 871.484 111.332 870.871 119.984 864.754ZM121.91 871.484" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M121.91 871.484 111.332 870.871 119.984 864.754ZM121.91 871.484"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M737.863 256.664C746.941 283.254 762.441 335.328 762.441 381V1319C762.441 1439.867 569.344 1458.641 483.148 1461"/>
-<path d="M483.371 1464.496 473.305 1461.191 483.234 1457.496ZM483.371 1464.496" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M483.371 1464.496 473.305 1461.191 483.234 1457.496ZM483.371 1464.496"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M72.148 688.926C54.461 697.023 36.531 708.379 24.441 724-.32 755.984 5.441 772.555 5.441 813V1319C5.441 1381.199 56.762 1382.383 113.441 1408 210.402 1451.824 337.852 1460.035 401.938 1461.184"/>
-<path d="M401.633 1457.68 411.594 1461.297 401.551 1464.68ZM401.633 1457.68" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M401.633 1457.68 411.594 1461.297 401.551 1464.68ZM401.633 1457.68"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M552.441 1120.934C552.441 1147.871 552.441 1200.379 552.441 1245V1319C552.441 1367.82 511.301 1410.035 479.34 1435.465"/>
-<path d="M481.82 1437.977 471.75 1441.277 477.562 1432.418ZM481.82 1437.977" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M481.82 1437.977 471.75 1441.277 477.562 1432.418ZM481.82 1437.977"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d9aa" d="M601.941 1012H484.941C478.941 1012 472.941 1018 472.941 1024V1036C472.941 1042 478.941 1048 484.941 1048H601.941C607.941 1048 613.941 1042 613.941 1036V1024C613.941 1018 607.941 1012 601.941 1012"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1032.5" x="480.9414 489.19123 494.4411 497.44105 502.69093 507.9408 513.18069 518.43057 520.68057 523.6804 528.9303 531.1803 536.4302 541.68008 543.93008 546.15 551.4199 556.6698 564.91958 570.16946 575.4193 578.40927 583.6591 588.909 591.8989 597.1488 600.13876">merge_viral_alignment_stats</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M545.711 1048.664C546.559 1055.246 547.543 1062.922 548.496 1070.332"/>
-<path d="M551.949 1069.73 549.75 1080.098 545.004 1070.625ZM551.949 1069.73" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M551.949 1069.73 549.75 1080.098 545.004 1070.625ZM551.949 1069.73"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c7d957" d="M590.441 940H492.441C486.441 940 480.441 946 480.441 952V964C480.441 970 486.441 976 492.441 976H590.441C596.441 976 602.441 970 602.441 964V952C602.441 946 596.441 940 590.441 940"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="960.5" x="488.4414 493.69129 495.94123 498.94117 504.19105 509.44093 514.6908 519.9407 525.18057 530.4304 532.6804 534.9304 540.1803 545.4302 553.67996 558.9298 564.1697 567.1696 572.4095 577.65939 580.6593 585.9092 588.8991">viruses_alignment_stats</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M541.945 976.664C542.133 983.246 542.352 990.922 542.562 998.332"/>
-<path d="M546.055 997.977 542.84 1008.074 539.059 998.176ZM546.055 997.977" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M546.055 997.977 542.84 1008.074 539.059 998.176ZM546.055 997.977"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M538.449 904.664C538.824 911.246 539.262 918.922 539.688 926.332"/>
-<path d="M543.168 925.895 540.242 936.074 536.18 926.293ZM543.168 925.895" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M543.168 925.895 540.242 936.074 536.18 926.293ZM543.168 925.895"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M477.125 1192.891C470.961 1240.539 454.09 1370.945 446.379 1430.551"/>
-<path d="M449.895 1430.645 445.141 1440.113 442.953 1429.746ZM449.895 1430.645" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M449.895 1430.645 445.141 1440.113 442.953 1429.746ZM449.895 1430.645"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57b2d9" d="M288.941 1372H245.941C239.941 1372 233.941 1378 233.941 1384V1396C233.941 1402 239.941 1408 245.941 1408H288.941C294.941 1408 300.941 1402 300.941 1396V1384C300.941 1378 294.941 1372 288.941 1372"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1392.5" x="241.9414 244.94135 250.19121 255.44107 260.69096 263.6909 268.94078 274.18064 279.4305 284.6804 286.93034">run_rvhaplo</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M301.598 1404.664C330.621 1416.273 372.309 1432.949 402.801 1445.145"/>
-<path d="M403.906 1441.816 411.891 1448.781 401.305 1448.316ZM403.906 1441.816" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M403.906 1441.816 411.891 1448.781 401.305 1448.316ZM403.906 1441.816"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d6d957" d="M183.941 1300H140.941C134.941 1300 128.941 1306 128.941 1312V1324C128.941 1330 134.941 1336 140.941 1336H183.941C189.941 1336 195.941 1330 195.941 1324V1312C195.941 1306 189.941 1300 183.941 1300"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1320.5" x="136.9414 142.19127 147.44113 150.43106 155.68093 158.68087 163.93074 169.1806 174.42047 179.67034 181.92028">get_rvhaplo</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M189.207 1336.844C201.672 1345.156 216.707 1355.18 230.254 1364.211"/>
-<path d="M231.824 1361.051 238.203 1369.508 227.941 1366.875ZM231.824 1361.051" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M231.824 1361.051 238.203 1369.508 227.941 1366.875ZM231.824 1361.051"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M267.441 1336.664C267.441 1343.246 267.441 1350.922 267.441 1358.332"/>
-<path d="M270.941 1358.07 267.441 1368.07 263.941 1358.07ZM270.941 1358.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M270.941 1358.07 267.441 1368.07 263.941 1358.07ZM270.941 1358.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d95c" d="M306.941 1228H227.941C221.941 1228 215.941 1234 215.941 1240V1252C215.941 1258 221.941 1264 227.941 1264H306.941C312.941 1264 318.941 1258 318.941 1252V1240C318.941 1234 312.941 1228 306.941 1228"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1248.5" x="223.9414 229.19129 234.44115 236.69109 238.94103 241.93096 247.18082 252.4307 254.65064 257.67057 262.92045 265.17039 270.42027 275.67015 280.92 286.1699 291.40977 299.65959 304.90946">split_viral_genomes</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M267.441 1264.664C267.441 1271.246 267.441 1278.922 267.441 1286.332"/>
-<path d="M270.941 1286.07 267.441 1296.07 263.941 1286.07ZM270.941 1286.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M270.941 1286.07 267.441 1296.07 263.941 1286.07ZM270.941 1286.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#61d957" d="M304.441 1156H230.441C224.441 1156 218.441 1162 218.441 1168V1180C218.441 1186 224.441 1192 230.441 1192H304.441C310.441 1192 316.441 1186 316.441 1180V1168C316.441 1162 310.441 1156 304.441 1156"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1176.5" x="226.4414 231.69127 236.94113 239.93106 245.18093 250.4308 252.68074 255.68067 260.92054 263.17048 268.42036 273.67024 278.9201 284.16999 289.41987 297.66969 302.90956">get_viral_genomes</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M267.441 1192.664C267.441 1199.246 267.441 1206.922 267.441 1214.332"/>
-<path d="M270.941 1214.07 267.441 1224.07 263.941 1214.07ZM270.941 1214.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M270.941 1214.07 267.441 1224.07 263.941 1214.07ZM270.941 1214.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d9cc57" d="M300.941 1084H233.941C227.941 1084 221.941 1090 221.941 1096V1108C221.941 1114 227.941 1120 233.941 1120H300.941C306.941 1120 312.941 1114 312.941 1108V1096C312.941 1090 306.941 1084 300.941 1084"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1104.5" x="229.9414 232.44135">fi</tspan></text>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1104.5" x="235.19129 240.44115 245.69101 250.94087 256.19075 258.41069 261.4306 266.68049 268.93043 274.1803 277.17024 282.4201 285.42005 290.66993 295.9198 298.90974">nd_viral_targets</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M267.441 1120.664C267.441 1127.246 267.441 1134.922 267.441 1142.332"/>
-<path d="M270.941 1142.07 267.441 1152.07 263.941 1142.07ZM270.941 1142.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M270.941 1142.07 267.441 1152.07 263.941 1142.07ZM270.941 1142.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M330.242 1048.664C320.668 1056.645 309.16 1066.234 298.629 1075.012"/>
-<path d="M301.172 1077.445 291.246 1081.16 296.688 1072.07ZM301.172 1077.445" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M301.172 1077.445 291.246 1081.16 296.688 1072.07ZM301.172 1077.445"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d99a" d="M198.441 1012H148.441C142.441 1012 136.441 1018 136.441 1024V1036C136.441 1042 142.441 1048 148.441 1048H198.441C204.441 1048 210.441 1042 210.441 1036V1024C210.441 1018 204.441 1012 198.441 1012"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1032.5" x="144.4414 149.69127 151.94121 154.19115 159.43102 164.6809 166.93083 169.93077 175.18064 180.43051 185.68038 190.93024 196.1801">all_virus_bed</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M197.16 1048.664C208.098 1056.809 221.285 1066.629 233.266 1075.551"/>
-<path d="M235.043 1072.512 240.973 1081.289 230.859 1078.125ZM235.043 1072.512" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M235.043 1072.512 240.973 1081.289 230.859 1078.125ZM235.043 1072.512"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#71d957" d="M293.941 1012H240.941C234.941 1012 228.941 1018 228.941 1024V1036C228.941 1042 234.941 1048 240.941 1048H293.941C299.941 1048 305.941 1042 305.941 1036V1024C305.941 1018 299.941 1012 293.941 1012"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="1032.5" x="236.9414 242.19127 247.44113 252.691 257.93086 263.18074 266.18064 269.18058 274.42045 276.67039 281.92027 287.17015 292.42">gen_strain_db</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M267.441 1048.664C267.441 1055.246 267.441 1062.922 267.441 1070.332"/>
-<path d="M270.941 1070.07 267.441 1080.07 263.941 1070.07ZM270.941 1070.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M270.941 1070.07 267.441 1080.07 263.941 1070.07ZM270.941 1070.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M70.441 904.934C70.441 931.871 70.441 984.379 70.441 1029V1319C70.441 1389.316 305.348 1437.547 401.824 1454.391"/>
-<path d="M402.23 1450.91 411.496 1456.047 401.047 1457.809ZM402.23 1450.91" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M402.23 1450.91 411.496 1456.047 401.047 1457.809ZM402.23 1450.91"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#5793d9" d="M93.941 796H46.941C40.941 796 34.941 802 34.941 808V820C34.941 826 40.941 832 46.941 832H93.941C99.941 832 105.941 826 105.941 820V808C105.941 802 99.941 796 93.941 796"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="816.5" x="42.941408 45.191354 47.4413 52.69117 57.94104 63.180913 68.430789 73.680667 78.930538 84.180408 89.43028 92.43021">link_daccord</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M70.441 832.664C70.441 839.246 70.441 846.922 70.441 854.332"/>
-<path d="M73.941 854.07 70.441 864.07 66.941 854.07ZM73.941 854.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M73.941 854.07 70.441 864.07 66.941 854.07ZM73.941 854.07"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#57d98b" d="M95.441 724H45.441C39.441 724 33.441 730 33.441 736V748C33.441 754 39.441 760 45.441 760H95.441C101.441 760 107.441 754 107.441 748V736C107.441 730 101.441 724 95.441 724"/>
-<text xml:space="preserve" transform="matrix(1 0 0 1 0 0)" font-size="9.999756" font-family="Helvetica"><tspan y="744.5" x="41.441408 46.691278 51.941148 54.931074 60.180944 65.43081 68.42074 71.42066 76.67054 78.92049 84.170368 86.39031 88.660259 93.91013">get_strainline</tspan></text>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M70.441 760.664C70.441 767.246 70.441 774.922 70.441 782.332"/>
-<path d="M73.941 782.07 70.441 792.07 66.941 782.07ZM73.941 782.07" fill="#c0c0c0"/>
-<path stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#c0c0c0" d="M73.941 782.07 70.441 792.07 66.941 782.07ZM73.941 782.07"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 7.0.4 (20221203.1631)
+ -->
+<!-- Title: snakemake_dag Pages: 1 -->
+<svg width="719pt" height="1484pt"
+ viewBox="0.00 0.00 719.08 1484.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1480)">
+<title>snakemake_dag</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-1480 715.08,-1480 715.08,4 -4,4"/>
+<!-- 0 -->
+<g id="node1" class="node">
+<title>0</title>
+<path fill="none" stroke="#70d856" stroke-width="2" d="M417.08,-36C417.08,-36 387.08,-36 387.08,-36 381.08,-36 375.08,-30 375.08,-24 375.08,-24 375.08,-12 375.08,-12 375.08,-6 381.08,0 387.08,0 387.08,0 417.08,0 417.08,0 423.08,0 429.08,-6 429.08,-12 429.08,-12 429.08,-24 429.08,-24 429.08,-30 423.08,-36 417.08,-36"/>
+<text text-anchor="middle" x="402.08" y="-15.5" font-family="sans" font-size="10.00">all</text>
+</g>
+<!-- 1 -->
+<g id="node2" class="node">
+<title>1</title>
+<path fill="none" stroke="#56d86b" stroke-width="2" d="M578.08,-396C578.08,-396 518.08,-396 518.08,-396 512.08,-396 506.08,-390 506.08,-384 506.08,-384 506.08,-372 506.08,-372 506.08,-366 512.08,-360 518.08,-360 518.08,-360 578.08,-360 578.08,-360 584.08,-360 590.08,-366 590.08,-372 590.08,-372 590.08,-384 590.08,-384 590.08,-390 584.08,-396 578.08,-396"/>
+<text text-anchor="middle" x="548.08" y="-375.5" font-family="sans" font-size="10.00">on_target_stats</text>
+</g>
+<!-- 1&#45;&gt;0 -->
+<g id="edge2" class="edge">
+<title>1&#45;&gt;0</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M548.08,-359.07C548.08,-332.13 548.08,-279.62 548.08,-235 548.08,-235 548.08,-235 548.08,-161 548.08,-101.37 484.72,-58.68 441.48,-36.49"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="443.12,-33.39 432.6,-32.11 440.02,-39.67 443.12,-33.39"/>
+</g>
+<!-- 2 -->
+<g id="node3" class="node">
+<title>2</title>
+<path fill="none" stroke="#97d856" stroke-width="2" d="M597.58,-468C597.58,-468 480.58,-468 480.58,-468 474.58,-468 468.58,-462 468.58,-456 468.58,-456 468.58,-444 468.58,-444 468.58,-438 474.58,-432 480.58,-432 480.58,-432 597.58,-432 597.58,-432 603.58,-432 609.58,-438 609.58,-444 609.58,-444 609.58,-456 609.58,-456 609.58,-462 603.58,-468 597.58,-468"/>
+<text text-anchor="middle" x="539.08" y="-447.5" font-family="sans" font-size="10.00">merge_viral_alignment_stats</text>
+</g>
+<!-- 2&#45;&gt;1 -->
+<g id="edge8" class="edge">
+<title>2&#45;&gt;1</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M541.35,-431.34C542.2,-424.75 543.18,-417.08 544.14,-409.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="547.59,-410.27 545.39,-399.9 540.64,-409.38 547.59,-410.27"/>
+</g>
+<!-- 3 -->
+<g id="node4" class="node">
+<title>3</title>
+<path fill="none" stroke="#d8a456" stroke-width="2" d="M516.08,-540C516.08,-540 418.08,-540 418.08,-540 412.08,-540 406.08,-534 406.08,-528 406.08,-528 406.08,-516 406.08,-516 406.08,-510 412.08,-504 418.08,-504 418.08,-504 516.08,-504 516.08,-504 522.08,-504 528.08,-510 528.08,-516 528.08,-516 528.08,-528 528.08,-528 528.08,-534 522.08,-540 516.08,-540"/>
+<text text-anchor="middle" x="467.08" y="-519.5" font-family="sans" font-size="10.00">viruses_alignment_stats</text>
+</g>
+<!-- 3&#45;&gt;2 -->
+<g id="edge10" class="edge">
+<title>3&#45;&gt;2</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M485.25,-503.34C493.2,-495.6 502.71,-486.36 511.51,-477.81"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="513.77,-480.49 518.5,-471.01 508.89,-475.47 513.77,-480.49"/>
+</g>
+<!-- 4 -->
+<g id="node5" class="node">
+<title>4</title>
+<path fill="none" stroke="#56d8a9" stroke-width="2" d="M516.58,-612C516.58,-612 409.58,-612 409.58,-612 403.58,-612 397.58,-606 397.58,-600 397.58,-600 397.58,-588 397.58,-588 397.58,-582 403.58,-576 409.58,-576 409.58,-576 516.58,-576 516.58,-576 522.58,-576 528.58,-582 528.58,-588 528.58,-588 528.58,-600 528.58,-600 528.58,-606 522.58,-612 516.58,-612"/>
+<text text-anchor="middle" x="463.08" y="-591.5" font-family="sans" font-size="10.00">align_to_viruses_for_stats</text>
+</g>
+<!-- 4&#45;&gt;3 -->
+<g id="edge11" class="edge">
+<title>4&#45;&gt;3</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M464.09,-575.34C464.46,-568.75 464.9,-561.08 465.33,-553.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="468.81,-554.11 465.88,-543.92 461.82,-553.71 468.81,-554.11"/>
+</g>
+<!-- 5 -->
+<g id="node6" class="node">
+<title>5</title>
+<path fill="none" stroke="#d89556" stroke-width="2" d="M364.08,-684C364.08,-684 302.08,-684 302.08,-684 296.08,-684 290.08,-678 290.08,-672 290.08,-672 290.08,-660 290.08,-660 290.08,-654 296.08,-648 302.08,-648 302.08,-648 364.08,-648 364.08,-648 370.08,-648 376.08,-654 376.08,-660 376.08,-660 376.08,-672 376.08,-672 376.08,-678 370.08,-684 364.08,-684"/>
+<text text-anchor="middle" x="333.08" y="-663.5" font-family="sans" font-size="10.00">non_host_reads</text>
+</g>
+<!-- 5&#45;&gt;4 -->
+<g id="edge12" class="edge">
+<title>5&#45;&gt;4</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M366.22,-647.15C382.11,-638.6 401.38,-628.22 418.53,-618.99"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="420.19,-622.07 427.33,-614.25 416.87,-615.91 420.19,-622.07"/>
+</g>
+<!-- 19 -->
+<g id="node20" class="node">
+<title>19</title>
+<path fill="none" stroke="#78d856" stroke-width="2" d="M364.58,-612C364.58,-612 301.58,-612 301.58,-612 295.58,-612 289.58,-606 289.58,-600 289.58,-600 289.58,-588 289.58,-588 289.58,-582 295.58,-576 301.58,-576 301.58,-576 364.58,-576 364.58,-576 370.58,-576 376.58,-582 376.58,-588 376.58,-588 376.58,-600 376.58,-600 376.58,-606 370.58,-612 364.58,-612"/>
+<text text-anchor="middle" x="333.08" y="-591.5" font-family="sans" font-size="10.00">align_to_viruses</text>
+</g>
+<!-- 5&#45;&gt;19 -->
+<g id="edge27" class="edge">
+<title>5&#45;&gt;19</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M333.08,-647.34C333.08,-640.75 333.08,-633.08 333.08,-625.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="336.58,-625.93 333.08,-615.93 329.58,-625.93 336.58,-625.93"/>
+</g>
+<!-- 25 -->
+<g id="node26" class="node">
+<title>25</title>
+<path fill="none" stroke="#d85656" stroke-width="2" d="M292.58,-180C292.58,-180 209.58,-180 209.58,-180 203.58,-180 197.58,-174 197.58,-168 197.58,-168 197.58,-156 197.58,-156 197.58,-150 203.58,-144 209.58,-144 209.58,-144 292.58,-144 292.58,-144 298.58,-144 304.58,-150 304.58,-156 304.58,-156 304.58,-168 304.58,-168 304.58,-174 298.58,-180 292.58,-180"/>
+<text text-anchor="middle" x="251.08" y="-159.5" font-family="sans" font-size="10.00">align_to_target_virus</text>
+</g>
+<!-- 5&#45;&gt;25 -->
+<g id="edge33" class="edge">
+<title>5&#45;&gt;25</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M304.81,-647.03C258.93,-616.28 168.78,-548.97 123.08,-468 103.2,-432.78 104.08,-419.45 104.08,-379 104.08,-379 104.08,-379 104.08,-305 104.08,-250.56 156.88,-210.37 199.2,-186.9"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="200.67,-190.08 207.85,-182.29 197.38,-183.9 200.67,-190.08"/>
+</g>
+<!-- 32 -->
+<g id="node33" class="node">
+<title>32</title>
+<path fill="none" stroke="#5692d8" stroke-width="2" d="M91.08,-612C91.08,-612 41.08,-612 41.08,-612 35.08,-612 29.08,-606 29.08,-600 29.08,-600 29.08,-588 29.08,-588 29.08,-582 35.08,-576 41.08,-576 41.08,-576 91.08,-576 91.08,-576 97.08,-576 103.08,-582 103.08,-588 103.08,-588 103.08,-600 103.08,-600 103.08,-606 97.08,-612 91.08,-612"/>
+<text text-anchor="middle" x="66.08" y="-591.5" font-family="sans" font-size="10.00">run_strainline</text>
+</g>
+<!-- 5&#45;&gt;32 -->
+<g id="edge41" class="edge">
+<title>5&#45;&gt;32</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M289.36,-655.37C245.53,-645.46 176.25,-629.09 117.08,-612 116.81,-611.92 116.54,-611.84 116.27,-611.77"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="117.33,-608.43 106.74,-608.85 115.28,-615.12 117.33,-608.43"/>
+</g>
+<!-- 6 -->
+<g id="node7" class="node">
+<title>6</title>
+<path fill="none" stroke="#d86656" stroke-width="2" d="M458.08,-756C458.08,-756 388.08,-756 388.08,-756 382.08,-756 376.08,-750 376.08,-744 376.08,-744 376.08,-732 376.08,-732 376.08,-726 382.08,-720 388.08,-720 388.08,-720 458.08,-720 458.08,-720 464.08,-720 470.08,-726 470.08,-732 470.08,-732 470.08,-744 470.08,-744 470.08,-750 464.08,-756 458.08,-756"/>
+<text text-anchor="middle" x="423.08" y="-735.5" font-family="sans" font-size="10.00">remove_host_dna</text>
+</g>
+<!-- 6&#45;&gt;5 -->
+<g id="edge13" class="edge">
+<title>6&#45;&gt;5</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M400.37,-719.34C390,-711.27 377.53,-701.57 366.15,-692.72"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="368.53,-690.14 358.49,-686.76 364.23,-695.66 368.53,-690.14"/>
+</g>
+<!-- 17 -->
+<g id="node18" class="node">
+<title>17</title>
+<path fill="none" stroke="#56d8d8" stroke-width="2" d="M636.08,-540C636.08,-540 558.08,-540 558.08,-540 552.08,-540 546.08,-534 546.08,-528 546.08,-528 546.08,-516 546.08,-516 546.08,-510 552.08,-504 558.08,-504 558.08,-504 636.08,-504 636.08,-504 642.08,-504 648.08,-510 648.08,-516 648.08,-516 648.08,-528 648.08,-528 648.08,-534 642.08,-540 636.08,-540"/>
+<text text-anchor="middle" x="597.08" y="-519.5" font-family="sans" font-size="10.00">host_removal_stats</text>
+</g>
+<!-- 6&#45;&gt;17 -->
+<g id="edge25" class="edge">
+<title>6&#45;&gt;17</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M440.95,-719.11C464.18,-695.48 505.49,-652.18 537.08,-612 552.29,-592.65 567.78,-569.58 579.2,-551.78"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="582.06,-553.8 584.46,-543.48 576.15,-550.05 582.06,-553.8"/>
+</g>
+<!-- 7 -->
+<g id="node8" class="node">
+<title>7</title>
+<path fill="none" stroke="#56d89a" stroke-width="2" d="M459.58,-828C459.58,-828 386.58,-828 386.58,-828 380.58,-828 374.58,-822 374.58,-816 374.58,-816 374.58,-804 374.58,-804 374.58,-798 380.58,-792 386.58,-792 386.58,-792 459.58,-792 459.58,-792 465.58,-792 471.58,-798 471.58,-804 471.58,-804 471.58,-816 471.58,-816 471.58,-822 465.58,-828 459.58,-828"/>
+<text text-anchor="middle" x="423.08" y="-807.5" font-family="sans" font-size="10.00">host_sam_to_bam</text>
+</g>
+<!-- 7&#45;&gt;6 -->
+<g id="edge14" class="edge">
+<title>7&#45;&gt;6</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M423.08,-791.34C423.08,-784.75 423.08,-777.08 423.08,-769.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="426.58,-769.93 423.08,-759.93 419.58,-769.93 426.58,-769.93"/>
+</g>
+<!-- 8 -->
+<g id="node9" class="node">
+<title>8</title>
+<path fill="none" stroke="#c6d856" stroke-width="2" d="M463.08,-900C463.08,-900 383.08,-900 383.08,-900 377.08,-900 371.08,-894 371.08,-888 371.08,-888 371.08,-876 371.08,-876 371.08,-870 377.08,-864 383.08,-864 383.08,-864 463.08,-864 463.08,-864 469.08,-864 475.08,-870 475.08,-876 475.08,-876 475.08,-888 475.08,-888 475.08,-894 469.08,-900 463.08,-900"/>
+<text text-anchor="middle" x="423.08" y="-879.5" font-family="sans" font-size="10.00">align_reads_to_host</text>
+</g>
+<!-- 8&#45;&gt;7 -->
+<g id="edge15" class="edge">
+<title>8&#45;&gt;7</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M423.08,-863.34C423.08,-856.75 423.08,-849.08 423.08,-841.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="426.58,-841.93 423.08,-831.93 419.58,-841.93 426.58,-841.93"/>
+</g>
+<!-- 9 -->
+<g id="node10" class="node">
+<title>9</title>
+<path fill="none" stroke="#88d856" stroke-width="2" d="M444.08,-972C444.08,-972 402.08,-972 402.08,-972 396.08,-972 390.08,-966 390.08,-960 390.08,-960 390.08,-948 390.08,-948 390.08,-942 396.08,-936 402.08,-936 402.08,-936 444.08,-936 444.08,-936 450.08,-936 456.08,-942 456.08,-948 456.08,-948 456.08,-960 456.08,-960 456.08,-966 450.08,-972 444.08,-972"/>
+<text text-anchor="middle" x="423.08" y="-951.5" font-family="sans" font-size="10.00">deduplicate</text>
+</g>
+<!-- 9&#45;&gt;8 -->
+<g id="edge16" class="edge">
+<title>9&#45;&gt;8</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M423.08,-935.34C423.08,-928.75 423.08,-921.08 423.08,-913.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="426.58,-913.93 423.08,-903.93 419.58,-913.93 426.58,-913.93"/>
+</g>
+<!-- 21 -->
+<g id="node22" class="node">
+<title>21</title>
+<path fill="none" stroke="#5663d8" stroke-width="2" d="M158.08,-828C158.08,-828 54.08,-828 54.08,-828 48.08,-828 42.08,-822 42.08,-816 42.08,-816 42.08,-804 42.08,-804 42.08,-798 48.08,-792 54.08,-792 54.08,-792 158.08,-792 158.08,-792 164.08,-792 170.08,-798 170.08,-804 170.08,-804 170.08,-816 170.08,-816 170.08,-822 164.08,-828 158.08,-828"/>
+<text text-anchor="middle" x="106.08" y="-807.5" font-family="sans" font-size="10.00">post_dedup_read_lengths</text>
+</g>
+<!-- 9&#45;&gt;21 -->
+<g id="edge29" class="edge">
+<title>9&#45;&gt;21</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M389.15,-937.8C333.67,-912.95 223.17,-863.45 157.85,-834.19"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="159.52,-831.1 148.96,-830.21 156.66,-837.49 159.52,-831.1"/>
+</g>
+<!-- 10 -->
+<g id="node11" class="node">
+<title>10</title>
+<path fill="none" stroke="#56d0d8" stroke-width="2" d="M528.08,-1404C528.08,-1404 490.08,-1404 490.08,-1404 484.08,-1404 478.08,-1398 478.08,-1392 478.08,-1392 478.08,-1380 478.08,-1380 478.08,-1374 484.08,-1368 490.08,-1368 490.08,-1368 528.08,-1368 528.08,-1368 534.08,-1368 540.08,-1374 540.08,-1380 540.08,-1380 540.08,-1392 540.08,-1392 540.08,-1398 534.08,-1404 528.08,-1404"/>
+<text text-anchor="middle" x="509.08" y="-1383.5" font-family="sans" font-size="10.00">trim_reads</text>
+</g>
+<!-- 10&#45;&gt;9 -->
+<g id="edge18" class="edge">
+<title>10&#45;&gt;9</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M509.08,-1367.07C509.08,-1340.13 509.08,-1287.62 509.08,-1243 509.08,-1243 509.08,-1243 509.08,-1097 509.08,-1056.55 511.42,-1042.36 490.08,-1008 483.51,-997.43 474.06,-988.1 464.31,-980.33"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="466.71,-977.75 456.59,-974.61 462.55,-983.38 466.71,-977.75"/>
+</g>
+<!-- 16 -->
+<g id="node17" class="node">
+<title>16</title>
+<path fill="none" stroke="#d87556" stroke-width="2" d="M468.08,-1332C468.08,-1332 386.08,-1332 386.08,-1332 380.08,-1332 374.08,-1326 374.08,-1320 374.08,-1320 374.08,-1308 374.08,-1308 374.08,-1302 380.08,-1296 386.08,-1296 386.08,-1296 468.08,-1296 468.08,-1296 474.08,-1296 480.08,-1302 480.08,-1308 480.08,-1308 480.08,-1320 480.08,-1320 480.08,-1326 474.08,-1332 468.08,-1332"/>
+<text text-anchor="middle" x="427.08" y="-1311.5" font-family="sans" font-size="10.00">bin_reads_by_length</text>
+</g>
+<!-- 10&#45;&gt;16 -->
+<g id="edge24" class="edge">
+<title>10&#45;&gt;16</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M488.39,-1367.34C479.14,-1359.44 468.04,-1349.96 457.84,-1341.26"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="460.23,-1338.7 450.35,-1334.87 455.69,-1344.02 460.23,-1338.7"/>
+</g>
+<!-- 20 -->
+<g id="node21" class="node">
+<title>20</title>
+<path fill="none" stroke="#b6d856" stroke-width="2" d="M699.08,-1260C699.08,-1260 601.08,-1260 601.08,-1260 595.08,-1260 589.08,-1254 589.08,-1248 589.08,-1248 589.08,-1236 589.08,-1236 589.08,-1230 595.08,-1224 601.08,-1224 601.08,-1224 699.08,-1224 699.08,-1224 705.08,-1224 711.08,-1230 711.08,-1236 711.08,-1236 711.08,-1248 711.08,-1248 711.08,-1254 705.08,-1260 699.08,-1260"/>
+<text text-anchor="middle" x="650.08" y="-1239.5" font-family="sans" font-size="10.00">pre_dedup_read_lengths</text>
+</g>
+<!-- 10&#45;&gt;20 -->
+<g id="edge28" class="edge">
+<title>10&#45;&gt;20</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M526.94,-1367.02C551.3,-1342.48 595.17,-1298.3 623.43,-1269.84"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="625.67,-1272.55 630.23,-1262.99 620.7,-1267.62 625.67,-1272.55"/>
+</g>
+<!-- 11 -->
+<g id="node12" class="node">
+<title>11</title>
+<path fill="none" stroke="#56d8c9" stroke-width="2" d="M533.58,-1476C533.58,-1476 484.58,-1476 484.58,-1476 478.58,-1476 472.58,-1470 472.58,-1464 472.58,-1464 472.58,-1452 472.58,-1452 472.58,-1446 478.58,-1440 484.58,-1440 484.58,-1440 533.58,-1440 533.58,-1440 539.58,-1440 545.58,-1446 545.58,-1452 545.58,-1452 545.58,-1464 545.58,-1464 545.58,-1470 539.58,-1476 533.58,-1476"/>
+<text text-anchor="middle" x="509.08" y="-1455.5" font-family="sans" font-size="10.00">concat_parts</text>
+</g>
+<!-- 11&#45;&gt;10 -->
+<g id="edge19" class="edge">
+<title>11&#45;&gt;10</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M509.08,-1439.34C509.08,-1432.75 509.08,-1425.08 509.08,-1417.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="512.58,-1417.93 509.08,-1407.93 505.58,-1417.93 512.58,-1417.93"/>
+</g>
+<!-- 12 -->
+<g id="node13" class="node">
+<title>12</title>
+<path fill="none" stroke="#d88556" stroke-width="2" d="M469.08,-1044C469.08,-1044 377.08,-1044 377.08,-1044 371.08,-1044 365.08,-1038 365.08,-1032 365.08,-1032 365.08,-1020 365.08,-1020 365.08,-1014 371.08,-1008 377.08,-1008 377.08,-1008 469.08,-1008 469.08,-1008 475.08,-1008 481.08,-1014 481.08,-1020 481.08,-1020 481.08,-1032 481.08,-1032 481.08,-1038 475.08,-1044 469.08,-1044"/>
+<text text-anchor="middle" x="423.08" y="-1023.5" font-family="sans" font-size="10.00">merge_duplicates_lists</text>
+</g>
+<!-- 12&#45;&gt;9 -->
+<g id="edge17" class="edge">
+<title>12&#45;&gt;9</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M423.08,-1007.34C423.08,-1000.75 423.08,-993.08 423.08,-985.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="426.58,-985.93 423.08,-975.93 419.58,-985.93 426.58,-985.93"/>
+</g>
+<!-- 13 -->
+<g id="node14" class="node">
+<title>13</title>
+<path fill="none" stroke="#56c1d8" stroke-width="2" d="M454.08,-1116C454.08,-1116 396.08,-1116 396.08,-1116 390.08,-1116 384.08,-1110 384.08,-1104 384.08,-1104 384.08,-1092 384.08,-1092 384.08,-1086 390.08,-1080 396.08,-1080 396.08,-1080 454.08,-1080 454.08,-1080 460.08,-1080 466.08,-1086 466.08,-1092 466.08,-1092 466.08,-1104 466.08,-1104 466.08,-1110 460.08,-1116 454.08,-1116"/>
+<text text-anchor="middle" x="425.08" y="-1095.5" font-family="sans" font-size="10.00">find_duplicates</text>
+</g>
+<!-- 13&#45;&gt;12 -->
+<g id="edge20" class="edge">
+<title>13&#45;&gt;12</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M424.57,-1079.34C424.39,-1072.75 424.17,-1065.08 423.96,-1057.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="427.46,-1057.82 423.68,-1047.93 420.46,-1058.02 427.46,-1057.82"/>
+</g>
+<!-- 14 -->
+<g id="node15" class="node">
+<title>14</title>
+<path fill="none" stroke="#56d87b" stroke-width="2" d="M467.58,-1188C467.58,-1188 384.58,-1188 384.58,-1188 378.58,-1188 372.58,-1182 372.58,-1176 372.58,-1176 372.58,-1164 372.58,-1164 372.58,-1158 378.58,-1152 384.58,-1152 384.58,-1152 467.58,-1152 467.58,-1152 473.58,-1152 479.58,-1158 479.58,-1164 479.58,-1164 479.58,-1176 479.58,-1176 479.58,-1182 473.58,-1188 467.58,-1188"/>
+<text text-anchor="middle" x="426.08" y="-1167.5" font-family="sans" font-size="10.00">blat_clustered_reads</text>
+</g>
+<!-- 14&#45;&gt;13 -->
+<g id="edge21" class="edge">
+<title>14&#45;&gt;13</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M425.83,-1151.34C425.73,-1144.75 425.62,-1137.08 425.52,-1129.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="429.02,-1129.88 425.38,-1119.93 422.02,-1129.98 429.02,-1129.88"/>
+</g>
+<!-- 15 -->
+<g id="node16" class="node">
+<title>15</title>
+<path fill="none" stroke="#56d88a" stroke-width="2" d="M451.58,-1260C451.58,-1260 400.58,-1260 400.58,-1260 394.58,-1260 388.58,-1254 388.58,-1248 388.58,-1248 388.58,-1236 388.58,-1236 388.58,-1230 394.58,-1224 400.58,-1224 400.58,-1224 451.58,-1224 451.58,-1224 457.58,-1224 463.58,-1230 463.58,-1236 463.58,-1236 463.58,-1248 463.58,-1248 463.58,-1254 457.58,-1260 451.58,-1260"/>
+<text text-anchor="middle" x="426.08" y="-1239.5" font-family="sans" font-size="10.00">cluster_reads</text>
+</g>
+<!-- 15&#45;&gt;14 -->
+<g id="edge22" class="edge">
+<title>15&#45;&gt;14</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M426.08,-1223.34C426.08,-1216.75 426.08,-1209.08 426.08,-1201.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="429.58,-1201.93 426.08,-1191.93 422.58,-1201.93 429.58,-1201.93"/>
+</g>
+<!-- 16&#45;&gt;15 -->
+<g id="edge23" class="edge">
+<title>16&#45;&gt;15</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M426.83,-1295.34C426.73,-1288.75 426.62,-1281.08 426.52,-1273.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="430.02,-1273.88 426.38,-1263.93 423.02,-1273.98 430.02,-1273.88"/>
+</g>
+<!-- 17&#45;&gt;1 -->
+<g id="edge9" class="edge">
+<title>17&#45;&gt;1</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M608.12,-503.13C618.08,-484.55 629.53,-455.03 618.08,-432 612.7,-421.17 603.93,-411.97 594.39,-404.42"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="596.5,-401.62 586.33,-398.64 592.42,-407.31 596.5,-401.62"/>
+</g>
+<!-- 18 -->
+<g id="node19" class="node">
+<title>18</title>
+<path fill="none" stroke="#5673d8" stroke-width="2" d="M376.08,-540C376.08,-540 290.08,-540 290.08,-540 284.08,-540 278.08,-534 278.08,-528 278.08,-528 278.08,-516 278.08,-516 278.08,-510 284.08,-504 290.08,-504 290.08,-504 376.08,-504 376.08,-504 382.08,-504 388.08,-510 388.08,-516 388.08,-516 388.08,-528 388.08,-528 388.08,-534 382.08,-540 376.08,-540"/>
+<text text-anchor="middle" x="333.08" y="-519.5" font-family="sans" font-size="10.00">viruses_sam_to_bam</text>
+</g>
+<!-- 18&#45;&gt;0 -->
+<g id="edge6" class="edge">
+<title>18&#45;&gt;0</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M353.95,-503.29C363.88,-493.79 375.09,-481.31 382.08,-468 400.93,-432.11 402.08,-419.54 402.08,-379 402.08,-379 402.08,-379 402.08,-161 402.08,-122.65 402.08,-78.48 402.08,-49.72"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="405.58,-49.96 402.08,-39.96 398.58,-49.96 405.58,-49.96"/>
+</g>
+<!-- 22 -->
+<g id="node23" class="node">
+<title>22</title>
+<path fill="none" stroke="#5682d8" stroke-width="2" d="M507.58,-324C507.58,-324 442.58,-324 442.58,-324 436.58,-324 430.58,-318 430.58,-312 430.58,-312 430.58,-300 430.58,-300 430.58,-294 436.58,-288 442.58,-288 442.58,-288 507.58,-288 507.58,-288 513.58,-288 519.58,-294 519.58,-300 519.58,-300 519.58,-312 519.58,-312 519.58,-318 513.58,-324 507.58,-324"/>
+<text text-anchor="middle" x="475.08" y="-303.5" font-family="sans" font-size="10.00">reads_per_strain</text>
+</g>
+<!-- 18&#45;&gt;22 -->
+<g id="edge30" class="edge">
+<title>18&#45;&gt;22</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M372.21,-503.01C387.63,-494.29 404.41,-482.53 416.08,-468 447.36,-429.08 462.98,-372.04 470.03,-337.34"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="473.42,-338.24 471.84,-327.77 466.54,-336.94 473.42,-338.24"/>
+</g>
+<!-- 29 -->
+<g id="node30" class="node">
+<title>29</title>
+<path fill="none" stroke="#a7d856" stroke-width="2" d="M266.08,-468C266.08,-468 236.08,-468 236.08,-468 230.08,-468 224.08,-462 224.08,-456 224.08,-456 224.08,-444 224.08,-444 224.08,-438 230.08,-432 236.08,-432 236.08,-432 266.08,-432 266.08,-432 272.08,-432 278.08,-438 278.08,-444 278.08,-444 278.08,-456 278.08,-456 278.08,-462 272.08,-468 266.08,-468"/>
+<text text-anchor="middle" x="251.08" y="-447.5" font-family="sans" font-size="10.00">mpileup</text>
+</g>
+<!-- 18&#45;&gt;29 -->
+<g id="edge40" class="edge">
+<title>18&#45;&gt;29</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M312.39,-503.34C303.14,-495.44 292.04,-485.96 281.84,-477.26"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="284.23,-474.7 274.35,-470.87 279.69,-480.02 284.23,-474.7"/>
+</g>
+<!-- 19&#45;&gt;18 -->
+<g id="edge26" class="edge">
+<title>19&#45;&gt;18</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M333.08,-575.34C333.08,-568.75 333.08,-561.08 333.08,-553.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="336.58,-553.93 333.08,-543.93 329.58,-553.93 336.58,-553.93"/>
+</g>
+<!-- 20&#45;&gt;0 -->
+<g id="edge3" class="edge">
+<title>20&#45;&gt;0</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M655.47,-1223.26C663.08,-1196.56 676.08,-1144.36 676.08,-1099 676.08,-1099 676.08,-1099 676.08,-161 676.08,-57.13 518.95,-29.15 442.67,-21.68"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="443.14,-18.21 432.87,-20.81 442.53,-25.18 443.14,-18.21"/>
+</g>
+<!-- 21&#45;&gt;0 -->
+<g id="edge7" class="edge">
+<title>21&#45;&gt;0</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M62.69,-791.14C47.07,-782.67 30.7,-771.05 20.08,-756 -3.24,-722.95 1.08,-707.45 1.08,-667 1.08,-667 1.08,-667 1.08,-161 1.08,-108.11 33.76,-97.54 80.08,-72 127.93,-45.61 286.52,-28.9 361.78,-22.26"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="361.71,-25.78 371.37,-21.43 361.11,-18.81 361.71,-25.78"/>
+</g>
+<!-- 22&#45;&gt;0 -->
+<g id="edge5" class="edge">
+<title>22&#45;&gt;0</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M470.63,-287.15C460.87,-248.11 436.82,-152.19 416.08,-72 414.15,-64.54 412.04,-56.49 410.05,-48.98"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="413.51,-48.35 407.57,-39.58 406.74,-50.14 413.51,-48.35"/>
+</g>
+<!-- 23 -->
+<g id="node24" class="node">
+<title>23</title>
+<path fill="none" stroke="#d8bc56" stroke-width="2" d="M272.58,-108C272.58,-108 229.58,-108 229.58,-108 223.58,-108 217.58,-102 217.58,-96 217.58,-96 217.58,-84 217.58,-84 217.58,-78 223.58,-72 229.58,-72 229.58,-72 272.58,-72 272.58,-72 278.58,-72 284.58,-78 284.58,-84 284.58,-84 284.58,-96 284.58,-96 284.58,-102 278.58,-108 272.58,-108"/>
+<text text-anchor="middle" x="251.08" y="-87.5" font-family="sans" font-size="10.00">run_rvhaplo</text>
+</g>
+<!-- 23&#45;&gt;0 -->
+<g id="edge1" class="edge">
+<title>23&#45;&gt;0</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M285.34,-73.12C308.42,-62.42 338.91,-48.28 362.94,-37.14"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="364.15,-40.44 371.76,-33.06 361.21,-34.09 364.15,-40.44"/>
+</g>
+<!-- 24 -->
+<g id="node25" class="node">
+<title>24</title>
+<path fill="none" stroke="#d8ac56" stroke-width="2" d="M167.58,-180C167.58,-180 124.58,-180 124.58,-180 118.58,-180 112.58,-174 112.58,-168 112.58,-168 112.58,-156 112.58,-156 112.58,-150 118.58,-144 124.58,-144 124.58,-144 167.58,-144 167.58,-144 173.58,-144 179.58,-150 179.58,-156 179.58,-156 179.58,-168 179.58,-168 179.58,-174 173.58,-180 167.58,-180"/>
+<text text-anchor="middle" x="146.08" y="-159.5" font-family="sans" font-size="10.00">get_rvhaplo</text>
+</g>
+<!-- 24&#45;&gt;23 -->
+<g id="edge32" class="edge">
+<title>24&#45;&gt;23</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M172.85,-143.15C185.31,-134.84 200.35,-124.82 213.89,-115.79"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="215.46,-118.95 221.84,-110.49 211.58,-113.13 215.46,-118.95"/>
+</g>
+<!-- 25&#45;&gt;23 -->
+<g id="edge31" class="edge">
+<title>25&#45;&gt;23</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M251.08,-143.34C251.08,-136.75 251.08,-129.08 251.08,-121.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="254.58,-121.93 251.08,-111.93 247.58,-121.93 254.58,-121.93"/>
+</g>
+<!-- 26 -->
+<g id="node27" class="node">
+<title>26</title>
+<path fill="none" stroke="#d8cb56" stroke-width="2" d="M290.58,-252C290.58,-252 211.58,-252 211.58,-252 205.58,-252 199.58,-246 199.58,-240 199.58,-240 199.58,-228 199.58,-228 199.58,-222 205.58,-216 211.58,-216 211.58,-216 290.58,-216 290.58,-216 296.58,-216 302.58,-222 302.58,-228 302.58,-228 302.58,-240 302.58,-240 302.58,-246 296.58,-252 290.58,-252"/>
+<text text-anchor="middle" x="251.08" y="-231.5" font-family="sans" font-size="10.00">split_viral_genomes</text>
+</g>
+<!-- 26&#45;&gt;25 -->
+<g id="edge34" class="edge">
+<title>26&#45;&gt;25</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M251.08,-215.34C251.08,-208.75 251.08,-201.08 251.08,-193.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="254.58,-193.93 251.08,-183.93 247.58,-193.93 254.58,-193.93"/>
+</g>
+<!-- 27 -->
+<g id="node28" class="node">
+<title>27</title>
+<path fill="none" stroke="#d6d856" stroke-width="2" d="M288.08,-324C288.08,-324 214.08,-324 214.08,-324 208.08,-324 202.08,-318 202.08,-312 202.08,-312 202.08,-300 202.08,-300 202.08,-294 208.08,-288 214.08,-288 214.08,-288 288.08,-288 288.08,-288 294.08,-288 300.08,-294 300.08,-300 300.08,-300 300.08,-312 300.08,-312 300.08,-318 294.08,-324 288.08,-324"/>
+<text text-anchor="middle" x="251.08" y="-303.5" font-family="sans" font-size="10.00">get_viral_genomes</text>
+</g>
+<!-- 27&#45;&gt;26 -->
+<g id="edge35" class="edge">
+<title>27&#45;&gt;26</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M251.08,-287.34C251.08,-280.75 251.08,-273.08 251.08,-265.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="254.58,-265.93 251.08,-255.93 247.58,-265.93 254.58,-265.93"/>
+</g>
+<!-- 28 -->
+<g id="node29" class="node">
+<title>28</title>
+<path fill="none" stroke="#61d856" stroke-width="2" d="M284.58,-396C284.58,-396 217.58,-396 217.58,-396 211.58,-396 205.58,-390 205.58,-384 205.58,-384 205.58,-372 205.58,-372 205.58,-366 211.58,-360 217.58,-360 217.58,-360 284.58,-360 284.58,-360 290.58,-360 296.58,-366 296.58,-372 296.58,-372 296.58,-384 296.58,-384 296.58,-390 290.58,-396 284.58,-396"/>
+<text text-anchor="middle" x="251.08" y="-375.5" font-family="sans" font-size="10.00">find_viral_targets</text>
+</g>
+<!-- 28&#45;&gt;27 -->
+<g id="edge36" class="edge">
+<title>28&#45;&gt;27</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M251.08,-359.34C251.08,-352.75 251.08,-345.08 251.08,-337.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="254.58,-337.93 251.08,-327.93 247.58,-337.93 254.58,-337.93"/>
+</g>
+<!-- 29&#45;&gt;28 -->
+<g id="edge37" class="edge">
+<title>29&#45;&gt;28</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M251.08,-431.34C251.08,-424.75 251.08,-417.08 251.08,-409.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="254.58,-409.93 251.08,-399.93 247.58,-409.93 254.58,-409.93"/>
+</g>
+<!-- 30 -->
+<g id="node31" class="node">
+<title>30</title>
+<path fill="none" stroke="#56d85b" stroke-width="2" d="M194.08,-468C194.08,-468 144.08,-468 144.08,-468 138.08,-468 132.08,-462 132.08,-456 132.08,-456 132.08,-444 132.08,-444 132.08,-438 138.08,-432 144.08,-432 144.08,-432 194.08,-432 194.08,-432 200.08,-432 206.08,-438 206.08,-444 206.08,-444 206.08,-456 206.08,-456 206.08,-462 200.08,-468 194.08,-468"/>
+<text text-anchor="middle" x="169.08" y="-447.5" font-family="sans" font-size="10.00">all_virus_bed</text>
+</g>
+<!-- 30&#45;&gt;28 -->
+<g id="edge39" class="edge">
+<title>30&#45;&gt;28</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M189.77,-431.34C199.02,-423.44 210.12,-413.96 220.32,-405.26"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="222.47,-408.02 227.81,-398.87 217.93,-402.7 222.47,-408.02"/>
+</g>
+<!-- 31 -->
+<g id="node32" class="node">
+<title>31</title>
+<path fill="none" stroke="#56a2d8" stroke-width="2" d="M361.58,-468C361.58,-468 308.58,-468 308.58,-468 302.58,-468 296.58,-462 296.58,-456 296.58,-456 296.58,-444 296.58,-444 296.58,-438 302.58,-432 308.58,-432 308.58,-432 361.58,-432 361.58,-432 367.58,-432 373.58,-438 373.58,-444 373.58,-444 373.58,-456 373.58,-456 373.58,-462 367.58,-468 361.58,-468"/>
+<text text-anchor="middle" x="335.08" y="-447.5" font-family="sans" font-size="10.00">gen_strain_db</text>
+</g>
+<!-- 31&#45;&gt;28 -->
+<g id="edge38" class="edge">
+<title>31&#45;&gt;28</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M313.88,-431.34C304.31,-423.36 292.8,-413.77 282.27,-404.99"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="284.81,-402.55 274.89,-398.84 280.33,-407.93 284.81,-402.55"/>
+</g>
+<!-- 32&#45;&gt;0 -->
+<g id="edge4" class="edge">
+<title>32&#45;&gt;0</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M66.08,-575.07C66.08,-548.13 66.08,-495.62 66.08,-451 66.08,-451 66.08,-451 66.08,-161 66.08,-34.05 272.1,-18.85 361.5,-18.23"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="361.27,-21.72 371.27,-18.23 361.27,-14.72 361.27,-21.72"/>
+</g>
+<!-- 33 -->
+<g id="node34" class="node">
+<title>33</title>
+<path fill="none" stroke="#56d8b9" stroke-width="2" d="M89.58,-684C89.58,-684 42.58,-684 42.58,-684 36.58,-684 30.58,-678 30.58,-672 30.58,-672 30.58,-660 30.58,-660 30.58,-654 36.58,-648 42.58,-648 42.58,-648 89.58,-648 89.58,-648 95.58,-648 101.58,-654 101.58,-660 101.58,-660 101.58,-672 101.58,-672 101.58,-678 95.58,-684 89.58,-684"/>
+<text text-anchor="middle" x="66.08" y="-663.5" font-family="sans" font-size="10.00">link_daccord</text>
+</g>
+<!-- 33&#45;&gt;32 -->
+<g id="edge42" class="edge">
+<title>33&#45;&gt;32</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M66.08,-647.34C66.08,-640.75 66.08,-633.08 66.08,-625.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="69.58,-625.93 66.08,-615.93 62.58,-625.93 69.58,-625.93"/>
+</g>
+<!-- 34 -->
+<g id="node35" class="node">
+<title>34</title>
+<path fill="none" stroke="#56b1d8" stroke-width="2" d="M91.08,-756C91.08,-756 41.08,-756 41.08,-756 35.08,-756 29.08,-750 29.08,-744 29.08,-744 29.08,-732 29.08,-732 29.08,-726 35.08,-720 41.08,-720 41.08,-720 91.08,-720 91.08,-720 97.08,-720 103.08,-726 103.08,-732 103.08,-732 103.08,-744 103.08,-744 103.08,-750 97.08,-756 91.08,-756"/>
+<text text-anchor="middle" x="66.08" y="-735.5" font-family="sans" font-size="10.00">get_strainline</text>
+</g>
+<!-- 34&#45;&gt;33 -->
+<g id="edge43" class="edge">
+<title>34&#45;&gt;33</title>
+<path fill="none" stroke="grey" stroke-width="2" d="M66.08,-719.34C66.08,-712.75 66.08,-705.08 66.08,-697.67"/>
+<polygon fill="grey" stroke="grey" stroke-width="2" points="69.58,-697.93 66.08,-687.93 62.58,-697.93 69.58,-697.93"/>
+</g>
 </g>
 </svg>
