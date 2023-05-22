@@ -101,8 +101,10 @@ def point_read(read, head_crop, tail_crop):
 def split_read(read, barcode):
     read_a = read[:barcode[0]]
     read_b = read[barcode[0]:]
-    read_a.read_id = f'{read_a.id}_A'
-    read_b.read_id = f'{read_b.id}_B'
+    read_a.id = f'{read_a.id}_A'
+    read_b.id = f'{read_b.id}_B'
+    # read_a.description = read.description + f' new_read_id={read_a.id}_A'
+    # read_b.description = read.description + f' new_read_id={read_b.id}_B'
     process_read(read_a)
     process_read(read_b)
 
