@@ -32,30 +32,31 @@ rule get_rvhaplo:
         "git/2.30.1"
     shell:
         "scripts/get_rvhaplo.sh {params.repo}"
+        
+## Commented out because we couldn't get strainline working yet
+# rule get_strainline:
+#     output:
+#         touch("get_strainline.done")
+#     params:
+#         repo = config["strainline_repo"]
+#     conda:
+#         "envs/git.yaml"
+#     envmodules:
+#         "git/2.30.1"
+#     shell:
+#         "scripts/get_strainline.sh {params.repo}; "
+#         "scripts/get_daccord.sh" 
 
-rule get_strainline:
-    output:
-        touch("get_strainline.done")
-    params:
-        repo = config["strainline_repo"]
-    conda:
-        "envs/git.yaml"
-    envmodules:
-        "git/2.30.1"
-    shell:
-        "scripts/get_strainline.sh {params.repo}; "
-        "scripts/get_daccord.sh" 
-
-rule link_daccord:
-    input:
-        "get_strainline.done"
-    output:
-        touch("daccord_linked.done")
-    conda:
-        "envs/strainline.yaml"
-    shell:
-        "ln -fs scripts/daccord/bin/daccord "
-        "$CONDA_PREFIX/bin/daccord"
+# rule link_daccord:
+#     input:
+#         "get_strainline.done"
+#     output:
+#         touch("daccord_linked.done")
+#     conda:
+#         "envs/strainline.yaml"
+#     shell:
+#         "ln -fs scripts/daccord/bin/daccord "
+#         "$CONDA_PREFIX/bin/daccord"
 
 ## PREP INFO FOR TARGET STRAIN SELECTION #######################################
 rule all_virus_bed:
@@ -91,6 +92,7 @@ rule gen_strain_db:
         "--outfile {output}"
 
 ## CONCAT RAW DATA #############################################################
+
 rule concat_parts:
     input:
         READS + "{barcode}"
@@ -100,7 +102,7 @@ rule concat_parts:
         "cat {input}/* > {output}"
 
 ## TRIM READS ##################################################################
-# gunzip -c reads.fastq.gz | NanoFilt -q 12 --headcrop 75 | gzip > trimmed-reads.fastq.gz
+
 rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24) 
     input:
        OUTDIR + "{barcode}/{barcode}.concat.fastq.gz"
@@ -109,6 +111,7 @@ rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24)
         trimmed_reads = OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
     params:
         crop = config["crop_len"]
+        barcodes = config["barcodes"]
     conda:
         "envs/deduplication.yaml"
     envmodules:
@@ -118,9 +121,11 @@ rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24)
         "--infile {input} "
         "--logfile {output.logfile} "
         "--outfile {output.trimmed_reads} "
+        "-barcodes {params.barcodes} "
         "--crop {params.crop}"
 
 ## DEDUPLICATE #################################################################
+
 rule pre_dedup_read_lengths:
     input:
         OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
@@ -333,6 +338,7 @@ rule non_host_reads:
         "bedtools bamtofastq -i {input} -fq {output}"
 
 ## GET VIRAL DB STATS ##########################################################
+
 rule align_to_viruses_for_stats:
     input:
         viruses = VIRUSES,
@@ -374,6 +380,7 @@ rule viruses_alignment_stats:
         "rm {params.bam}"
 
 ## ON TARGET STATS #############################################################
+
 rule merge_viral_alignment_stats:
     input:
         expand(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats", barcode = BARCODES)
@@ -403,6 +410,7 @@ rule on_target_stats:
         "--outfile {output}"
 
 ## VIRAL STRAIN SELECTION ######################################################
+
 rule align_to_viruses:
     input:
         viruses = VIRUSES,
@@ -534,6 +542,7 @@ rule align_to_target_virus:
         "{threads}"
 
 ## HAPLOTYPE GENERATION ########################################################
+
 rule run_rvhaplo:
     input:
         "get_rvhaplo.done",
@@ -561,21 +570,21 @@ rule run_rvhaplo:
 # On Hipergator the `daccord` command isn't being found in some samples
 ## even after the command has been linked correctly to the bin
 
-rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
-    input:
-        "daccord_linked.done",
-        fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
-    output:
-        touch(OUTDIR + "{barcode}/strainline.done")
-    params:
-        outdir = OUTDIR + "{barcode}/{barcode}_strainline_out/"
-    threads:
-        10
-    conda:
-        "envs/strainline.yaml"
-    shell:
-        "scripts/Strainline/src/strainline.sh "
-        "-i {input.fasta} "
-        "-o {params.outdir} "
-        "-t {threads} "
-        "-p ont"
+# rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
+#     input:
+#         "daccord_linked.done",
+#         fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+#     output:
+#         touch(OUTDIR + "{barcode}/strainline.done")
+#     params:
+#         outdir = OUTDIR + "{barcode}/{barcode}_strainline_out/"
+#     threads:
+#         10
+#     conda:
+#         "envs/strainline.yaml"
+#     shell:
+#         "scripts/Strainline/src/strainline.sh "
+#         "-i {input.fasta} "
+#         "-o {params.outdir} "
+#         "-t {threads} "
+#         "-p ont"

@@ -6,6 +6,7 @@ viral_genomes: "data/viruses/all_swine_viruses_concat.fasta"
 reads: "data/raw/"
 silimarity_threshold: 0.9
 crop_len: 37
+barcodes: "data/barcodes/RapidBarcode.fasta"
 
 rvhaplo_repo: "https://github.com/dhcai21/RVHaplo.git"
 strainline_repo: "https://github.com/HaploKit/Strainline.git"

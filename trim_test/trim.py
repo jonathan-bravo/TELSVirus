@@ -131,25 +131,6 @@ def bin_barcodes(matches, seq_len): # if this doesn't work I can use the below c
 
     return (head, tail, neither)
 
-# def bin_barcodes(matches, seq_len):
-#     neither, head, tail = [], [], []
-
-#     bins = {'head': [], 'tail': [], 'neither': []}
-
-#     for match in matches:
-#         if in_head(match):
-#             head.append(match)
-#         elif in_tail(match, seq_len):
-#             tail.append(match)
-#         else:
-#             neither.append(match)
-
-#     head.sort()
-#     tail.sort()
-#     neither.sort()
-
-#     return (head, tail, neither)
-
 
 def process_read(read):
     head_crop = crop_len
@@ -208,5 +189,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# ./trim.py --infile barcode09.fastq.gz --outfile barcode09.trim.fastq --crop 37 --logfile barcode09.trim.log --barcodes RapidBarcode.fasta
