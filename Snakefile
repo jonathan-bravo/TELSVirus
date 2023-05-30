@@ -121,7 +121,7 @@ rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24)
         "--infile {input} "
         "--logfile {output.logfile} "
         "--outfile {output.trimmed_reads} "
-        "-barcodes {params.barcodes} "
+        "--barcodes {params.barcodes} "
         "--crop {params.crop}"
 
 ## DEDUPLICATE #################################################################
@@ -405,8 +405,8 @@ rule on_target_stats:
         "python/3.8"
     shell:
         "scripts/merge_stats.py "
-        "--host_stats {input.host_stats}"
-        "--viral_stats {input.viral_stats}"
+        "--host_stats {input.host_stats} "
+        "--viral_stats {input.viral_stats} "
         "--outfile {output}"
 
 ## VIRAL STRAIN SELECTION ######################################################
