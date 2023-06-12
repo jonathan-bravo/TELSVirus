@@ -11,9 +11,12 @@ all_input = [
     expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.pre.dedup.rl.tsv", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.post.dedup.rl.tsv", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.filtered.tsv", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.start.read.count.txt", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.hard.trim.count.txt", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.chimeric.count.txt", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/strainline.done", barcode = BARCODES)
+    #expand(OUTDIR + "{barcode}/strainline.done", barcode = BARCODES)
 ]
 
 rule all:
@@ -101,6 +104,14 @@ rule concat_parts:
     shell:
         "cat {input}/* > {output}"
 
+rule start_read_count:
+    input:
+        OUTDIR + "{barcode}/{barcode}.concat.fastq.gz"
+    output:
+        OUTDIR + "{barcode}/{barcode}.start.read.count.txt"
+    shell:
+        "scripts/start_counts.sh {input} {output}"
+
 ## TRIM READS ##################################################################
 
 rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24) 
@@ -123,6 +134,26 @@ rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24)
         "--outfile {output.trimmed_reads} "
         "--barcodes {params.barcodes} "
         "--crop {params.crop}"
+
+rule hard_trim_count:
+    input:
+        OUTDIR + "{barcode}/{barcode}.trimmed.log"
+    output:
+        OUTDIR + "{barcode}/{barcode}.hard.trim.count.txt"
+    shell:
+        "cat {input} | "
+        "awk '{{ if ($0 ~ /short/) print }}' | "
+        "wc -l > {output}"
+
+rule chimeric_count:
+    input:
+        OUTDIR + "{barcode}/{barcode}.trimmed.fastq.gz"
+    output:
+        OUTDIR + "{barcode}/{barcode}.chimeric.count.txt"
+    shell:
+        "zcat {input} | "
+        "awk '{{ if ($0 ~ /_A/ || $0 ~ /_B/) print $0 }}' | "
+        "wc -l > {output}"
 
 ## DEDUPLICATE #################################################################
 
@@ -449,7 +480,8 @@ rule viruses_sam_to_bam:
 
 rule reads_per_strain:
     input:
-        OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats"
+        stats = OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats",
+        strain_db = OUTDIR + "strain_db.tsv"
     output:
         OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv"
     conda:
@@ -458,8 +490,18 @@ rule reads_per_strain:
         "python/3.8"
     shell:
         "scripts/summarize_idxstats.py "
-        "--infile {input} "
+        "--infile {input.stats} "
+        "--strains {input.strain_db} "
         "--outfile {output}"
+
+rule filter_reads_per_strain:
+    input:
+        OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv"
+    output:
+        OUTDIR + "{barcode}/{barcode}.reads.per.strain.filtered.tsv"
+    shell:
+        "cat {input} | "
+        "awk '{{ if($3 > 0) print}}' > {output}"
 
 rule mpileup:
     input:
@@ -482,7 +524,8 @@ rule find_viral_targets:
         all_viruses_bed = OUTDIR + "all.viral.targets.bed",
         strain_db = OUTDIR + "strain_db.tsv"
     output:
-        temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed")
+        bed = temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed"),
+        logfile = OUTDIR + "{barcode}/{barcode}.viral.targets.log"
     conda:
         "envs/alignment.yaml"
     envmodules:
@@ -492,7 +535,8 @@ rule find_viral_targets:
         "--mpileup {input.pileup} "
         "--bed {input.all_viruses_bed} "
         "--strains {input.strain_db} "
-        "--outfile {output}"
+        "--logfile {output.logfile} "
+        "--outfile {output.bed}"
 
 rule get_viral_genomes:
     input:
