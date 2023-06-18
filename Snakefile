@@ -501,7 +501,7 @@ rule filter_reads_per_strain:
         OUTDIR + "{barcode}/{barcode}.reads.per.strain.filtered.tsv"
     shell:
         "cat {input} | "
-        "awk '{{ if($3 > 0) print}}' > {output}"
+        "awk -F'\t' '{{ if($3 > 0) print}}' > {output}"
 
 rule mpileup:
     input:

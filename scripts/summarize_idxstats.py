@@ -16,7 +16,7 @@ def parse_strains(strain_db):
 def get_strain_name(strains, strain):
     try: name = strains[strain]
     except KeyError: name = '*'
-    return name
+    return name.strip()
 
 def write_out(idxstats, strains, output_file):
     with open(output_file, 'w') as o:
