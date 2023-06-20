@@ -16,6 +16,7 @@ all_input = [
     expand(OUTDIR + "{barcode}/{barcode}.hard.trim.count.txt", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.chimeric.count.txt", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/rvhaplo.done", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/rvhaplo_results_table.tsv", barcode = BARCODES),
     #expand(OUTDIR + "{barcode}/strainline.done", barcode = BARCODES)
 ]
 
@@ -609,6 +610,18 @@ rule run_rvhaplo:
         "{params.sam_indir} "
         "{params.barcode} "
         "{threads}"
+
+rule parse_rvhaplo_out:
+    input:
+        OUTDIR + "{barcode}/rvhaplo.done"
+    output:
+        OUTDIR + "{barcode}/rvhaplo_results_table.tsv"
+    params:
+        indir = OUTDIR + "{barcode}/rvhaplo_out/"
+    shell:
+        "scripts/parse_rvhaplo.py "
+        "--indir {params.indir} "
+        "--outfile {output}"
 
 # LAS error, not able to read fatsa file, need to figure out why
 # On Hipergator the `daccord` command isn't being found in some samples
