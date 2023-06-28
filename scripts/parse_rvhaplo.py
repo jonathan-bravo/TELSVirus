@@ -9,8 +9,21 @@ import pandas as pd
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument('--indir')
+    parser.add_argument('--strains', required=True)
     parser.add_argument('--outfile')
+    # Add virus db as input
     return parser.parse_args()
+
+
+def parse_strains(strain_db):
+    strains = (row.split('\t') for row in open(strain_db))
+    return dict([(row[0], row[1]) for row in strains])
+
+
+def get_strain_name(strain):
+    try: name = strains[strain]
+    except KeyError: name = '*'
+    return name.strip()
 
 
 def get_haplotypes(fq):
@@ -19,8 +32,9 @@ def get_haplotypes(fq):
 
 def make_df():
     global df
-    columns = [
+    columns = [ # add virus name after strain
         'Strain',
+        'Name',
         'Haplotype',
         'Length',
         'Abundance',
@@ -31,10 +45,11 @@ def make_df():
     df = pd.DataFrame(columns=columns)
 
 
-def parse_haplotype(strain, hap):
+def parse_haplotype(strain, hap): # Add name here after strain
     data = str(hap.id).split('_')
     df.loc[len(df.index)] = [
         strain,
+        get_strain_name(strain),
         data[1],
         data[3],
         data[5],
@@ -52,11 +67,15 @@ def parse_rvhaplo_out(indir, directory):
 
 
 def main():
+    global strains
+
     args = parse_args()
 
     # haplotype_0_length_979_abundance_1_number_of_reads_94_depth_50.65580448065173
 
     make_df()
+
+    strains = parse_strains(args.strains)
 
     # pulling data from haplotype fasta files
     [parse_rvhaplo_out(args.indir, directory) for directory in listdir(args.indir)]
