@@ -20,8 +20,11 @@ def get_strain_name(strains, strain):
 
 def write_out(idxstats, strains, output_file):
     with open(output_file, 'w') as o:
-        o.write('Strain\tName\tNumberOfInputReads\tMapped\tUnmapped\tPercentMapped\n')
-        [o.write(f'{strain}\t{get_strain_name(strains, strain)}\t{idxstats[strain][0]}\t{idxstats[strain][1]}\t{idxstats[strain][2]}\t{idxstats[strain][3]}\n') for strain in idxstats]
+        # o.write('Strain\tName\tNumberOfInputReads\tMapped\tUnmapped\tPercentMapped\n')
+        # [o.write(f'{strain}\t{get_strain_name(strains, strain)}\t{idxstats[strain][0]}\t{idxstats[strain][1]}\t{idxstats[strain][2]}\t{idxstats[strain][3]}\n') for strain in idxstats]
+        o.write('Strain\tName\tNumberOfMappedReads\n')
+        [o.write(f'{strain}\t{get_strain_name(strains, strain)}\t{idxstats[strain][0]}\n') for strain in idxstats]
+
 
 def mapping_stats(infile):
     idxstats = (row.strip().split('\t') for row in open(infile))

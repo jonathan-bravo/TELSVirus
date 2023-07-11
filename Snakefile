@@ -487,7 +487,7 @@ rule reads_per_strain:
         stats = OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats",
         strain_db = OUTDIR + "strain_db.tsv"
     output:
-        OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv"
+        temp(OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv")
     conda:
         "envs/alignment.yaml"
     envmodules:
