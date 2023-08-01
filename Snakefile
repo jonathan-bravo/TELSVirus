@@ -31,8 +31,6 @@ rule get_rvhaplo:
         repo = config["rvhaplo_repo"]
     conda:
         "envs/git.yaml"
-    envmodules:
-        "git/2.30.1"
     shell:
         "scripts/get_rvhaplo.sh {params.repo}"
         
@@ -44,8 +42,6 @@ rule get_rvhaplo:
 #         repo = config["strainline_repo"]
 #     conda:
 #         "envs/git.yaml"
-#     envmodules:
-#         "git/2.30.1"
 #     shell:
 #         "scripts/get_strainline.sh {params.repo}; "
 #         "scripts/get_daccord.sh" 
@@ -69,8 +65,6 @@ rule all_virus_bed:
         temp(OUTDIR + "all.viral.targets.bed")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
     shell:
         "samtools faidx {input}; "
         "cat {input}.fai | "
@@ -86,8 +80,6 @@ rule gen_strain_db:
         email = config["email"]
     conda:
         "envs/strain_db.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/gen_strain_source_db.py "
         "--infile {input} "
@@ -162,8 +154,6 @@ rule pre_dedup_read_lengths:
         OUTDIR + "{barcode}/{barcode}.pre.dedup.rl.tsv"
     conda:
         "envs/deduplication.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/read_lengths.py --infile {input} --outfile {output}"
 
@@ -176,8 +166,6 @@ rule bin_reads_by_length:
         outdir = OUTDIR + "{barcode}/read_bins"
     conda:
         "envs/deduplication.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "mkdir -p {params.outdir}; "
         "scripts/bin_reads.py "
@@ -194,8 +182,6 @@ rule cluster_reads:
         outdir = OUTDIR + "{barcode}/read_clusters"
     conda:
         "envs/deduplication.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "mkdir -p {params.outdir}; "
         "scripts/cluster_reads.py "
@@ -216,8 +202,6 @@ rule blat_clustered_reads:
         32
     conda:
         "envs/deduplication.yaml"
-    envmodules:
-        "blat/20140318"
     shell:
         "mkdir -p {params.o}; "
         "scripts/run_blat.py "
@@ -238,8 +222,6 @@ rule find_duplicates:
         outdir = OUTDIR + "{barcode}/duplicate_txts/"
     conda:
         "envs/deduplication.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "mkdir -p {params.outdir}; "
         "scripts/run_find_duplicates.sh "
@@ -269,8 +251,6 @@ rule deduplicate: # find reads here?
         dupes = OUTDIR + "{barcode}/{barcode}.dup.reads.fastq.gz"
     conda:
         "envs/deduplication.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/deduplicate.py "
         "--reads {input.reads} "
@@ -285,8 +265,6 @@ rule post_dedup_read_lengths:
         OUTDIR + "{barcode}/{barcode}.post.dedup.rl.tsv"
     conda:
         "envs/deduplication.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/read_lengths.py --infile {input} --outfile {output}"
 
@@ -299,8 +277,6 @@ rule align_reads_to_host:
         temp(OUTDIR + "{barcode}/{barcode}.host.sam")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "minimap2/2.24"
     threads:
         32
     shell:
@@ -316,8 +292,6 @@ rule host_sam_to_bam:
         temp(OUTDIR + "{barcode}/{barcode}.host.sorted.bam")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
     threads:
         32
     shell:
@@ -332,8 +306,6 @@ rule remove_host_dna: # NO DUPS HERE
         bam = temp(OUTDIR + "{barcode}/{barcode}.host.removed.sorted.bam")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
     threads:
         10
     shell:
@@ -349,8 +321,6 @@ rule host_removal_stats:
         temp(OUTDIR + "host.removal.stats")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/samtools_idxstats.py -i {input} -o {output}"
 
@@ -363,8 +333,6 @@ rule non_host_reads:
         fq = OUTDIR + "{barcode}/{barcode}.non.host.fastq"
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
     threads:
         4
     shell:
@@ -382,8 +350,6 @@ rule align_to_viruses_for_stats: # FIRST SIGN OF DUPES
         temp(OUTDIR + "{barcode}/{barcode}.stats.viruses.sam")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "minimap2/2.24"
     threads:
         32
     shell:
@@ -402,8 +368,6 @@ rule viruses_alignment_stats:
         bam = "{barcode}.stats.viruses.sorted.bam"
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
     threads:
         32
     shell:
@@ -423,8 +387,6 @@ rule merge_viral_alignment_stats:
         temp(OUTDIR + "all.viruses.stats")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/samtools_idxstats.py -i {input} -o {output}"
 
@@ -436,8 +398,6 @@ rule on_target_stats:
         OUTDIR + "on.target.stats"
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/merge_stats.py "
         "--host_stats {input.host_stats} "
@@ -454,8 +414,6 @@ rule align_to_viruses:
         temp(OUTDIR + "{barcode}/{barcode}.viruses.sam")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "minimap2/2.24"
     threads:
         32
     shell:
@@ -472,8 +430,6 @@ rule viruses_sam_to_bam:
         idx = temp(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
     threads:
         32
     shell:
@@ -487,11 +443,9 @@ rule reads_per_strain:
         stats = OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats",
         strain_db = OUTDIR + "strain_db.tsv"
     output:
-        temp(OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv")
+        OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv"
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/summarize_idxstats.py "
         "--infile {input.stats} "
@@ -514,8 +468,6 @@ rule mpileup:
         temp(OUTDIR + "{barcode}/{barcode}.mpileup")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "samtools/1.9"
     threads:
         10
     shell:
@@ -532,8 +484,6 @@ rule find_viral_targets:
         logfile = OUTDIR + "{barcode}/{barcode}.viral.targets.log"
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "python/3.8"
     shell:
         "scripts/find_viral_targets.py "
         "--mpileup {input.pileup} "
@@ -550,8 +500,6 @@ rule get_viral_genomes:
         temp(OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta")
     conda:
         "envs/alignment.yaml"
-    envmodules:
-        "bedtools/2.30.0"
     shell:
         "bedtools getfasta -fi {input.fasta} -bed {input.bed} -fo {output}"
 
@@ -581,8 +529,6 @@ if num_targets > 0:
             barcode = "{barcode}"
         conda:
             "envs/alignment.yaml"
-        envmodules:
-            "minimap2/2.24"
         threads:
             32
         shell:
