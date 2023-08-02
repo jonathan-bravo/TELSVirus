@@ -1,0 +1,157 @@
+configfile: "config.yaml"
+
+OUTDIR = config["output"]
+VIRUSES = config["viral_genomes"]
+
+def get_barcodes(outdir):
+    samples = []
+    for f in os.listdir(outdir):
+        if not f.endswith('.stats') and not f.endswith('.tsv') and not f.startswith('.'):
+            sample_name = f
+            for j in os.listdir(f'{outdir}/{f}/'):
+                if j.endswith('.VIRAL.TARGETS.FOUND'):
+                    samples.append(sample_name)
+    return samples
+
+BARCODES = get_barcodes(OUTDIR)
+
+all_input = [
+    expand(OUTDIR + "{barcode}/rvhaplo_results_table.tsv", barcode = BARCODES),
+    #expand(OUTDIR + "{barcode}/strainline.done", barcode = BARCODES)
+]
+
+rule all:
+    input:
+        all_input
+
+## DOWNLOAD TOOLS ##############################################################
+rule get_rvhaplo:
+    output:
+        touch("get_rvhaplo.done")
+    params:
+        repo = config["rvhaplo_repo"]
+    conda:
+        "envs/git.yaml"
+    shell:
+        "scripts/get_rvhaplo.sh {params.repo}"
+        
+## Commented out because we couldn't get strainline working yet
+# rule get_strainline:
+#     output:
+#         touch("get_strainline.done")
+#     params:
+#         repo = config["strainline_repo"]
+#     conda:
+#         "envs/git.yaml"
+#     shell:
+#         "scripts/get_strainline.sh {params.repo}; "
+#         "scripts/get_daccord.sh" 
+
+# rule link_daccord:
+#     input:
+#         "get_strainline.done"
+#     output:
+#         touch("daccord_linked.done")
+#     conda:
+#         "envs/strainline.yaml"
+#     shell:
+#         "ln -fs scripts/daccord/bin/daccord "
+#         "$CONDA_PREFIX/bin/daccord"
+
+## HAPLOTYPE GENERATION ########################################################
+
+rule split_viral_genomes: # This is where we fail if the file is empty
+    input:
+        fasta = OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta"
+    output:
+        touch(OUTDIR + "{barcode}/viral_refs.done")
+    params:
+        outdir = OUTDIR + "{barcode}/viral_refs/"
+    shell:
+        "scripts/split_target_viruses.sh {input} {params.outdir}"
+
+rule align_to_target_virus:
+    input:
+        OUTDIR + "{barcode}/viral_refs.done",
+        reads = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+    output:
+        touch(OUTDIR + "{barcode}/align_to_targets.done")
+    params:
+        indir = OUTDIR + "{barcode}/viral_refs/",
+        outdir = OUTDIR + "{barcode}/target_aligned/",
+        barcode = "{barcode}"
+    conda:
+        "envs/alignment.yaml"
+    threads:
+        32
+    shell:
+        "scripts/align_to_targets.sh "
+        "{params.outdir} "
+        "{params.indir} "
+        "{params.barcode} "
+        "{input.reads} "
+        "{threads}"
+
+## HAPLOTYPE GENERATION ########################################################
+
+rule run_rvhaplo:
+    input:
+        "get_rvhaplo.done",
+        OUTDIR + "{barcode}/align_to_targets.done"
+    output:
+        touch(OUTDIR + "{barcode}/rvhaplo.done")
+    params:
+        barcode = "{barcode}",
+        vir_indir = OUTDIR + "{barcode}/viral_refs/",
+        sam_indir = OUTDIR + "{barcode}/target_aligned/",
+        outdir = OUTDIR + "{barcode}/rvhaplo_out/"
+    conda:
+        "envs/rvhaplo.yaml"
+    threads:
+        10
+    shell:
+        "scripts/run_rvhaplo.sh "
+        "{params.outdir} "
+        "{params.vir_indir} "
+        "{params.sam_indir} "
+        "{params.barcode} "
+        "{threads}"
+
+rule parse_rvhaplo_out:
+    input:
+        OUTDIR + "{barcode}/rvhaplo.done",
+        strain_db = OUTDIR + "strain_db.tsv"
+    output:
+        OUTDIR + "{barcode}/rvhaplo_results_table.tsv"
+    params:
+        indir = OUTDIR + "{barcode}/rvhaplo_out/"
+    conda:
+        "envs/rvhaplo.yaml"
+    shell:
+        "scripts/parse_rvhaplo.py "
+        "--indir {params.indir} "
+        "--strains {input.strain_db} "
+        "--outfile {output}"
+
+# LAS error, not able to read fatsa file, need to figure out why
+# On Hipergator the `daccord` command isn't being found in some samples
+## even after the command has been linked correctly to the bin
+
+# rule run_strainline: ## need to figure out how to link daccord to strainline conda bin...
+#     input:
+#         "daccord_linked.done",
+#         fasta = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
+#     output:
+#         touch(OUTDIR + "{barcode}/strainline.done")
+#     params:
+#         outdir = OUTDIR + "{barcode}/{barcode}_strainline_out/"
+#     threads:
+#         10
+#     conda:
+#         "envs/strainline.yaml"
+#     shell:
+#         "scripts/Strainline/src/strainline.sh "
+#         "-i {input.fasta} "
+#         "-o {params.outdir} "
+#         "-t {threads} "
+#         "-p ont"
