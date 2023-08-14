@@ -2,6 +2,8 @@
 
 from argparse import ArgumentParser
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 from os import listdir
 import pandas as pd
 
@@ -11,7 +13,6 @@ def parse_args():
     parser.add_argument('--indir')
     parser.add_argument('--strains', required=True)
     parser.add_argument('--outfile')
-    # Add virus db as input
     return parser.parse_args()
 
 
@@ -27,12 +28,14 @@ def get_strain_name(strain):
 
 
 def get_haplotypes(fq):
-    return [seq for seq in SeqIO.parse(open(fq), 'fasta')]
+    try: fasta = [seq for seq in SeqIO.parse(open(fq), 'fasta')]
+    except: fasta = [SeqRecord(Seq("NAN"), id = "None")]
+    return fasta
 
 
 def make_df():
     global df
-    columns = [ # add virus name after strain
+    columns = [
         'Strain',
         'Name',
         'Haplotype',
@@ -61,7 +64,7 @@ def parse_haplotype(strain, hap): # Add name here after strain
 
 def parse_rvhaplo_out(indir, directory):
     strain = directory.split('_')[-1]
-    f = f'{indir}{directory}/rvhaplo_haplotypes.fasta'
+    f = f'{indir}{directory}/rvhaplo_haplotypes.fasta' # some of the outputs don't have a fasta file... So I need to come up with a case for this
     fq = get_haplotypes(f)
     [parse_haplotype(strain, hap) for hap in fq]
 
