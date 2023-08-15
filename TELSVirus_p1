@@ -446,7 +446,8 @@ rule find_viral_targets:
         strain_db = OUTDIR + "strain_db.tsv"
     output:
         bed = temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed"),
-        logfile = OUTDIR + "{barcode}/{barcode}.viral.targets.log"
+        logfile = OUTDIR + "{barcode}/{barcode}.viral.targets.log",
+        selected_log = OUTDIR + "{barcode}/{barcode}.selected.viral.targets.log",
     conda:
         "envs/alignment.yaml"
     shell:
@@ -455,7 +456,8 @@ rule find_viral_targets:
         "--bed {input.all_viruses_bed} "
         "--strains {input.strain_db} "
         "--logfile {output.logfile} "
-        "--outfile {output.bed}"
+        "--outfile {output.bed}; "
+        "awk -F'\t' '{{ if($3 > 80.0) print}}' {output.logfile} > {output.selected_log}"
 
 rule get_viral_genomes:
     input:

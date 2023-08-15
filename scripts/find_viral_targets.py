@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import argparse
+from argparse import ArgumentParser
+from pprint import pprint
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument('--mpileup', required = True)
     parser.add_argument('--bed', required = True)
     parser.add_argument('--strains', required = True)
@@ -44,7 +45,7 @@ def high_match(key, cc, tc):
 def get_viral_targets(cc, tc): # write logfile here?
     global log_lines
     best_matches = {}
-    log_lines = [(cc[key][0], genome_fraction(key, cc, tc), mean_depth(key, cc, tc), key) for key in cc.keys()]
+    log_lines = [(key, cc[key][0], genome_fraction(key, cc, tc), mean_depth(key, cc, tc), key) for key in cc.keys()]
     [best_matches.setdefault(cc[key][0], []).append((genome_fraction(key, cc, tc), mean_depth(key, cc, tc), key)) for key in cc.keys() if high_match(key, cc, tc)]
     [best_matches[key].sort(reverse=True) for key in best_matches.keys()]
     return [best_matches[key][0] for key in best_matches.keys()]
@@ -55,8 +56,8 @@ def write_viral_targets(targets, tc, outfile):
 
 def write_log(logfile):
     with open(logfile,'w') as o:
-        o.write(f'Strain\tHorizontalCov\tMeanDepth\n')
-        [o.write(f'{line[0]}\t{line[1]}\t{line[2]}\n') for line in log_lines]
+        o.write(f'Accession\tStrain\tHorizontalCov\tMeanDepth\n')
+        [o.write(f'{line[0]}\t{line[1]}\t{line[2]}\t{line[3]}\n') for line in log_lines]
 
 def main():
     args = parse_args()
@@ -64,6 +65,7 @@ def main():
     total_counts = parse_bed(args.bed) # length of the virus
     strains = parse_strains(args.strains)
     covered_counts = get_counts(pileup, strains)
+    #pprint(covered_counts)
     targets = get_viral_targets(covered_counts, total_counts)
     write_viral_targets(targets, total_counts, args.outfile)
     write_log(args.logfile)
