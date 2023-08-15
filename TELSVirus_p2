@@ -108,7 +108,7 @@ rule run_rvhaplo:
     conda:
         "envs/rvhaplo.yaml"
     threads:
-        10
+        32
     shell:
         "scripts/run_rvhaplo.sh "
         "{params.outdir} "

@@ -64,8 +64,8 @@
     },
 
     "run_rvhaplo": {
-        "cpus-per-task": "10",
-        "mem": "32gb"
+        "cpus-per-task": "32",
+        "mem": "64gb"
     },
 
     "run_strainline": {
