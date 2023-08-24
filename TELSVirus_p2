@@ -1,7 +1,10 @@
 configfile: "config.yaml"
 
 OUTDIR = config["output"]
+STRAIN_DB = config["strain_db"]
 VIRUSES = config["viral_genomes"]
+
+if STRAIN_DB == "": STRAIN_DB = "data/viruses/strain_db.tsv"
 
 def get_barcodes(outdir):
     samples = []
@@ -120,7 +123,7 @@ rule run_rvhaplo:
 rule parse_rvhaplo_out:
     input:
         OUTDIR + "{barcode}/rvhaplo.done",
-        strain_db = OUTDIR + "strain_db.tsv"
+        strain_db = STRAIN_DB
     output:
         OUTDIR + "{barcode}/rvhaplo_results_table.tsv"
     params:

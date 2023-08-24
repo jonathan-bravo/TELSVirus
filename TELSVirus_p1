@@ -1,6 +1,7 @@
 configfile: "config.yaml"
 
 READS = config["reads"]
+STRAIN_DB = config["strain_db"]
 OUTDIR = config["output"]
 HOST_FILE = config["host_genome"]
 VIRUSES = config["viral_genomes"]
@@ -15,6 +16,7 @@ all_input = [
     expand(OUTDIR + "{barcode}/{barcode}.start.read.count.txt", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.hard.trim.count.txt", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.chimeric.count.txt", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/{barcode}.viral.targets.log", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta", barcode = BARCODES)
 ]
 
@@ -36,20 +38,23 @@ rule all_virus_bed:
         "awk '{{print $1\"\t0\t\"$2}}' >  {output}; "
         "rm {input}.fai"
 
-rule gen_strain_db:
-    input:
-        VIRUSES
-    output:
-        OUTDIR + "strain_db.tsv"
-    params:
-        email = config["email"]
-    conda:
-        "envs/strain_db.yaml"
-    shell:
-        "scripts/gen_strain_source_db.py "
-        "--infile {input} "
-        "--email {params.email} "
-        "--outfile {output}"
+if STRAIN_DB == "":
+    rule gen_strain_db:
+        input:
+            VIRUSES
+        output:
+            "data/viruses/strain_db.tsv"
+        params:
+            email = config["email"]
+        conda:
+            "envs/strain_db.yaml"
+        shell:
+            "scripts/gen_strain_source_db.py "
+            "--infile {input} "
+            "--email {params.email} "
+            "--outfile {output}"
+    
+    STRAIN_DB = "data/viruses/strain_db.tsv"
 
 ## CONCAT RAW DATA #############################################################
 
@@ -406,7 +411,7 @@ rule viruses_sam_to_bam:
 rule reads_per_strain:
     input:
         stats = OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats",
-        strain_db = OUTDIR + "strain_db.tsv"
+        strain_db = STRAIN_DB
     output:
         OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv"
     conda:
@@ -443,7 +448,7 @@ rule find_viral_targets:
     input:
         pileup = OUTDIR + "{barcode}/{barcode}.mpileup",
         all_viruses_bed = OUTDIR + "all.viral.targets.bed",
-        strain_db = OUTDIR + "strain_db.tsv"
+        strain_db = STRAIN_DB
     output:
         bed = temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed"),
         logfile = OUTDIR + "{barcode}/{barcode}.viral.targets.log",

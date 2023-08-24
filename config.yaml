@@ -3,6 +3,7 @@ output: "test_results/"
 
 host_genome: "data/host/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz"
 viral_genomes: "data/viruses/all_swine_viruses_concat.fasta"
+strain_db: ""
 reads: "data/raw/"
 silimarity_threshold: 0.9
 crop_len: 37
