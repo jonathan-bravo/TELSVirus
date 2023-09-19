@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import argparse
+from argparse import ArgumentParser
 import pandas as pd
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument('--host_stats', required = True)
     parser.add_argument('--viral_stats', required = True)
     parser.add_argument('--outfile', required = True)
@@ -18,12 +18,13 @@ def prep_host_stats(host_stats):
 
 def prep_viral_stats(viral_stats):
     df = pd.read_table(viral_stats)
-    df.drop(columns=['NumberOfInputReads'], inplace=True)
-    df.columns=['Sample', 'MappedToViralDB', 'Unmapped']
+    df.drop(columns=['NumberOfInputReads', 'Unmapped'], inplace=True)
+    df.columns=['Sample', 'MappedToViralDB']
     return df
 
 def on_target_stats(host_df, viral_df, outfile):
     final_df = pd.merge(host_df, viral_df, on=['Sample'])
+    final_df['Unmapped'] = final_df['NumberOfInputReads'] - (final_df['MappedToHost'] + final_df['MappedToViralDB'])
     final_df['HostReadsPercent'] = (final_df['MappedToHost']/final_df['NumberOfInputReads'])*100
     final_df['OnTargetPercent'] = (final_df['MappedToViralDB']/final_df['NumberOfInputReads'])*100
     final_df.to_csv(outfile, index=False, sep='\t')
