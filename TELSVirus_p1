@@ -268,7 +268,7 @@ rule host_sam_to_bam:
         "samtools view -Sb {input} | "
         "samtools sort -@ {threads} -o {output}"
 
-rule remove_host_dna: # NO DUPS HERE
+rule remove_host_dna: # not counting supp alignments for `host.removal`
     input:
         OUTDIR + "{barcode}/{barcode}.host.sorted.bam"
     output:
@@ -280,7 +280,8 @@ rule remove_host_dna: # NO DUPS HERE
         10
     shell:
         "samtools index {input} && "
-        "samtools idxstats {input} > {output.idx}; "
+        "samtools view -h -F 2048 -b {input} | "
+        "samtools idxstats -@ {threads} - > {output.idx}; "
         "samtools view -h -f 4 -b {input} -o {output.bam}; "
         "rm {input}.bai"
 
@@ -329,7 +330,7 @@ rule align_to_viruses_for_stats: # FIRST SIGN OF DUPES
         "-o {output} "
         "-a {input.viruses} {input.barcodes}"
 
-rule viruses_alignment_stats:
+rule viruses_alignment_stats: # not counting supp alignments for `viral.stats`
     input:
         OUTDIR + "{barcode}/{barcode}.stats.viruses.sam"
     output:
@@ -341,10 +342,10 @@ rule viruses_alignment_stats:
     threads:
         32
     shell:
-        "samtools view -Sb {input} | "
+        "samtools view -h -F 2048 -Sb {input} | "
         "samtools sort -@ {threads} -o {params.bam}; "
         "samtools index {params.bam}; "
-        "samtools idxstats {params.bam} > {output}; "
+        "samtools idxstats -@ {threads} {params.bam} > {output}; "
         "rm {params.bam}.bai; "
         "rm {params.bam}"
 
@@ -392,7 +393,7 @@ rule align_to_viruses:
         "-o {output} "
         "-a {input.viruses} {input.barcodes}"
 
-rule viruses_sam_to_bam:
+rule viruses_sam_to_bam: # not counting supp alignments for `reads.per.strain`
     input:
         OUTDIR + "{barcode}/{barcode}.viruses.sam"
     output:
@@ -406,7 +407,8 @@ rule viruses_sam_to_bam:
         "samtools view -Sb {input} | "
         "samtools sort -@ {threads} -o {output.bam}; "
         "samtools index {output.bam}; "
-        "samtools idxstats {output.bam} > {output.idx}"
+        "samtools view -h -F 2048 -b {output.bam} | "
+        "samtools idxstats -@ {threads} - > {output.idx}"
 
 rule reads_per_strain:
     input:
