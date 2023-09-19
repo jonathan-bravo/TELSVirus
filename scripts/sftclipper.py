@@ -20,14 +20,16 @@ def parse_cigar(cigar):
     return cigar_string
 
 
-def clip_check(read):
+def clip_check(read, cutoff):
     cigar = parse_cigar(read.cigarstring)
     soft_clip = 0
+    mapped = 0
     total = 0
     for c in cigar:
         total += c[0]
         if c[1] == 'S': soft_clip += c[0]
-    return soft_clip/total
+        if c[1] == 'M' or c[1] == 'Y': mapped += c[0]
+    return soft_clip/total < cutoff and mapped >= 100
 
 
 def main():
@@ -35,18 +37,7 @@ def main():
     bamfile = pysam.AlignmentFile(args.bam, "rb")
     removed_bam = pysam.AlignmentFile(f'{args.outfile}_REMOVED.bam', "wb", template=bamfile)
     with pysam.AlignmentFile(args.outfile, "wb", template=bamfile) as outf:
-        [outf.write(read) if clip_check(read) < args.cutoff else removed_bam.write(read) for read in bamfile.fetch()]
-        # for read in bamfile.fetch():
-        #     cigar = parse_cigar(read.cigarstring)
-        #     soft_clip = 0
-        #     total = 0
-        #     for c in cigar:
-        #         total += c[0]
-        #         if c[1] == 'S': soft_clip += c[0]
-        #     if soft_clip/total < args.cutoff:
-        #         outf.write(read)
-        #     else:
-        #         removed_bam.write(read)
+        [outf.write(read) if clip_check(read, args.cutoff) else removed_bam.write(read) for read in bamfile.fetch()]
     removed_bam.close()
     bamfile.close()
 
