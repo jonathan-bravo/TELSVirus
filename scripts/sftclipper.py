@@ -20,6 +20,17 @@ def parse_cigar(cigar):
     return cigar_string
 
 
+# M	Match           no insertion or deletions, bases may not agree
+# I	Insertion       additional base in query (not in reference)
+# D	Deletion        query is missing base from reference
+# =	Equal           no insertions or deletions, and bases agree
+# X	Not Equal       no insertions or deletions, bases do not agree
+# N	None            no query bases to align, an expected read gap (spliced read)
+# S	Soft-Clipped    bases on end of read are not aligned but stored in SAM
+# H	Hard-Clipped    bases on end of read are not aligned, not stored in SAM
+# P	Padding	neither read nor reference has a base here
+
+
 def clip_check(read, cutoff):
     cigar = parse_cigar(read.cigarstring)
     soft_clip = 0
@@ -28,7 +39,7 @@ def clip_check(read, cutoff):
     for c in cigar:
         total += c[0]
         if c[1] == 'S': soft_clip += c[0]
-        if c[1] == 'M' or c[1] == 'Y': mapped += c[0]
+        if c[1] in 'MID=': mapped += c[0]
     return soft_clip/total < cutoff and mapped >= 100
 
 
