@@ -2,7 +2,7 @@ configfile: "config.yaml"
 
 READS = config["reads"]
 STRAIN_DB = config["strain_db"]
-OUTDIR = config["output"]
+OUTDIR = config["output"] + config["run_id"] + "/"
 HOST_FILE = config["host_genome"]
 VIRUSES = config["viral_genomes"]
 BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
@@ -17,7 +17,8 @@ all_input = [
     expand(OUTDIR + "{barcode}/{barcode}.hard.trim.count.txt", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.chimeric.count.txt", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.viral.targets.log", barcode = BARCODES),
-    expand(OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta", barcode = BARCODES)
+    expand(OUTDIR + "{barcode}/{barcode}.viral.target.genomes.fasta", barcode = BARCODES),
+    expand(OUTDIR + "{barcode}/add_sample_info.done", barcode = BARCODES)
 ]
 
 rule all:
@@ -505,3 +506,21 @@ rule get_viral_genomes:
     shell:
         "bedtools getfasta -fi {input.fasta} -bed {input.bed} -fo {output}; "
         "if grep -q . {output}; then touch {params.succeed}; else touch {params.fail}; fi"
+
+
+rule add_sample_info:
+    input:
+        OUTDIR + "{barcode}/{barcode}.pre.dedup.rl.tsv",
+        OUTDIR + "{barcode}/{barcode}.post.dedup.rl.tsv",
+        OUTDIR + "{barcode}/{barcode}.reads.per.strain.tsv",
+        OUTDIR + "{barcode}/{barcode}.reads.per.strain.filtered.tsv",
+        OUTDIR + "{barcode}/{barcode}.viral.targets.log",
+        OUTDIR + "{barcode}/{barcode}.selected.viral.targets.log"
+    output:
+        touch(OUTDIR + "{barcode}/add_sample_info.done")
+    params:
+        run_id = config["run_id"],
+        sample_id = "{barcode}"
+    shell:
+        "scripts/add_run_info.py "
+        "--infiles {input}"

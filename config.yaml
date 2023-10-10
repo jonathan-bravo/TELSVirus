@@ -1,4 +1,5 @@
 email: ""
+run_id: "test"
 output: "test_results/"
 
 host_genome: "data/host/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz"
