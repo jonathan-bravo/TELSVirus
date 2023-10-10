@@ -281,7 +281,7 @@ rule remove_host_dna: # not counting supp alignments for `host.removal`
     shell:
         "samtools index {input} && "
         "samtools view -h -F 2048 -b {input} | "
-        "samtools idxstats -@ {threads} - > {output.idx}; "
+        "samtools idxstats - > {output.idx}; "
         "samtools view -h -f 4 -b {input} -o {output.bam}; "
         "rm {input}.bai"
 
@@ -326,6 +326,8 @@ rule align_to_viruses_for_stats: # FIRST SIGN OF DUPES
     shell:
         "minimap2 "
         "--secondary=no "
+        "--q-occ-frac 0 "
+        "-f 0 "
         "-t {threads} "
         "-o {output} "
         "-a {input.viruses} {input.barcodes}"
@@ -336,7 +338,9 @@ rule viruses_alignment_stats: # not counting supp alignments for `viral.stats`
     output:
         temp(OUTDIR + "{barcode}/{barcode}.all.viruses.samtools.idxstats")
     params:
-        bam = "{barcode}.stats.viruses.sorted.bam"
+        cutoff = config["sftclp_cutoff"],
+        bam = OUTDIR + "{barcode}/{barcode}.stats.viruses.sorted.bam",
+        sftbam = OUTDIR + "{barcode}/{barcode}.stats.viruses.sorted.sftclp.bam"
     conda:
         "envs/alignment.yaml"
     threads:
@@ -344,10 +348,15 @@ rule viruses_alignment_stats: # not counting supp alignments for `viral.stats`
     shell:
         "samtools view -h -F 2048 -Sb {input} | "
         "samtools sort -@ {threads} -o {params.bam}; "
-        "samtools index {params.bam}; "
-        "samtools idxstats -@ {threads} {params.bam} > {output}; "
-        "rm {params.bam}.bai; "
-        "rm {params.bam}"
+        "samtools index -@ {threads} {params.bam}; "
+        "scripts/sftclipper.py "
+        "--cutoff {params.cutoff} "
+        "--bam {params.bam} "
+        "--outfile {params.sftbam}; "
+        "samtools index -@ {threads} {params.sftbam}; "
+        "samtools idxstats {params.bam} > {output}; "
+        "rm {params.bam} {params.bam}.bai; "
+        "rm {params.sftbam} {params.sftbam}.bai"
 
 ## ON TARGET STATS #############################################################
 
@@ -389,6 +398,8 @@ rule align_to_viruses:
         32
     shell:
         "minimap2 "
+        "--q-occ-frac 0 "
+        "-f 0 "
         "-t {threads} "
         "-o {output} "
         "-a {input.viruses} {input.barcodes}"
@@ -397,18 +408,27 @@ rule viruses_sam_to_bam: # not counting supp alignments for `reads.per.strain`
     input:
         OUTDIR + "{barcode}/{barcode}.viruses.sam"
     output:
-        bam = OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam",
+        bam = OUTDIR + "{barcode}/{barcode}.viruses.sorted.sftclp.bam",
         idx = temp(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats")
+    params:
+        cutoff = config["sftclp_cutoff"],
+        tmp_bam = OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
     conda:
         "envs/alignment.yaml"
     threads:
         32
     shell:
         "samtools view -Sb {input} | "
-        "samtools sort -@ {threads} -o {output.bam}; "
-        "samtools index {output.bam}; "
+        "samtools sort -@ {threads} -o {params.tmp_bam}; "
+        "samtools index -@ {threads} {params.tmp_bam}; "
+        "scripts/sftclipper.py "
+        "--cutoff {params.cutoff} "
+        "--bam {params.tmp_bam} "
+        "--outfile {output.bam}; "
+        "samtools index -@ {threads} {output.bam}; "
         "samtools view -h -F 2048 -b {output.bam} | "
-        "samtools idxstats -@ {threads} - > {output.idx}"
+        "samtools idxstats - > {output.idx}; "
+        "rm {params.tmp_bam} {params.tmp_bam}.bai"
 
 rule reads_per_strain:
     input:
@@ -435,7 +455,7 @@ rule filter_reads_per_strain:
 
 rule mpileup:
     input:
-        OUTDIR + "{barcode}/{barcode}.viruses.sorted.bam"
+        OUTDIR + "{barcode}/{barcode}.viruses.sorted.sftclp.bam"
     output:
         temp(OUTDIR + "{barcode}/{barcode}.mpileup")
     conda:
@@ -454,7 +474,9 @@ rule find_viral_targets:
     output:
         bed = temp(OUTDIR + "{barcode}/{barcode}.viral.targets.bed"),
         logfile = OUTDIR + "{barcode}/{barcode}.viral.targets.log",
-        selected_log = OUTDIR + "{barcode}/{barcode}.selected.viral.targets.log",
+        selected_log = OUTDIR + "{barcode}/{barcode}.selected.viral.targets.log"
+    params:
+        email = config["email"]
     conda:
         "envs/alignment.yaml"
     shell:
@@ -464,6 +486,9 @@ rule find_viral_targets:
         "--strains {input.strain_db} "
         "--logfile {output.logfile} "
         "--outfile {output.bed}; "
+        "scripts/add_viral_segments.py "
+        "--infile {output.logfile} "
+        "--email {params.email}; "
         "awk -F'\t' '{{ if($3 > 80.0) print}}' {output.logfile} > {output.selected_log}"
 
 rule get_viral_genomes:
