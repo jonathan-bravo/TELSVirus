@@ -9,3 +9,4 @@ dependencies:
   - bedtools=2.30.0
   - pandas
   - pysam
+  - biopython
