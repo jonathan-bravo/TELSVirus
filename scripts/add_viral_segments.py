@@ -9,7 +9,8 @@ class GBFeatures:
         self.quals = {}
 
         for d in quals:
-            self.quals[d['GBQualifier_name']] = d['GBQualifier_value']
+            try: self.quals[d['GBQualifier_name']] = d['GBQualifier_value']
+            except KeyError: self.quals[d['GBQualifier_name']] = 'NA'
 
 
 def parse_args():
