@@ -523,4 +523,6 @@ rule add_sample_info:
         sample_id = "{barcode}"
     shell:
         "scripts/add_run_info.py "
+        "--sample_id {params.sample_id} "
+        "--run_id {params.run_id} "
         "--infiles {input}"
