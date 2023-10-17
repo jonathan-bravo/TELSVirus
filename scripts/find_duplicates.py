@@ -13,7 +13,8 @@ def read_psl(psl):
     return (q.strip().split('\t') for q in open(psl))
 
 def skip_header(qresults):
-    [next(qresults) for _ in range(5)]
+    try: [next(qresults) for _ in range(5)]
+    except StopIteration: pass
 
 def high_match(q, threshold): 
     return (int(q[0]) >= threshold * int(q[14]) # amount covered is 90% of target?
