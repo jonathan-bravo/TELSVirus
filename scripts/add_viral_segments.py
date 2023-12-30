@@ -20,28 +20,30 @@ def parse_args():
     return parser.parse_args()
 
 
-def get_serotype_and_strain(d):
+def get_features(d):
     try: serotype = d['serotype']
     except KeyError: serotype = 'NA'
     try: strain = d['strain']
     except KeyError: strain = 'NA'
-    return (serotype, strain)
+    try: segment = d['segment']
+    except KeyError: segment = 'NA'
+    return (serotype, strain, segment)
 
 
 def get_viral_info(accessions):
     handle = Entrez.efetch(db='nucleotide', rettype='gb', retmode='xml', id=','.join(accessions))
     data = Entrez.read(handle)
     features = [GBFeatures(e['GBSeq_feature-table'][0]['GBFeature_quals']) for e in data]
-    viral_info = [get_serotype_and_strain(f.quals) for f in features]
+    viral_info = [get_features(f.quals) for f in features]
     handle.close()
     return viral_info
 
 
 def write_updated_log(outfile, log, viral_info):
     with open(outfile, 'w') as out:
-        out.write('Accession\tStrain\tHorizontalCov\tMeanDepth\tSerotype\tStrain\n')
+        out.write('Accession\tStrain\tHorizontalCov\tMeanDepth\tSerotype\tStrain\tSegment\n')
         for i, line in enumerate(log[1:]):
-            out.write(f'{line[0]}\t{line[1]}\t{line[2]}\t{line[3]}\t{viral_info[i][0]}\t{viral_info[i][1]}\n')
+            out.write(f'{line[0]}\t{line[1]}\t{line[2]}\t{line[3]}\t{viral_info[i][0]}\t{viral_info[i][1]}\t{viral_info[i][2]}\n')
 
 
 def main():
