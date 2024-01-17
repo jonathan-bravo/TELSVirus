@@ -314,7 +314,7 @@ rule non_host_reads:
 
 ## GET VIRAL DB STATS ##########################################################
 
-rule align_to_viruses_for_stats: # FIRST SIGN OF DUPES
+rule align_to_viruses_for_stats_no_secondary: # FIRST SIGN OF DUPES
     input:
         viruses = VIRUSES,
         barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
@@ -387,7 +387,7 @@ rule on_target_stats:
 
 ## VIRAL STRAIN SELECTION ######################################################
 
-rule align_to_viruses:
+rule align_to_viruses_with_secondary:
     input:
         viruses = VIRUSES,
         barcodes = OUTDIR + "{barcode}/{barcode}.non.host.fastq.gz"
@@ -458,7 +458,7 @@ rule mpileup:
     input:
         OUTDIR + "{barcode}/{barcode}.viruses.sorted.sftclp.bam"
     output:
-        temp(OUTDIR + "{barcode}/{barcode}.mpileup")
+        OUTDIR + "{barcode}/{barcode}.mpileup"
     conda:
         "envs/alignment.yaml"
     threads:
