@@ -30,12 +30,21 @@ def get_features(d):
     return (serotype, strain, segment)
 
 
+def divide_chunks(l,n=9999):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
+
+
 def get_viral_info(accessions):
-    handle = Entrez.efetch(db='nucleotide', rettype='gb', retmode='xml', id=','.join(accessions))
-    data = Entrez.read(handle)
-    features = [GBFeatures(e['GBSeq_feature-table'][0]['GBFeature_quals']) for e in data]
-    viral_info = [get_features(f.quals) for f in features]
-    handle.close()
+    viral_info = []
+    queries = list(divide_chunks(accessions))
+    for query in queries:
+        handle = Entrez.efetch(db='nucleotide', rettype='gb', retmode='xml', id=','.join(query))
+        data = Entrez.read(handle)
+        features = [GBFeatures(e['GBSeq_feature-table'][0]['GBFeature_quals']) for e in data]
+        viral_info_part = [get_features(f.quals) for f in features]
+        viral_info.extend(viral_info_part)
+        handle.close()
     return viral_info
 
 
