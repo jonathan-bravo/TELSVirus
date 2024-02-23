@@ -50,7 +50,7 @@ if STRAIN_DB == "":
         conda:
             "envs/strain_db.yaml"
         shell:
-            "scripts/gen_strain_source_db.py "
+            "python scripts/gen_strain_source_db.py "
             "--infile {input} "
             "--email {params.email} "
             "--outfile {output}"
@@ -73,7 +73,7 @@ rule start_read_count:
     output:
         OUTDIR + "{barcode}/{barcode}.start.read.count.txt"
     shell:
-        "scripts/start_counts.sh {input} {output}"
+        "bash scripts/start_counts.sh {input} {output}"
 
 ## TRIM READS ##################################################################
 
@@ -89,7 +89,7 @@ rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24)
     conda:
         "envs/trimming.yaml"
     shell:
-        "scripts/trim.py "
+        "python scripts/trim.py "
         "--infile {input} "
         "--logfile {output.logfile} "
         "--outfile {output.trimmed_reads} "
@@ -126,7 +126,7 @@ rule pre_dedup_read_lengths:
     conda:
         "envs/deduplication.yaml"
     shell:
-        "scripts/read_lengths.py --infile {input} --outfile {output}"
+        "python scripts/read_lengths.py --infile {input} --outfile {output}"
 
 rule bin_reads_by_length:
     input:
@@ -139,7 +139,7 @@ rule bin_reads_by_length:
         "envs/deduplication.yaml"
     shell:
         "mkdir -p {params.outdir}; "
-        "scripts/bin_reads.py "
+        "python scripts/bin_reads.py "
         "--infile {input} "
         "--outdir {params.outdir}"
 
@@ -155,7 +155,7 @@ rule cluster_reads:
         "envs/deduplication.yaml"
     shell:
         "mkdir -p {params.outdir}; "
-        "scripts/cluster_reads.py "
+        "python scripts/cluster_reads.py "
         "--indir {params.indir} "
         "--outdir {params.outdir}; "
         "rm -rf {params.indir}; "
@@ -175,7 +175,7 @@ rule blat_clustered_reads:
         "envs/deduplication.yaml"
     shell:
         "mkdir -p {params.o}; "
-        "scripts/run_blat.py "
+        "python scripts/run_blat.py "
         "--outdir {params.o} "
         "--threads {threads} "
         "--read_clusters {params.rc}; "
@@ -195,7 +195,7 @@ rule find_duplicates:
         "envs/deduplication.yaml"
     shell:
         "mkdir -p {params.outdir}; "
-        "scripts/run_find_duplicates.sh "
+        "bash scripts/run_find_duplicates.sh "
         "{params.outdir} "
         "{params.pls_dir} "
         "{params.similarity_threshold}; "
@@ -223,7 +223,7 @@ rule deduplicate: # find reads here?
     conda:
         "envs/deduplication.yaml"
     shell:
-        "scripts/deduplicate.py "
+        "python scripts/deduplicate.py "
         "--reads {input.reads} "
         "--duplicates {input.duplicates_list} "
         "--out_reads {output.reads} "
@@ -237,7 +237,7 @@ rule post_dedup_read_lengths:
     conda:
         "envs/deduplication.yaml"
     shell:
-        "scripts/read_lengths.py --infile {input} --outfile {output}"
+        "python scripts/read_lengths.py --infile {input} --outfile {output}"
 
 ## REMOVE HOST DNA #############################################################
 rule align_reads_to_host:
@@ -294,7 +294,7 @@ rule host_removal_stats:
     conda:
         "envs/alignment.yaml"
     shell:
-        "scripts/samtools_idxstats.py -i {input} -o {output}"
+        "python scripts/samtools_idxstats.py -i {input} -o {output}"
 
 rule non_host_reads:
     input:
@@ -350,12 +350,12 @@ rule viruses_alignment_stats: # not counting supp alignments for `viral.stats`
         "samtools view -h -F 2048 -Sb {input} | "
         "samtools sort -@ {threads} -o {params.bam}; "
         "samtools index -@ {threads} {params.bam}; "
-        "scripts/sftclipper.py "
+        "python scripts/sftclipper.py "
         "--cutoff {params.cutoff} "
         "--bam {params.bam} "
         "--outfile {params.sftbam}; "
         "samtools index -@ {threads} {params.sftbam}; "
-        "samtools idxstats {params.bam} > {output}; "
+        "samtools idxstats {params.sftbam} > {output}; "
         "rm {params.bam} {params.bam}.bai; "
         "rm {params.sftbam} {params.sftbam}.bai"
 
@@ -369,7 +369,7 @@ rule merge_viral_alignment_stats:
     conda:
         "envs/alignment.yaml"
     shell:
-        "scripts/samtools_idxstats.py -i {input} -o {output}"
+        "python scripts/samtools_idxstats.py -i {input} -o {output}"
 
 rule on_target_stats:
     input:
@@ -380,7 +380,7 @@ rule on_target_stats:
     conda:
         "envs/alignment.yaml"
     shell:
-        "scripts/merge_stats.py "
+        "python scripts/merge_stats.py "
         "--host_stats {input.host_stats} "
         "--viral_stats {input.viral_stats} "
         "--outfile {output}"
@@ -422,7 +422,7 @@ rule viruses_sam_to_bam: # not counting supp alignments for `reads.per.strain`
         "samtools view -Sb {input} | "
         "samtools sort -@ {threads} -o {params.tmp_bam}; "
         "samtools index -@ {threads} {params.tmp_bam}; "
-        "scripts/sftclipper.py "
+        "python scripts/sftclipper.py "
         "--cutoff {params.cutoff} "
         "--bam {params.tmp_bam} "
         "--outfile {output.bam}; "
@@ -440,7 +440,7 @@ rule reads_per_strain:
     conda:
         "envs/alignment.yaml"
     shell:
-        "scripts/summarize_idxstats.py "
+        "python scripts/summarize_idxstats.py "
         "--infile {input.stats} "
         "--strains {input.strain_db} "
         "--outfile {output}"
@@ -481,13 +481,13 @@ rule find_viral_targets:
     conda:
         "envs/alignment.yaml"
     shell:
-        "scripts/find_viral_targets.py "
+        "python scripts/find_viral_targets.py "
         "--mpileup {input.pileup} "
         "--bed {input.all_viruses_bed} "
         "--strains {input.strain_db} "
         "--logfile {output.logfile} "
         "--outfile {output.bed}; "
-        "scripts/add_viral_segments.py "
+        "python scripts/add_viral_segments.py "
         "--infile {output.logfile} "
         "--email {params.email}; "
         "awk -F'\t' '{{ if($3 > 80.0) print}}' {output.logfile} > {output.selected_log}"
@@ -522,7 +522,7 @@ rule add_sample_info:
         run_id = config["run_id"],
         sample_id = "{barcode}"
     shell:
-        "scripts/add_run_info.py "
+        "python scripts/add_run_info.py "
         "--sample_id {params.sample_id} "
         "--run_id {params.run_id} "
         "--infiles {input}"
