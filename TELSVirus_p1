@@ -149,6 +149,7 @@ rule cluster_reads:
     output:
         touch(OUTDIR + "{barcode}/{barcode}.cluster.reads.done")
     params:
+        similarity_threshold = config["silimarity_threshold"],
         indir = OUTDIR + "{barcode}/read_bins",
         outdir = OUTDIR + "{barcode}/read_clusters"
     conda:
@@ -156,6 +157,7 @@ rule cluster_reads:
     shell:
         "mkdir -p {params.outdir}; "
         "python scripts/cluster_reads.py "
+        "--threshold {params.similarity_threshold} "
         "--indir {params.indir} "
         "--outdir {params.outdir}; "
         "rm -rf {params.indir}; "
