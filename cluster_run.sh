@@ -12,14 +12,7 @@
 module load snakemake
 module load conda
 
-snakemake -s TELSVirus_p1 --cluster "sbatch -A {cluster.account} -q {cluster.qos} \
--c {cluster.cpus-per-task} -N {cluster.Nodes} -t {cluster.runtime} \
---mem {cluster.mem} -J {cluster.jobname} --mail-type={cluster.mail_type} \
---mail-user={cluster.mail} --output {cluster.out} --error {cluster.err}" \
---cluster-config cluster.json --jobs 100 --latency-wait 20 \
---rerun-incomplete --use-conda
-
-snakemake -s TELSVirus_p2 --cluster "sbatch -A {cluster.account} -q {cluster.qos} \
+snakemake --cluster "sbatch -A {cluster.account} -q {cluster.qos} \
 -c {cluster.cpus-per-task} -N {cluster.Nodes} -t {cluster.runtime} \
 --mem {cluster.mem} -J {cluster.jobname} --mail-type={cluster.mail_type} \
 --mail-user={cluster.mail} --output {cluster.out} --error {cluster.err}" \
