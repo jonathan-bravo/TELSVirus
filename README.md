@@ -2,13 +2,6 @@
 
 ## Cleaning the data
 
-- [ ] Make sure all required outputs are in the `all_rule`
-- [ ] Convert RVHaplo viral accession to Viral Name (+ accession ?)
-- [ ] Investiagte Strainline errors
-- [ ] Investigate RVHaplo errors (exit error 0)
-- [ ] Check trimmed fastq data for **exact match** adapters
-  - Make sure the adapter pairs are together
-  - Make sure the same barcode is present and same for read from specific sample
 - [ ] Check for chimeric reads
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5600009/ -> Chimeric reads seem to appear in 1.7% of sequence even when samples are prepped separately
   - _if_ read has exact match of adapter align to viral reference
