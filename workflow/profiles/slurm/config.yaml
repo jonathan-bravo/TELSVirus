@@ -1,0 +1,44 @@
+cluster:
+  mkdir -p results/logs/ &&
+  sbatch
+    --account={resources.account}
+    --qos={resources.qos}
+    --cpus-per-task="1"
+    --nodes=1
+    --mem={resources.mem_mb}
+    --time="72:00:00"
+    --job-name={rule}
+    --mail-user=""
+    --mail-type="NONE"
+    --output="results/logs/log_{rule}_%j.log"
+    --error="results/logs/err_{rule}_%j.log"
+default-resources:
+  - mem_mb=32000
+  - account=
+  - qos=
+set-threads:
+  - blat_clustered_reads=32
+  - align_reads_to_host=32
+  - host_sam_to_bam=32
+  - remove_host_dna=10
+  - align_to_viruses=32
+  - align_to_viruses_for_stats=32
+  - viruses_sam_ot_bam=32
+  - viruses_alignment_stats=32
+  - mpileup=10
+  - align_to_target_viruses=32
+set-resources:
+  - blat_clustered_reads:mem_mb=128000
+  - align_reads_to_host:mem_mb=64000
+  - host_sam_to_bam:mem_mb=64000
+  - remove_host_dna:mem_mb=32000
+  - align_to_viruses:mem_mb=64000
+  - align_to_viruses_for_stats:mem_mb=64000
+  - viruses_sam_ot_bam:mem_mb=64000
+  - viruses_alignment_stats:mem_mb=64000
+  - mpileup:mem_mb=32000
+  - align_to_target_viruses:mem_mb=64000
+jobs: 100
+use-conda: True
+latency-wait: 20
+rerun-incomplete: True
