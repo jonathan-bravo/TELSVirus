@@ -1,4 +1,10 @@
+from snakemake.utils import min_version
+
+min_version("7.29.0")
+
+
 configfile: "config/config.yaml"
+
 
 READS = config["reads"]
 STRAIN_DB = config["strain_db"]
@@ -6,8 +12,7 @@ OUTDIR = config["output"] + config["run_id"] + "/"
 HOST_FILE = config["host_genome"]
 VIRUSES = config["viral_genomes"]
 BARCODES = [f for f in os.listdir(READS) if not f.startswith('.')]
-
-all_input = [
+ALL_INPUT = [
     OUTDIR + "on.target.stats",
     expand(OUTDIR + "{barcode}/{barcode}.reads.per.strain.samtools.idxstats", barcode = BARCODES),
     expand(OUTDIR + "{barcode}/{barcode}.pre.dedup.rl.tsv", barcode = BARCODES),
@@ -21,9 +26,11 @@ all_input = [
     expand(OUTDIR + "{barcode}/add_sample_info.done", barcode = BARCODES)
 ]
 
+
 rule all:
     input:
-        all_input
+        ALL_INPUT
+
 
 ## PREP INFO FOR TARGET STRAIN SELECTION #######################################
 rule all_virus_bed:
@@ -38,6 +45,7 @@ rule all_virus_bed:
         "cat {input}.fai | "
         "awk '{{print $1\"\t0\t\"$2}}' >  {output}; "
         "rm {input}.fai"
+
 
 if STRAIN_DB == "":
     rule gen_strain_db:
