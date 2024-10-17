@@ -3,6 +3,6 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python=3.8
+  - python=3.11
   - biopython
   - tqdm
