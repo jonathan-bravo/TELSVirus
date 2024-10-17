@@ -144,7 +144,11 @@ cd TELSVirus
 sbatch run.sh
 ```
 
-### Output
+## Test Data
+
+Will include test data in future commit - getting permissions
+
+## Output
 
 *Update with output*
 
@@ -152,12 +156,12 @@ sbatch run.sh
 | - | - |
 | file | data |
 
-### Making a Workflow DAG
+## Making a Workflow DAG
 
 ```bash
 snakemake --forceall --rulegraph | dot -Tsvg > dag.svg
 ```
 
-## Workflow DAG Image
+### Workflow DAG Image
 
 ![Workflow Image](resources/dag.svg)
