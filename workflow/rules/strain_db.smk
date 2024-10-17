@@ -7,6 +7,8 @@ rule gen_strain_db:
         email = config["email"]
     conda:
         "../envs/strain_db.yaml"
+    benchmark:
+        f"{BENCHDIR}/gen_strain_db.benchmark"
     log:
         f"{LOGDIR}/gen_strain_db_snakemake.log"
     shell:

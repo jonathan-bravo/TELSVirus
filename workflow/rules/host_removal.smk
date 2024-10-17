@@ -8,6 +8,8 @@ rule align_reads_to_host:
         "../envs/alignment.yaml"
     threads:
         32
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_ato_host.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_ato_host_snakemake.log"
     shell:
@@ -26,6 +28,8 @@ rule host_sam_to_bam:
         "../envs/alignment.yaml"
     threads:
         32
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_host_sam2bam.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_host_sam2bam_snakemake.log"
     shell:
@@ -43,6 +47,8 @@ rule remove_host_dna: # not counting supp alignments for `host.removal`
         "../envs/alignment.yaml"
     threads:
         10
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_host_removal.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_host_removal_snakemake.log"
     shell:
@@ -64,6 +70,8 @@ rule non_host_reads:
         "../envs/alignment.yaml"
     threads:
         4
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_non_host_reads.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_non_host_reads_snakemake.log"
     shell:

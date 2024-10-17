@@ -5,6 +5,8 @@ rule start_read_count:
         f"{OUTDIR}/{{sample}}.start.read.count.txt"
     conda:
         "../envs/default.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_read_counts.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_read_count_snakemake.log"
     shell:

@@ -5,6 +5,8 @@ rule host_removal_stats:
         temp(f"{OUTDIR}/host.removal.stats")
     conda:
         "../envs/alignment.yaml"
+    benchmark:
+        f"{BENCHDIR}/host_removal_stats.benchmark"
     log:
         f"{LOGDIR}/host_removal_stats_snakemake.log"
     shell:

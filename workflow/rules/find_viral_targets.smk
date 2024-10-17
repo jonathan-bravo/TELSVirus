@@ -7,6 +7,8 @@ rule mpileup:
         "../envs/alignment.yaml"
     threads:
         10
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_mpileup.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_mpileup_snakemake.log"
     shell:
@@ -27,6 +29,8 @@ rule find_viral_targets:
         email = config["email"]
     conda:
         "../envs/alignment.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_viral_targets.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_viral_targets_snakemake.log"
     shell:
@@ -53,6 +57,8 @@ rule get_viral_genomes:
         fail = f"{OUTDIR}/{{sample}}.NO.VIRAL.TARGETS"
     conda:
         "../envs/alignment.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_get_viral_genomes.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_get_viral_genomes_snakemake.log"
     shell:

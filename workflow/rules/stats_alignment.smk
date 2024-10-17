@@ -8,6 +8,8 @@ rule align_to_viruses_for_stats_no_secondary: # FIRST SIGN OF DUPES
         "../envs/alignment.yaml"
     threads:
         32
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_ato_viruses_4stats.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_ato_viruses_4stats_snakemake.log"
     shell:

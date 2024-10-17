@@ -12,6 +12,7 @@ HOST_FILE = config["host_genome"]
 VIRUSES = config["viral_genomes"]
 OUTDIR = config["output"] + config["run_id"]
 LOGDIR = f"{OUTDIR}/snakemake_logs"
+BENCHDIR = f"{OUTDIR}/snakemake_benchmarks"
 SAMPLES = [f for f in os.listdir(READS) if not f.startswith('.')]
 ALL_INPUT = [
     f"{OUTDIR}/on.target.stats",

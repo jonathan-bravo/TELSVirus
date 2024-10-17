@@ -6,6 +6,8 @@ rule reads_per_strain:
         f"{OUTDIR}/{{sample}}.reads.per.strain.tsv"
     conda:
         "../envs/alignment.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_reads_per_strain.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_reads_per_strain_snakemake.log"
     shell:
@@ -22,6 +24,8 @@ rule filter_reads_per_strain:
         f"{OUTDIR}/{{sample}}.reads.per.strain.filtered.tsv"
     conda:
         "../envs/default.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_filtered_reads_per_strain.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_filtered_reads_per_strain_snakemake.log"
     shell:

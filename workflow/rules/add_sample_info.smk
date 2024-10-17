@@ -13,6 +13,8 @@ rule add_sample_info:
         sample_id = "{sample}"
     conda:
         "../envs/default.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_add_sample_info.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_sample_info_snakemake.log"
     shell:

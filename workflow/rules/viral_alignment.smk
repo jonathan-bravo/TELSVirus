@@ -8,6 +8,8 @@ rule align_to_viruses_with_secondary:
         "../envs/alignment.yaml"
     threads:
         32
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_ato_viruses.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_ato_viruses_snakemake.log"
     shell:
@@ -32,6 +34,8 @@ rule viruses_sam_to_bam: # not counting supp alignments for `reads.per.strain`
         "../envs/alignment.yaml"
     threads:
         32
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_viral_sam2bam.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_viral_sam2bam_snakemake.log"
     shell:

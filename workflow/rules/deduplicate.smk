@@ -7,6 +7,8 @@ rule bin_reads_by_length:
         outdir = f"{OUTDIR}/{{sample}}_read_bins"
     conda:
         "../envs/deduplication.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_bin_reads.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_bin_reads_snakemake.log"
     shell:
@@ -27,6 +29,8 @@ rule cluster_reads:
         outdir = f"{OUTDIR}/{{sample}}_read_clusters"
     conda:
         "../envs/deduplication.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_cluster_reads.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_cluster_reads_snakemake.log"
     shell:
@@ -51,6 +55,8 @@ rule blat_clustered_reads:
         32
     conda:
         "../envs/deduplication.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_blat.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_blat_reads_snakemake.log"
     shell:
@@ -74,6 +80,8 @@ rule find_duplicates:
         outdir = f"{OUTDIR}/{{sample}}_duplicate_txts/"
     conda:
         "../envs/deduplication.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_find_dups.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_find_dups_snakemake.log"
     shell:
@@ -95,6 +103,8 @@ rule merge_duplicates_lists:
         indir = f"{OUTDIR}/{{sample}}_duplicate_txts"
     conda:
         "../envs/default.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_merge_dups_lists.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_merge_dup_lists_snakemake.log"
     shell:
@@ -111,6 +121,8 @@ rule deduplicate: # find reads here?
         dupes = f"{OUTDIR}/{{sample}}.dup.reads.fastq.gz"
     conda:
         "../envs/deduplication.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_dedup.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_dedup_snakemake.log"
     shell:

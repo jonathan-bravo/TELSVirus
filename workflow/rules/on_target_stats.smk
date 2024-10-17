@@ -11,6 +11,8 @@ rule viruses_alignment_stats: # not counting supp alignments for `viral.stats`
         "../envs/alignment.yaml"
     threads:
         32
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_stat_align.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_stat_align_snakemake.log"
     shell:
@@ -34,6 +36,8 @@ rule merge_viral_alignment_stats:
         temp(f"{OUTDIR}/all.viruses.stats")
     conda:
         "../envs/alignment.yaml"
+    benchmark:
+        f"{BENCHDIR}/merge_viral_stats.benchmark"
     log:
         f"{LOGDIR}/merge_viral_stats_snakemake.log"
     shell:
@@ -48,6 +52,8 @@ rule on_target_stats:
         f"{OUTDIR}/on.target.stats"
     conda:
         "../envs/alignment.yaml"
+    benchmark:
+        f"{BENCHDIR}/on_target_stats.benchmark"
     log:
         f"{LOGDIR}/on_target_stats_snakemake.log"
     shell:

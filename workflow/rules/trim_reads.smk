@@ -9,6 +9,8 @@ rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24)
         barcodes = config["barcodes"]
     conda:
         "../envs/trimming.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_trim_reads.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_trim_reads_snakemake.log"
     shell:

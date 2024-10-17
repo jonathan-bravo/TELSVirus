@@ -5,6 +5,8 @@ rule hard_trim_count:
         f"{OUTDIR}/{{sample}}.hard.trim.count.txt"
     conda:
         "../envs/default.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_hard_trim_count.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_hard_trim_count_snakemake.log"
     shell:
@@ -20,6 +22,8 @@ rule chimeric_count:
         f"{OUTDIR}/{{sample}}.chimeric.count.txt"
     conda:
         "../envs/default.yaml"
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_chimer_count.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_chimer_count_snakemake.log"
     shell:
