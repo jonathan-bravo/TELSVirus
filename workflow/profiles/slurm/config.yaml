@@ -8,14 +8,16 @@ cluster:
     --mem={resources.mem_mb}
     --time="72:00:00"
     --job-name={rule}
-    --mail-user=""
-    --mail-type="NONE"
+    --mail-user={resources.email}
+    --mail-type={resources.mail_type}
     --output="results/logs/log_{rule}_%j.log"
     --error="results/logs/err_{rule}_%j.log"
 default-resources:
   - mem_mb=32000
   - account=
   - qos=
+  - email=
+  - mail_type="NONE"
 set-threads:
   - blat_clustered_reads=32
   - align_reads_to_host=32
