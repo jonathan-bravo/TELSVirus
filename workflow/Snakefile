@@ -46,7 +46,7 @@ if STRAIN_DB == "":
 
     include: "rules/strain_db.smk"
 
-    STRAIN_DB = f"{OUTDIR}/downloaded_ref_files/strain_db.tsv"
+    STRAIN_DB = "resources/downloaded_ref_files/strain_db.tsv"
 
 
 if HOST_FILE == "":
