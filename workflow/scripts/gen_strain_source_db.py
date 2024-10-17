@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-import argparse
+from argparse import ArgumentParser
 from Bio import Entrez
 from tqdm import tqdm
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument('--infile', required=True)
     parser.add_argument('--outfile', required=True)
     parser.add_argument('--email', required=True)
