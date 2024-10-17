@@ -1,6 +1,5 @@
 .DS_Store
 .snakemake/
-data/
-test_results/
-_adapter_testing/
-_trim_test/
+resources/test/reads/
+resources/test/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz
+results/
