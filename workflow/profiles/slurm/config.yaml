@@ -23,9 +23,10 @@ set-threads:
   - align_reads_to_host=32
   - host_sam_to_bam=32
   - remove_host_dna=10
-  - align_to_viruses=32
-  - align_to_viruses_for_stats=32
-  - viruses_sam_ot_bam=32
+  - non_host_reads=4
+  - align_to_viruses_with_secondary=32
+  - align_to_viruses_for_stats_no_secondary=32
+  - viruses_sam_to_bam=32
   - viruses_alignment_stats=32
   - mpileup=10
   - align_to_target_viruses=32
@@ -34,9 +35,10 @@ set-resources:
   - align_reads_to_host:mem_mb=64000
   - host_sam_to_bam:mem_mb=64000
   - remove_host_dna:mem_mb=32000
-  - align_to_viruses:mem_mb=64000
-  - align_to_viruses_for_stats:mem_mb=64000
-  - viruses_sam_ot_bam:mem_mb=64000
+  - remove_host_dna:mem_mb=16000
+  - align_to_viruses_with_secondary:mem_mb=64000
+  - align_to_viruses_for_stats_no_secondary:mem_mb=64000
+  - viruses_sam_to_bam:mem_mb=64000
   - viruses_alignment_stats:mem_mb=64000
   - mpileup:mem_mb=32000
   - align_to_target_viruses:mem_mb=64000
