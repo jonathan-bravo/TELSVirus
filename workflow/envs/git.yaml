@@ -1,8 +1,0 @@
-name: git
-channels:
-  - defaults
-  - conda-forge
-dependencies:
-  - git
-  - wget
-  - tar
