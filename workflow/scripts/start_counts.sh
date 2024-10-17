@@ -1,4 +1,4 @@
 input=$1
 output=$2
 
-echo $(zcat ${input} | wc -l)/4 | bc > ${output}
+echo $(gzcat ${input} | wc -l)/4 | bc > ${output}
