@@ -46,7 +46,8 @@ def clip_check(read, cutoff):
 def main():
     args = parse_args()
     bamfile = pysam.AlignmentFile(args.bam, "rb")
-    removed_bam = pysam.AlignmentFile(f'{args.outfile}_REMOVED.bam', "wb", template=bamfile)
+    removed_name = args.outfile.split('.')[0]
+    removed_bam = pysam.AlignmentFile(f'{removed_name}_REMOVED.bam', "wb", template=bamfile)
     with pysam.AlignmentFile(args.outfile, "wb", template=bamfile) as outf:
         [outf.write(read) if clip_check(read, args.cutoff) else removed_bam.write(read) for read in bamfile.fetch()]
     removed_bam.close()

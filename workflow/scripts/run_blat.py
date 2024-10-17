@@ -18,7 +18,7 @@ def get_out_list(outdir, l):
     return [outdir] * l
 
 def run_blat(cluster, outdir):
-    cluster_id = cluster.split('/')[-1].split('.rl.clusters.fasta.gz')[0]
+    cluster_id = cluster.split('/')[-1].split('_rl_clusters.fasta.gz')[0]
     system(f'blat -fastMap {cluster} {cluster} {outdir}{cluster_id}.psl')
 
 def thread(threads, rc, out_list):

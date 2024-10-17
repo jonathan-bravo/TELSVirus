@@ -14,5 +14,5 @@ do
     --secondary=no \
     -t ${threads} \
     -a ${r} ${reads} \
-    -o ${outdir}${barcode}.aligned.${vir}.sam;
+    -o ${outdir}${barcode}_aligned_${vir}.sam;
 done

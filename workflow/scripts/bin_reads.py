@@ -16,7 +16,7 @@ def gen_read_length_clusters(reads, outdir):
         seq_len = len(seq.strip())
         next(reads) # desc
         next(reads) # qual
-        outfile = f'{outdir}/{seq_len}.rl.bins.fasta.gz'
+        outfile = f'{outdir}/{seq_len}_rl_bins.fasta.gz'
         with gzip.open(outfile, "a") as o:
             o.write(b'>' + read_id + b'\n')
             o.write(seq)

@@ -11,5 +11,5 @@ do
     python workflow/scripts/find_duplicates.py \
     -p $f \
     -s ${threshold} \
-    -o ${outdir}${cluster}.dupes.txt;
+    -o ${outdir}${cluster}_dupes.txt;
 done
