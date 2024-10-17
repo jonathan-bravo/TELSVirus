@@ -1,8 +1,8 @@
 rule bin_reads_by_length:
     input:
-        f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
+        f"{OUTDIR}/{{sample}}_trimmed.fastq.gz",
     output:
-        touch(f"{OUTDIR}/{{sample}}.bin.reads.done"),
+        touch(f"{OUTDIR}/{{sample}}_bin_reads.done"),
     params:
         outdir=f"{OUTDIR}/{{sample}}_read_bins",
     conda:
@@ -20,9 +20,9 @@ rule bin_reads_by_length:
 
 rule cluster_reads:
     input:
-        f"{OUTDIR}/{{sample}}.bin.reads.done",
+        f"{OUTDIR}/{{sample}}_bin_reads.done",
     output:
-        touch(f"{OUTDIR}/{{sample}}.cluster.reads.done"),
+        touch(f"{OUTDIR}/{{sample}}_cluster_reads.done"),
     params:
         similarity_threshold=config["silimarity_threshold"],
         indir=f"{OUTDIR}/{{sample}}_read_bins",
@@ -45,9 +45,9 @@ rule cluster_reads:
 
 rule blat_clustered_reads:
     input:
-        f"{OUTDIR}/{{sample}}.cluster.reads.done",
+        f"{OUTDIR}/{{sample}}_cluster_reads.done",
     output:
-        touch(f"{OUTDIR}/{{sample}}.blat.done"),
+        touch(f"{OUTDIR}/{{sample}}_blat.done"),
     params:
         rc=f"{OUTDIR}/{{sample}}_read_clusters/",
         o=f"{OUTDIR}/{{sample}}_psl_files/",
@@ -70,9 +70,9 @@ rule blat_clustered_reads:
 
 rule find_duplicates:
     input:
-        f"{OUTDIR}/{{sample}}.blat.done",
+        f"{OUTDIR}/{{sample}}_blat.done",
     output:
-        touch(f"{OUTDIR}/{{sample}}.find.duplcates.done"),
+        touch(f"{OUTDIR}/{{sample}}_find_duplcates.done"),
     params:
         similarity_threshold=SIMILARITY,
         pls_dir=f"{OUTDIR}/{{sample}}_psl_files/",
@@ -95,7 +95,7 @@ rule find_duplicates:
 
 rule merge_duplicates_lists:
     input:
-        f"{OUTDIR}/{{sample}}.find.duplcates.done",
+        f"{OUTDIR}/{{sample}}_find_duplcates.done",
     output:
         f"{OUTDIR}/{{sample}}_duplicates.txt",
     params:
@@ -113,11 +113,11 @@ rule merge_duplicates_lists:
 
 rule deduplicate:
     input:
-        reads=f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
+        reads=f"{OUTDIR}/{{sample}}_trimmed.fastq.gz",
         duplicates_list=f"{OUTDIR}/{{sample}}_duplicates.txt",
     output:
-        reads=f"{OUTDIR}/{{sample}}.dedup.fastq.gz",
-        dupes=f"{OUTDIR}/{{sample}}.dup.reads.fastq.gz",
+        reads=f"{OUTDIR}/{{sample}}_dedup.fastq.gz",
+        dupes=f"{OUTDIR}/{{sample}}_dup_reads.fastq.gz",
     conda:
         "../envs/deduplication.yaml"
     benchmark:

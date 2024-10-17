@@ -1,8 +1,8 @@
 rule host_removal_stats:
     input:
-        expand(f"{OUTDIR}/{{sample}}.remove.host.samtools.idxstats", sample=SAMPLES),
+        expand(f"{OUTDIR}/{{sample}}_remove_host_samtools.idxstats", sample=SAMPLES),
     output:
-        temp(f"{OUTDIR}/host.removal.stats"),
+        temp(f"{OUTDIR}/host_removal_stats.tsv"),
     conda:
         "../envs/alignment.yaml"
     benchmark:

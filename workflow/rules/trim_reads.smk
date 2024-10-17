@@ -1,9 +1,9 @@
 rule trim_reads:
     input:
-        f"{OUTDIR}/{{sample}}.concat.fastq.gz",
+        f"{OUTDIR}/{{sample}}_concat.fastq.gz",
     output:
-        logfile=f"{OUTDIR}/{{sample}}.trimmed.log",
-        trimmed_reads=f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
+        logfile=f"{OUTDIR}/{{sample}}_trimmed.log",
+        trimmed_reads=f"{OUTDIR}/{{sample}}_trimmed.fastq.gz",
     params:
         crop=CROPLEN,
         barcodes=BARCODES,

@@ -23,16 +23,16 @@ LOGDIR = f"{OUTDIR}/snakemake_logs"
 BENCHDIR = f"{OUTDIR}/snakemake_benchmarks"
 SAMPLES = [f for f in os.listdir(READS) if not f.startswith(".")]
 ALL_INPUT = [
-    f"{OUTDIR}/on.target.stats",
-    expand(f"{OUTDIR}/{{sample}}.reads.per.strain.samtools.idxstats", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.pre.dedup.rl.tsv", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.post.dedup.rl.tsv", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.reads.per.strain.filtered.tsv", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.start.read.count.txt", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.hard.trim.count.txt", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.chimeric.count.txt", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.viral.targets.log", sample=SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.viral.target.genomes.fasta", sample=SAMPLES),
+    f"{OUTDIR}/on_target_stats.tsv",
+    expand(f"{OUTDIR}/{{sample}}_reads_per_strain_samtools.idxstats", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_pre_dedup_rl.tsv", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_post_dedup_rl.tsv", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_reads_per_strain_filtered.tsv", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_start_read_count.txt", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_hard_trim_count.txt", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_chimeric_count.txt", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_viral_targets.log", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_viral_target_genomes.fasta", sample=SAMPLES),
     expand(f"{OUTDIR}/{{sample}}_add_sample_info.done", sample=SAMPLES),
 ]
 

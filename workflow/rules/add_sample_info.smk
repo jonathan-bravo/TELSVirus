@@ -1,11 +1,11 @@
 rule add_sample_info:
     input:
-        f"{OUTDIR}/{{sample}}.pre.dedup.rl.tsv",
-        f"{OUTDIR}/{{sample}}.post.dedup.rl.tsv",
-        f"{OUTDIR}/{{sample}}.reads.per.strain.tsv",
-        f"{OUTDIR}/{{sample}}.reads.per.strain.filtered.tsv",
-        f"{OUTDIR}/{{sample}}.viral.targets.log",
-        f"{OUTDIR}/{{sample}}.selected.viral.targets.log",
+        f"{OUTDIR}/{{sample}}_pre_dedup_rl.tsv",
+        f"{OUTDIR}/{{sample}}_post_dedup_rl.tsv",
+        f"{OUTDIR}/{{sample}}_reads_per_strain.tsv",
+        f"{OUTDIR}/{{sample}}_reads_per_strain_filtered.tsv",
+        f"{OUTDIR}/{{sample}}_viral_targets.log",
+        f"{OUTDIR}/{{sample}}_selected_viral_targets.log",
     output:
         touch(f"{OUTDIR}/{{sample}}_add_sample_info.done"),
     params:

@@ -1,9 +1,9 @@
 rule reads_per_strain:
     input:
-        stats=f"{OUTDIR}/{{sample}}.reads.per.strain.samtools.idxstats",
+        stats=f"{OUTDIR}/{{sample}}_reads_per_strain_samtools.idxstats",
         strain_db=STRAIN_DB,
     output:
-        f"{OUTDIR}/{{sample}}.reads.per.strain.tsv",
+        f"{OUTDIR}/{{sample}}_reads_per_strain.tsv",
     conda:
         "../envs/alignment.yaml"
     benchmark:
@@ -19,9 +19,9 @@ rule reads_per_strain:
 
 rule filter_reads_per_strain:
     input:
-        f"{OUTDIR}/{{sample}}.reads.per.strain.tsv",
+        f"{OUTDIR}/{{sample}}_reads_per_strain.tsv",
     output:
-        f"{OUTDIR}/{{sample}}.reads.per.strain.filtered.tsv",
+        f"{OUTDIR}/{{sample}}_reads_per_strain_filtered.tsv",
     conda:
         "../envs/default.yaml"
     benchmark:

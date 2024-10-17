@@ -1,8 +1,8 @@
 rule pre_dedup_read_lengths:
     input:
-        f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
+        f"{OUTDIR}/{{sample}}_trimmed.fastq.gz",
     output:
-        f"{OUTDIR}/{{sample}}.pre.dedup.rl.tsv",
+        f"{OUTDIR}/{{sample}}_pre_dedup_rl.tsv",
     conda:
         "../envs/deduplication.yaml"
     benchmark:
@@ -17,9 +17,9 @@ rule pre_dedup_read_lengths:
 
 rule post_dedup_read_lengths:
     input:
-        f"{OUTDIR}/{{sample}}.dedup.fastq.gz",
+        f"{OUTDIR}/{{sample}}_dedup.fastq.gz",
     output:
-        f"{OUTDIR}/{{sample}}.post.dedup.rl.tsv",
+        f"{OUTDIR}/{{sample}}_post_dedup_rl.tsv",
     conda:
         "../envs/deduplication.yaml"
     benchmark:

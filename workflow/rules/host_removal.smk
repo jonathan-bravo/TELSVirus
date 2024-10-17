@@ -1,9 +1,9 @@
 rule align_reads_to_host:
     input:
         host=HOST_FILE,
-        samples=f"{OUTDIR}/{{sample}}.dedup.fastq.gz",
+        samples=f"{OUTDIR}/{{sample}}_dedup.fastq.gz",
     output:
-        temp(f"{OUTDIR}/{{sample}}.host.sam"),
+        temp(f"{OUTDIR}/{{sample}}_host.sam"),
     conda:
         "../envs/alignment.yaml"
     threads: 32
@@ -20,9 +20,9 @@ rule align_reads_to_host:
 
 rule host_sam_to_bam:
     input:
-        f"{OUTDIR}/{{sample}}.host.sam",
+        f"{OUTDIR}/{{sample}}_host.sam",
     output:
-        temp(f"{OUTDIR}/{{sample}}.host.sorted.bam"),
+        temp(f"{OUTDIR}/{{sample}}_host_sorted.bam"),
     conda:
         "../envs/alignment.yaml"
     threads: 32
@@ -37,10 +37,10 @@ rule host_sam_to_bam:
 
 rule remove_host_dna:
     input:
-        f"{OUTDIR}/{{sample}}.host.sorted.bam",
+        f"{OUTDIR}/{{sample}}_host_sorted.bam",
     output:
-        idx=temp(f"{OUTDIR}/{{sample}}.remove.host.samtools.idxstats"),
-        bam=temp(f"{OUTDIR}/{{sample}}.host.removed.sorted.bam"),
+        idx=temp(f"{OUTDIR}/{{sample}}_remove_host_samtools.idxstats"),
+        bam=temp(f"{OUTDIR}/{{sample}}_host_removed_sorted.bam"),
     conda:
         "../envs/alignment.yaml"
     threads: 10
@@ -58,9 +58,9 @@ rule remove_host_dna:
 
 rule non_host_reads:
     input:
-        f"{OUTDIR}/{{sample}}.host.removed.sorted.bam",
+        f"{OUTDIR}/{{sample}}_host_removed_sorted.bam",
     output:
-        f"{OUTDIR}/{{sample}}.non.host.fastq.gz",
+        f"{OUTDIR}/{{sample}}_non_host.fastq.gz",
     conda:
         "../envs/alignment.yaml"
     threads: 4

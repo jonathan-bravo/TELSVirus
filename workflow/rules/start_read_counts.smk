@@ -1,8 +1,8 @@
 rule start_read_count:
     input:
-        f"{OUTDIR}/{{sample}}.concat.fastq.gz",
+        f"{OUTDIR}/{{sample}}_concat.fastq.gz",
     output:
-        f"{OUTDIR}/{{sample}}.start.read.count.txt",
+        f"{OUTDIR}/{{sample}}_start_read_count.txt",
     conda:
         "../envs/default.yaml"
     benchmark:

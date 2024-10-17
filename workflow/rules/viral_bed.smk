@@ -2,7 +2,7 @@ rule viral_bed:
     input:
         VIRUSES,
     output:
-        temp(f"{OUTDIR}/all.viral.targets.bed"),
+        temp(f"{OUTDIR}/all_viral_targets.bed"),
     conda:
         "../envs/alignment.yaml"
     benchmark:

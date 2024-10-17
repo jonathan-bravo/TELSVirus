@@ -1,9 +1,9 @@
 rule align_to_viruses_for_stats_no_secondary:
     input:
         viruses=VIRUSES,
-        samples=f"{OUTDIR}/{{sample}}.non.host.fastq.gz",
+        samples=f"{OUTDIR}/{{sample}}_non_host.fastq.gz",
     output:
-        temp(f"{OUTDIR}/{{sample}}.stats.viruses.sam"),
+        temp(f"{OUTDIR}/{{sample}}_stats_viruses.sam"),
     conda:
         "../envs/alignment.yaml"
     threads: 32

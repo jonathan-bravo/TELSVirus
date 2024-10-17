@@ -1,12 +1,12 @@
 rule viruses_alignment_stats:
     input:
-        f"{OUTDIR}/{{sample}}.stats.viruses.sam",
+        f"{OUTDIR}/{{sample}}_stats_viruses.sam",
     output:
-        temp(f"{OUTDIR}/{{sample}}.all.viruses.samtools.idxstats"),
+        temp(f"{OUTDIR}/{{sample}}_all_viruses_samtools.idxstats"),
     params:
-        cutoff=config["sftclp_cutoff"],
-        bam=f"{OUTDIR}/{{sample}}.stats.viruses.sorted.bam",
-        sftbam=f"{OUTDIR}/{{sample}}.stats.viruses.sorted.sftclp.bam",
+        cutoff=CUTOFF,
+        bam=f"{OUTDIR}/{{sample}}_stats_viruses_sorted.bam",
+        sftbam=f"{OUTDIR}/{{sample}}_stats_viruses_sorted_sftclp.bam",
     conda:
         "../envs/alignment.yaml"
     threads: 32
@@ -30,9 +30,9 @@ rule viruses_alignment_stats:
 
 rule merge_viral_alignment_stats:
     input:
-        expand(f"{OUTDIR}/{{sample}}.all.viruses.samtools.idxstats", sample=SAMPLES),
+        expand(f"{OUTDIR}/{{sample}}_all_viruses_samtools.idxstats", sample=SAMPLES),
     output:
-        temp(f"{OUTDIR}/all.viruses.stats"),
+        temp(f"{OUTDIR}/all_viruses_stats.tsv"),
     conda:
         "../envs/alignment.yaml"
     benchmark:
@@ -45,10 +45,10 @@ rule merge_viral_alignment_stats:
 
 rule on_target_stats:
     input:
-        viral_stats=f"{OUTDIR}/all.viruses.stats",
-        host_stats=f"{OUTDIR}/host.removal.stats",
+        viral_stats=f"{OUTDIR}/all_viruses_stats.tsv",
+        host_stats=f"{OUTDIR}/host_removal_stats.tsv",
     output:
-        f"{OUTDIR}/on.target.stats",
+        f"{OUTDIR}/on_target_stats.tsv",
     conda:
         "../envs/alignment.yaml"
     benchmark:

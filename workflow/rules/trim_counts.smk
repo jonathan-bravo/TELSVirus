@@ -1,8 +1,8 @@
 rule hard_trim_count:
     input:
-        f"{OUTDIR}/{{sample}}.trimmed.log",
+        f"{OUTDIR}/{{sample}}_trimmed.log",
     output:
-        f"{OUTDIR}/{{sample}}.hard.trim.count.txt",
+        f"{OUTDIR}/{{sample}}_hard_trim_count.txt",
     conda:
         "../envs/default.yaml"
     benchmark:
@@ -17,9 +17,9 @@ rule hard_trim_count:
 
 rule chimeric_count:
     input:
-        f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
+        f"{OUTDIR}/{{sample}}_trimmed.fastq.gz",
     output:
-        f"{OUTDIR}/{{sample}}.chimeric.count.txt",
+        f"{OUTDIR}/{{sample}}_chimeric_count.txt",
     conda:
         "../envs/default.yaml"
     benchmark:

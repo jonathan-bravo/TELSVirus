@@ -1,6 +1,6 @@
 rule mpileup:
     input:
-        f"{OUTDIR}/{{sample}}.viruses.sorted.sftclp.bam",
+        f"{OUTDIR}/{{sample}}_viruses_sorted_sftclp.bam",
     output:
         f"{OUTDIR}/{{sample}}.mpileup",
     conda:
@@ -18,12 +18,12 @@ rule mpileup:
 rule find_viral_targets:
     input:
         pileup=f"{OUTDIR}/{{sample}}.mpileup",
-        all_viruses_bed=f"{OUTDIR}/all.viral.targets.bed",
+        all_viruses_bed=f"{OUTDIR}/all_viral_targets.bed",
         strain_db=STRAIN_DB,
     output:
-        bed=temp(f"{OUTDIR}/{{sample}}.viral.targets.bed"),
-        logfile=f"{OUTDIR}/{{sample}}.viral.targets.log",
-        selected_log=f"{OUTDIR}/{{sample}}.selected.viral.targets.log",
+        bed=temp(f"{OUTDIR}/{{sample}}_viral_targets.bed"),
+        logfile=f"{OUTDIR}/{{sample}}_viral_targets.log",
+        selected_log=f"{OUTDIR}/{{sample}}_selected_viral_targets.log",
     params:
         email=EMAIL,
     conda:
@@ -49,12 +49,12 @@ rule find_viral_targets:
 rule get_viral_genomes:
     input:
         fasta=VIRUSES,
-        bed=f"{OUTDIR}/{{sample}}.viral.targets.bed",
+        bed=f"{OUTDIR}/{{sample}}_viral_targets.bed",
     output:
-        f"{OUTDIR}/{{sample}}.viral.target.genomes.fasta",
+        f"{OUTDIR}/{{sample}}_viral_target_genomes.fasta",
     params:
-        succeed=f"{OUTDIR}/{{sample}}.VIRAL.TARGETS.FOUND",
-        fail=f"{OUTDIR}/{{sample}}.NO.VIRAL.TARGETS",
+        succeed=f"{OUTDIR}/{{sample}}_VIRAL_TARGETS_FOUND",
+        fail=f"{OUTDIR}/{{sample}}_NO_VIRAL_TARGETS",
     conda:
         "../envs/alignment.yaml"
     benchmark:

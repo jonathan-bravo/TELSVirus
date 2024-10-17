@@ -1,9 +1,9 @@
 rule align_to_viruses_with_secondary:
     input:
         viruses=VIRUSES,
-        samples=f"{OUTDIR}/{{sample}}.non.host.fastq.gz",
+        samples=f"{OUTDIR}/{{sample}}_non_host.fastq.gz",
     output:
-        temp(f"{OUTDIR}/{{sample}}.viruses.sam"),
+        temp(f"{OUTDIR}/{{sample}}_viruses.sam"),
     conda:
         "../envs/alignment.yaml"
     threads: 32
@@ -22,13 +22,13 @@ rule align_to_viruses_with_secondary:
 
 rule viruses_sam_to_bam:
     input:
-        f"{OUTDIR}/{{sample}}.viruses.sam",
+        f"{OUTDIR}/{{sample}}_viruses.sam",
     output:
-        bam=f"{OUTDIR}/{{sample}}.viruses.sorted.sftclp.bam",
-        idx=temp(f"{OUTDIR}/{{sample}}.reads.per.strain.samtools.idxstats"),
+        bam=f"{OUTDIR}/{{sample}}_viruses_sorted_sftclp.bam",
+        idx=temp(f"{OUTDIR}/{{sample}}_reads_per_strain_samtools.idxstats"),
     params:
         cutoff=CUTOFF,
-        tmp_bam=f"{OUTDIR}/{{sample}}.viruses.sorted.bam",
+        tmp_bam=f"{OUTDIR}/{{sample}}_viruses_sorted.bam",
     conda:
         "../envs/alignment.yaml"
     threads: 32
