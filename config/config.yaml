@@ -1,15 +1,14 @@
-email: ""
+email: "hakmonkey@gmail.com"
 run_id: "test"
-output: "test_results/"
+output: "results/"
 
-host_genome: "data/host/"
-viral_genomes: "data/viruses/"
-strain_db: ""
-reads: "data/raw/"
+host_organism: "Sus Scrofa"
+# host_genome: "resources/test/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz"
+host_genome: ""
+viral_genomes: "resources/test/allvirusgenomes_poly-a_removed_hand_edit.fasta"
+strain_db: "resources/test/strain_db.tsv"
+barcodes: "resources/test/RapidBarcode.fasta"
+reads: "resources/test/reads"
 silimarity_threshold: 0.9
 crop_len: 37
-barcodes: "data/barcodes/"
 sftclp_cutoff: 0.5
-
-rvhaplo_repo: "https://github.com/dhcai21/RVHaplo.git"
-strainline_repo: "https://github.com/HaploKit/Strainline.git"
