@@ -30,4 +30,4 @@
 
 ## Workflow Image
 
-![Workflow Image](dag.svg)
+![Workflow Image](resources/dag.svg)
