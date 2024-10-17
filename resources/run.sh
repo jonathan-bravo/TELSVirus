@@ -12,4 +12,4 @@
 module load snakemake
 module load conda
 
-snakemake --profiles profiles/slurm
+snakemake --profiles worflow/profiles/slurm
