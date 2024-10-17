@@ -1,0 +1,6 @@
+*.fasta filter=lfs diff=lfs merge=lfs -text
+*.fasta.gz filter=lfs diff=lfs merge=lfs -text
+*.fastq filter=lfs diff=lfs merge=lfs -text
+*.fastq.gz filter=lfs diff=lfs merge=lfs -text
+*.fna filter=lfs diff=lfs merge=lfs -text
+*.fna.gz filter=lfs diff=lfs merge=lfs -text
