@@ -1,17 +1,16 @@
 rule align_to_viruses_with_secondary:
     input:
-        viruses = VIRUSES,
-        samples = f"{OUTDIR}/{{sample}}.non.host.fastq.gz"
+        viruses=VIRUSES,
+        samples=f"{OUTDIR}/{{sample}}.non.host.fastq.gz",
     output:
-        temp(f"{OUTDIR}/{{sample}}.viruses.sam")
+        temp(f"{OUTDIR}/{{sample}}.viruses.sam"),
     conda:
         "../envs/alignment.yaml"
-    threads:
-        32
+    threads: 32
     benchmark:
         f"{BENCHDIR}/{{sample}}_ato_viruses.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_ato_viruses_snakemake.log"
+        f"{LOGDIR}/{{sample}}_ato_viruses_snakemake.log",
     shell:
         "minimap2 "
         "--q-occ-frac 0 "
@@ -21,23 +20,22 @@ rule align_to_viruses_with_secondary:
         "-a {input.viruses} {input.samples}"
 
 
-rule viruses_sam_to_bam: # not counting supp alignments for `reads.per.strain`
+rule viruses_sam_to_bam:
     input:
-        f"{OUTDIR}/{{sample}}.viruses.sam"
+        f"{OUTDIR}/{{sample}}.viruses.sam",
     output:
-        bam = f"{OUTDIR}/{{sample}}.viruses.sorted.sftclp.bam",
-        idx = temp(f"{OUTDIR}/{{sample}}.reads.per.strain.samtools.idxstats")
+        bam=f"{OUTDIR}/{{sample}}.viruses.sorted.sftclp.bam",
+        idx=temp(f"{OUTDIR}/{{sample}}.reads.per.strain.samtools.idxstats"),
     params:
-        cutoff = config["sftclp_cutoff"],
-        tmp_bam = f"{OUTDIR}/{{sample}}.viruses.sorted.bam"
+        cutoff=CUTOFF,
+        tmp_bam=f"{OUTDIR}/{{sample}}.viruses.sorted.bam",
     conda:
         "../envs/alignment.yaml"
-    threads:
-        32
+    threads: 32
     benchmark:
         f"{BENCHDIR}/{{sample}}_viral_sam2bam.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_viral_sam2bam_snakemake.log"
+        f"{LOGDIR}/{{sample}}_viral_sam2bam_snakemake.log",
     shell:
         "samtools view -Sb {input} | "
         "samtools sort -@ {threads} -o {params.tmp_bam}; "

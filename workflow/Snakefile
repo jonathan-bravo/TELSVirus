@@ -6,75 +6,77 @@ min_version("7.12.1")
 configfile: "config/config.yaml"
 
 
-READS = config["reads"]
-STRAIN_DB = config["strain_db"]
+EMAIL = config["email"]
+RUNID = config["run_id"]
+OUTPUT = config["output"]
+HOST = config["host_organism"]
 HOST_FILE = config["host_genome"]
 VIRUSES = config["viral_genomes"]
-OUTDIR = config["output"] + config["run_id"]
+STRAIN_DB = config["strain_db"]
+BARCODES = config["barcodes"]
+READS = config["reads"]
+SIMILARITY = config["silimarity_threshold"]
+CROPLEN = config["crop_len"]
+CUTOFF = config["sftclp_cutoff"]
+OUTDIR = OUTPUT + RUNID
 LOGDIR = f"{OUTDIR}/snakemake_logs"
 BENCHDIR = f"{OUTDIR}/snakemake_benchmarks"
-SAMPLES = [f for f in os.listdir(READS) if not f.startswith('.')]
+SAMPLES = [f for f in os.listdir(READS) if not f.startswith(".")]
 ALL_INPUT = [
     f"{OUTDIR}/on.target.stats",
-    expand(f"{OUTDIR}/{{sample}}.reads.per.strain.samtools.idxstats", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.pre.dedup.rl.tsv", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.post.dedup.rl.tsv", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.reads.per.strain.filtered.tsv", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.start.read.count.txt", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.hard.trim.count.txt", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.chimeric.count.txt", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.viral.targets.log", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}.viral.target.genomes.fasta", sample = SAMPLES),
-    expand(f"{OUTDIR}/{{sample}}_add_sample_info.done", sample = SAMPLES)
+    expand(f"{OUTDIR}/{{sample}}.reads.per.strain.samtools.idxstats", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.pre.dedup.rl.tsv", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.post.dedup.rl.tsv", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.reads.per.strain.filtered.tsv", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.start.read.count.txt", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.hard.trim.count.txt", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.chimeric.count.txt", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.viral.targets.log", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}.viral.target.genomes.fasta", sample=SAMPLES),
+    expand(f"{OUTDIR}/{{sample}}_add_sample_info.done", sample=SAMPLES),
 ]
 
 
 rule all:
     input:
-        ALL_INPUT
+        ALL_INPUT,
+
+
+if STRAIN_DB == "":
+
+    include: "rules/strain_db.smk"
+
+    STRAIN_DB = f"{OUTDIR}/downloaded_ref_files/strain_db.tsv"
+
+
+if HOST_FILE == "":
+
+    include: "rules/get_host_ref.smk"
+
+    HOST_FILE = "resources/downloaded_ref_files/ref_genome.fna.gz"
 
 
 include: "rules/viral_bed.smk"
-
-if STRAIN_DB == "":
-    include: "rules/strain_db.smk"
-    STRAIN_DB = f"{OUTDIR}/downloaded_ref_files/strain_db.tsv"
-
-if HOST_FILE == "":
-    include: "rules/get_host_ref.smk"
-    HOST_FILE = "resources/downloaded_ref_files/ref_genome.fna.gz"
-
 include: "rules/concat_parts.smk"
-
 include: "rules/start_read_counts.smk"
-
 include: "rules/trim_reads.smk"
-
 include: "rules/trim_counts.smk"
-
 include: "rules/deduplicate.smk"
-
 include: "rules/dup_read_lengths.smk"
-
 include: "rules/host_removal.smk"
-
 include: "rules/host_removal_stats.smk"
-
 include: "rules/stats_alignment.smk"
-
 include: "rules/on_target_stats.smk"
-
 include: "rules/viral_alignment.smk"
-
 include: "rules/reads_per_strain.smk"
-
 include: "rules/find_viral_targets.smk"
-
 include: "rules/add_sample_info.smk"
+
 
 onsuccess:
     shell(f"bash workflow/scripts/log_cleanup.sh {LOGDIR}")
 
+
 onerror:
     print("An error occurred")
-    shell(f"mail -s 'an error occurred' {config["email"]} < {{log}}")
+    shell(f"mail -s 'an error occurred' {EMAIL} < {{log}}")

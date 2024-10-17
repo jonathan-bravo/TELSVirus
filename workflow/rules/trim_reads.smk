@@ -1,18 +1,18 @@
-rule trim_reads: # want to trim nanopore (8) + UMI (5) + illumina adaptors (24) 
+rule trim_reads:
     input:
-       f"{OUTDIR}/{{sample}}.concat.fastq.gz"
+        f"{OUTDIR}/{{sample}}.concat.fastq.gz",
     output:
-        logfile = f"{OUTDIR}/{{sample}}.trimmed.log",
-        trimmed_reads = f"{OUTDIR}/{{sample}}.trimmed.fastq.gz"
+        logfile=f"{OUTDIR}/{{sample}}.trimmed.log",
+        trimmed_reads=f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
     params:
-        crop = config["crop_len"],
-        barcodes = config["barcodes"]
+        crop=CROPLEN,
+        barcodes=BARCODES,
     conda:
         "../envs/trimming.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_trim_reads.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_trim_reads_snakemake.log"
+        f"{LOGDIR}/{{sample}}_trim_reads_snakemake.log",
     shell:
         "python workflow/scripts/trim.py "
         "--infile {input} "

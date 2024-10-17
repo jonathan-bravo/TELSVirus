@@ -1,7 +1,6 @@
 email: ""
 run_id: "test"
 output: "results/"
-
 host_organism: "Sus Scrofa"
 # host_genome: "resources/test/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz"
 host_genome: ""

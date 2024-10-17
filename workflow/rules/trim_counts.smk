@@ -1,14 +1,14 @@
 rule hard_trim_count:
     input:
-        f"{OUTDIR}/{{sample}}.trimmed.log"
+        f"{OUTDIR}/{{sample}}.trimmed.log",
     output:
-        f"{OUTDIR}/{{sample}}.hard.trim.count.txt"
+        f"{OUTDIR}/{{sample}}.hard.trim.count.txt",
     conda:
         "../envs/default.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_hard_trim_count.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_hard_trim_count_snakemake.log"
+        f"{LOGDIR}/{{sample}}_hard_trim_count_snakemake.log",
     shell:
         "cat {input} | "
         "awk '{{ if ($0 ~ /short/) print }}' | "
@@ -17,15 +17,15 @@ rule hard_trim_count:
 
 rule chimeric_count:
     input:
-        f"{OUTDIR}/{{sample}}.trimmed.fastq.gz"
+        f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
     output:
-        f"{OUTDIR}/{{sample}}.chimeric.count.txt"
+        f"{OUTDIR}/{{sample}}.chimeric.count.txt",
     conda:
         "../envs/default.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_chimer_count.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_chimer_count_snakemake.log"
+        f"{LOGDIR}/{{sample}}_chimer_count_snakemake.log",
     shell:
         "gzcat {input} | "
         "awk '{{ if ($0 ~ /_A/ || $0 ~ /_B/) print $0 }}' | "

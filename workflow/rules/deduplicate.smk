@@ -1,16 +1,16 @@
 rule bin_reads_by_length:
     input:
-        f"{OUTDIR}/{{sample}}.trimmed.fastq.gz"
+        f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
     output:
-        touch(f"{OUTDIR}/{{sample}}.bin.reads.done")
+        touch(f"{OUTDIR}/{{sample}}.bin.reads.done"),
     params:
-        outdir = f"{OUTDIR}/{{sample}}_read_bins"
+        outdir=f"{OUTDIR}/{{sample}}_read_bins",
     conda:
         "../envs/deduplication.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_bin_reads.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_bin_reads_snakemake.log"
+        f"{LOGDIR}/{{sample}}_bin_reads_snakemake.log",
     shell:
         "mkdir -p {params.outdir}; "
         "python workflow/scripts/bin_reads.py "
@@ -20,19 +20,19 @@ rule bin_reads_by_length:
 
 rule cluster_reads:
     input:
-        f"{OUTDIR}/{{sample}}.bin.reads.done"
+        f"{OUTDIR}/{{sample}}.bin.reads.done",
     output:
-        touch(f"{OUTDIR}/{{sample}}.cluster.reads.done")
+        touch(f"{OUTDIR}/{{sample}}.cluster.reads.done"),
     params:
-        similarity_threshold = config["silimarity_threshold"],
-        indir = f"{OUTDIR}/{{sample}}_read_bins",
-        outdir = f"{OUTDIR}/{{sample}}_read_clusters"
+        similarity_threshold=config["silimarity_threshold"],
+        indir=f"{OUTDIR}/{{sample}}_read_bins",
+        outdir=f"{OUTDIR}/{{sample}}_read_clusters",
     conda:
         "../envs/deduplication.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_cluster_reads.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_cluster_reads_snakemake.log"
+        f"{LOGDIR}/{{sample}}_cluster_reads_snakemake.log",
     shell:
         "mkdir -p {params.outdir}; "
         "python workflow/scripts/cluster_reads.py "
@@ -45,20 +45,19 @@ rule cluster_reads:
 
 rule blat_clustered_reads:
     input:
-        f"{OUTDIR}/{{sample}}.cluster.reads.done"
+        f"{OUTDIR}/{{sample}}.cluster.reads.done",
     output:
-        touch(f"{OUTDIR}/{{sample}}.blat.done")
+        touch(f"{OUTDIR}/{{sample}}.blat.done"),
     params:
-        rc = f"{OUTDIR}/{{sample}}_read_clusters/",
-        o = f"{OUTDIR}/{{sample}}_psl_files/"
-    threads:
-        32
+        rc=f"{OUTDIR}/{{sample}}_read_clusters/",
+        o=f"{OUTDIR}/{{sample}}_psl_files/",
+    threads: 32
     conda:
         "../envs/deduplication.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_blat.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_blat_reads_snakemake.log"
+        f"{LOGDIR}/{{sample}}_blat_reads_snakemake.log",
     shell:
         "mkdir -p {params.o}; "
         "python workflow/scripts/run_blat.py "
@@ -71,19 +70,19 @@ rule blat_clustered_reads:
 
 rule find_duplicates:
     input:
-        f"{OUTDIR}/{{sample}}.blat.done"
+        f"{OUTDIR}/{{sample}}.blat.done",
     output:
-        touch(f"{OUTDIR}/{{sample}}.find.duplcates.done")
+        touch(f"{OUTDIR}/{{sample}}.find.duplcates.done"),
     params:
-        similarity_threshold = config["silimarity_threshold"],
-        pls_dir = f"{OUTDIR}/{{sample}}_psl_files/",
-        outdir = f"{OUTDIR}/{{sample}}_duplicate_txts/"
+        similarity_threshold=SIMILARITY,
+        pls_dir=f"{OUTDIR}/{{sample}}_psl_files/",
+        outdir=f"{OUTDIR}/{{sample}}_duplicate_txts/",
     conda:
         "../envs/deduplication.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_find_dups.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_find_dups_snakemake.log"
+        f"{LOGDIR}/{{sample}}_find_dups_snakemake.log",
     shell:
         "mkdir -p {params.outdir}; "
         "bash workflow/scripts/run_find_duplicates.sh "
@@ -96,35 +95,35 @@ rule find_duplicates:
 
 rule merge_duplicates_lists:
     input:
-        f"{OUTDIR}/{{sample}}.find.duplcates.done"
+        f"{OUTDIR}/{{sample}}.find.duplcates.done",
     output:
-        f"{OUTDIR}/{{sample}}_duplicates.txt"
+        f"{OUTDIR}/{{sample}}_duplicates.txt",
     params:
-        indir = f"{OUTDIR}/{{sample}}_duplicate_txts"
+        indir=f"{OUTDIR}/{{sample}}_duplicate_txts",
     conda:
         "../envs/default.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_merge_dups_lists.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_merge_dup_lists_snakemake.log"
+        f"{LOGDIR}/{{sample}}_merge_dup_lists_snakemake.log",
     shell:
         "cat {params.indir}/* > {output}; "
         "rm -rf {params.indir}"
 
 
-rule deduplicate: # find reads here?
+rule deduplicate:
     input:
-        reads = f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
-        duplicates_list = f"{OUTDIR}/{{sample}}_duplicates.txt"
+        reads=f"{OUTDIR}/{{sample}}.trimmed.fastq.gz",
+        duplicates_list=f"{OUTDIR}/{{sample}}_duplicates.txt",
     output:
-        reads = f"{OUTDIR}/{{sample}}.dedup.fastq.gz",
-        dupes = f"{OUTDIR}/{{sample}}.dup.reads.fastq.gz"
+        reads=f"{OUTDIR}/{{sample}}.dedup.fastq.gz",
+        dupes=f"{OUTDIR}/{{sample}}.dup.reads.fastq.gz",
     conda:
         "../envs/deduplication.yaml"
     benchmark:
         f"{BENCHDIR}/{{sample}}_dedup.benchmark"
     log:
-        f"{LOGDIR}/{{sample}}_dedup_snakemake.log"
+        f"{LOGDIR}/{{sample}}_dedup_snakemake.log",
     shell:
         "python workflow/scripts/deduplicate.py "
         "--reads {input.reads} "
