@@ -72,4 +72,9 @@ include: "rules/find_viral_targets.smk"
 
 include: "rules/add_sample_info.smk"
 
-onsuccess: shell(f"bash workflow/scripts/log_cleanup.sh {LOGDIR}")
+onsuccess:
+    shell(f"bash workflow/scripts/log_cleanup.sh {LOGDIR}")
+
+onerror:
+    print("An error occurred")
+    shell(f"mail -s 'an error occurred' {config["email"]} < {{log}}")
