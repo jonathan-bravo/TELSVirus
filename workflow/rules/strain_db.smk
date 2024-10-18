@@ -2,7 +2,7 @@ rule gen_strain_db:
     input:
         VIRUSES,
     output:
-        "resources/downloaded_ref_files/strain_db.tsv",
+        f"{REF_DOWNLOADS}/strain_db.tsv",
     params:
         email=config["email"],
     conda:
