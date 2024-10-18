@@ -53,7 +53,7 @@ if HOST_FILE == "":
 
     include: "rules/get_host_ref.smk"
 
-    HOST_FILE = "resources/downloaded_ref_files/ref_genome.fna.gz"
+    HOST_FILE = f"resources/downloaded_ref_files/{HOST.replace(' ', '_')}_ref_genome.fna.gz"
 
 
 include: "rules/viral_bed.smk"

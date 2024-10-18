@@ -1,6 +1,6 @@
 rule get_host_ref:
     output:
-        "resources/downloaded_ref_files/ref_genome.fna.gz",
+        f"resources/downloaded_ref_files/{HOST.replace(' ', '_')}_ref_genome.fna.gz",
     params:
         organism=HOST,
     conda:
