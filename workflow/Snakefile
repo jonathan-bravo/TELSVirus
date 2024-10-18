@@ -44,24 +44,24 @@ rule all:
         ALL_INPUT,
 
 
+if STRAIN_DB == "" and not os.path.exists(f"{REF_DOWNLOADS}/strain_db.tsv"):
+
+    include: "rules/strain_db.smk"
+
+
 if STRAIN_DB == "":
 
     STRAIN_DB = f"{REF_DOWNLOADS}/strain_db.tsv"
 
 
-if not os.path.exists(f"{REF_DOWNLOADS}/strain_db.tsv"):
+if HOST_FILE == "" and not os.path.exists(f"{REF_DOWNLOADS}/{HOST_DOWNLOAD}"):
 
-    include: "rules/strain_db.smk"
+    include: "rules/get_host_ref.smk"
 
 
 if HOST_FILE == "":
 
     HOST_FILE = f"{REF_DOWNLOADS}/{HOST_DOWNLOAD}"
-
-
-if HOST_DOWNLOAD not in [f for f in os.listdir(f"{REF_DOWNLOADS}/")]:
-
-    include: "rules/get_host_ref.smk"
 
 
 include: "rules/viral_bed.smk"
