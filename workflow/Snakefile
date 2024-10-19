@@ -65,19 +65,47 @@ if HOST_FILE == "":
 
 
 include: "rules/viral_bed.smk"
+
+
 include: "rules/concat_parts.smk"
+
+
 include: "rules/start_read_counts.smk"
+
+
 include: "rules/trim_reads.smk"
+
+
 include: "rules/trim_counts.smk"
+
+
 include: "rules/deduplicate.smk"
+
+
 include: "rules/dup_read_lengths.smk"
+
+
 include: "rules/host_removal.smk"
+
+
 include: "rules/host_removal_stats.smk"
+
+
 include: "rules/stats_alignment.smk"
+
+
 include: "rules/on_target_stats.smk"
+
+
 include: "rules/viral_alignment.smk"
+
+
 include: "rules/reads_per_strain.smk"
+
+
 include: "rules/find_viral_targets.smk"
+
+
 include: "rules/add_sample_info.smk"
 
 
