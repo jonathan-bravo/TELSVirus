@@ -4,9 +4,9 @@ channels:
   - bioconda
 dependencies:
   - python=3.8
-  - minimap2=2.24
-  - samtools=1.9
-  - bedtools=2.30.0
+  - minimap2=2.28
+  - samtools=1.21
+  - bedtools=2.31.1
   - pandas
   - pysam
   - biopython
