@@ -1,0 +1,3 @@
+[submodule "RVHaplo"]
+	path = RVHaplo
+	url = https://github.com/dhcai21/RVHaplo.git
