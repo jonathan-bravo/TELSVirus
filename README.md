@@ -166,13 +166,3 @@ A negative and positive sample are included in `resources/test/reads/`.
 | `{sample}_viruses_sorted_sftclp.bam` | The alignment files used for determing all viral targets. |
 | `{sample}_viruses_sorted_sftclp.bam.bai` | The index file of `{sample}_viruses_sorted_sftclp.bam`. |
 | `{sample}.mpileup` | Pileup file generated for determining viral targets horizontal coverage and mean depth. |
-
-## Making a Workflow DAG
-
-```bash
-snakemake --forceall --rulegraph | dot -Tsvg > dag.svg
-```
-
-### Workflow DAG Image
-
-![Workflow Image](resources/dag.svg)
