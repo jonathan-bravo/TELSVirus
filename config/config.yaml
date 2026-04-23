@@ -1,12 +1,12 @@
-email: "jonathan.bravo@ufl.edu"
-run_id: "telsvirus_biosamples"
+email: ""
+run_id: "test"
 output: "results/"
 host_organism: "Sus Scrofa"
 host_genome: ""
 viral_genomes: "resources/test/allvirusgenomes_poly-a_removed_hand_edit.fasta"
 strain_db: "resources/test/strain_db.tsv"
 barcodes: "resources/test/RapidBarcode.fasta"
-reads: "telsvirus_biosamples/reads"
+reads: "resources/test/reads"
 silimarity_threshold: 0.9
 crop_len: 37
 sftclp_cutoff: 0.5
