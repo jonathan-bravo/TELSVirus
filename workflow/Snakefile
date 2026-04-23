@@ -20,6 +20,7 @@ READS = config["reads"]
 SIMILARITY = config["silimarity_threshold"]
 CROPLEN = config["crop_len"]
 CUTOFF = config["sftclp_cutoff"]
+REF_LENGTH_LIMIT = config["ref_length_limit"]
 OUTDIR = OUTPUT + RUNID
 LOGDIR = f"{OUTDIR}/snakemake_logs"
 BENCHDIR = f"{OUTDIR}/snakemake_benchmarks"
@@ -786,7 +787,8 @@ rule run_rvhaplo:
         sample="{sample}",
         vir_indir=f"{OUTDIR}/{{sample}}_viral_refs/",
         sam_indir=f"{OUTDIR}/{{sample}}_target_aligned/",
-        outdir=f"{OUTDIR}/{{sample}}_rvhaplo_out/"
+        outdir=f"{OUTDIR}/{{sample}}_rvhaplo_out/",
+        ref_length_limit=REF_LENGTH_LIMIT,
     conda:
         "envs/rvhaplo.yaml"
     threads: 32
@@ -800,7 +802,8 @@ rule run_rvhaplo:
         "{params.vir_indir} "
         "{params.sam_indir} "
         "{params.sample} "
-        "{threads}"
+        "{threads} "
+        "{params.ref_length_limit}"
 
 
 rule parse_rvhaplo_out:
