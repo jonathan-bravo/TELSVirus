@@ -7,7 +7,8 @@ viral_genomes: "resources/test/allvirusgenomes_poly-a_removed_hand_edit.fasta"
 strain_db: "resources/test/strain_db.tsv"
 barcodes: "resources/test/RapidBarcode.fasta"
 reads: "resources/test/reads"
-silimarity_threshold: 0.9
+similarity_threshold: 0.9
+blat_fast_map: true
 crop_len: 37
 sftclp_cutoff: 0.5
 ref_length_limit: 12000
