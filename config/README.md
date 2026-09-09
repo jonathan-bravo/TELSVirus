@@ -16,6 +16,7 @@ To configure this workflow, modify `config/config.yaml` according to your needs,
 | `crop_len` | 37 |
 | `sftclp_cutoff` | 0.5 |
 | `ref_length_limit` | 12000 |
+| `blat_fast_map` | true |
 
 > *NOTE: All files can exist outside of the TELSVirus directory as long as paths are correct. Alternatively files can be symbolically linked or copied to the desired location.*
 
@@ -68,7 +69,19 @@ The input data specified at `reads` should be a directory that containes many sa
 
 ## Similarity Threshold
 
-This value determines how similar two sequences have to be to eachother to be considered duplicates. If the query read (A) matches against a target read (B) at 90% and read B matches against A at 90% then one read is randomly removed from further processing.
+This threshold controls length clustering and duplicate filtering. A BLAT alignment qualifies when `matches + repMatches` covers at least this fraction of both the query and target lengths. Self-alignments are excluded. Each qualifying pair is ordered lexicographically by read ID, with the larger ID marked as a duplicate candidate; the existing pruning step resolves overlapping pairs. This is not random selection or a requirement for two directional alignments.
+
+Older configs must rename `silimarity_threshold` to `similarity_threshold`.
+
+## BLAT Fast Map
+
+`blat_fast_map: true` enables BLAT's `-fastMap` option (the workflow default). Set it to `false` for the more sensitive, potentially much slower search. Keep this setting fixed across a similarity sweep.
+
+## Runtime and Logs
+
+The local profile defaults to 16 cores. Read binning buffers sequences in memory to reduce repeated gzip writes; larger inputs therefore require more RAM. Duplicate filtering processes independent PSL files in parallel, and worker/BLAT failures stop the workflow.
+
+After successful completion, the entire run-specific `snakemake_logs` directory is deleted, including nonempty logs. Capture console output separately if needed. Benchmark files in `snakemake_benchmarks` are retained.
 
 ## Soft Clip Cutoff
 

@@ -17,7 +17,8 @@ VIRUSES = config["viral_genomes"]
 STRAIN_DB = config["strain_db"]
 BARCODES = config["barcodes"]
 READS = config["reads"]
-SIMILARITY = config["silimarity_threshold"]
+SIMILARITY = config["similarity_threshold"]
+FASTMAP = config.get("blat_fast_map", True)
 CROPLEN = config["crop_len"]
 CUTOFF = config["sftclp_cutoff"]
 REF_LENGTH_LIMIT = config["ref_length_limit"]
@@ -195,7 +196,7 @@ rule chimeric_count:
     conda:
         "envs/default.yaml"
     shell:
-        "zcat {input.fastq} | "
+        "gzip -dc {input.fastq:q} | "
         "awk '{{ if ($0 ~ /_A/ || $0 ~ /_B/) print $0 }}' | "
         "wc -l > {output.counts}"
 
@@ -233,7 +234,7 @@ rule cluster_reads:
     conda:
         "envs/deduplication.yaml"
     params:
-        similarity_threshold=config["silimarity_threshold"],
+        similarity_threshold=SIMILARITY,
         indir=f"{OUTDIR}/{{sample}}_read_bins",
         outdir=f"{OUTDIR}/{{sample}}_read_clusters",
     shell:
@@ -261,12 +262,14 @@ rule blat_clustered_reads:
     params:
         rc=f"{OUTDIR}/{{sample}}_read_clusters/",
         o=f"{OUTDIR}/{{sample}}_psl_files/",
+        fast_map_flag=lambda wildcards: "--fast_map" if FASTMAP else "",
     shell:
         "mkdir -p {params.o}; "
         "python workflow/scripts/run_blat.py "
         "--outdir {params.o} "
         "--threads {threads} "
-        "--read_clusters {params.rc}; "
+        "--read_clusters {params.rc} "
+        "{params.fast_map_flag}; "
         "rm -rf {params.rc}; "
         "rm {input}"
 
@@ -282,16 +285,17 @@ rule find_duplicates:
         f"{BENCHDIR}/{{sample}}_find_dups.benchmark"
     conda:
         "envs/deduplication.yaml"
+    threads: 8
     params:
         similarity_threshold=SIMILARITY,
         pls_dir=f"{OUTDIR}/{{sample}}_psl_files/",
         outdir=f"{OUTDIR}/{{sample}}_duplicate_txts/",
     shell:
-        "mkdir -p {params.outdir}; "
-        "bash workflow/scripts/run_find_duplicates.sh "
-        "{params.outdir} "
-        "{params.pls_dir} "
-        "{params.similarity_threshold}; "
+        "python workflow/scripts/find_duplicates.py "
+        "-p {params.pls_dir} "
+        "-o {params.outdir} "
+        "-s {params.similarity_threshold} "
+        "-t {threads}; "
         "rm -rf {params.pls_dir}; "
         "rm {input}"
 
@@ -826,4 +830,4 @@ rule parse_rvhaplo_out:
 
 
 onsuccess:
-    shell(f"bash workflow/scripts/log_cleanup.sh {LOGDIR}")
+    shell("rm -rf -- {LOGDIR:q}")
