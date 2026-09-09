@@ -27,24 +27,25 @@ BENCHDIR = f"{OUTDIR}/snakemake_benchmarks"
 SAMPLES = [f for f in os.listdir(READS) if not f.startswith(".")]
 
 
-def get_samples_with_viral_targets(wildcards):                                                                             
-      """                                                                                                                    
-      Called after checkpoint get_viral_genomes completes.                                                                   
-      Returns RVHaplo output paths only for samples that found viral targets.                                                
-      """                                                                                                                    
-      # Force checkpoint evaluation for all samples                                                                          
-      for sample in SAMPLES:                                                                                                 
-          checkpoints.get_viral_genomes.get(sample=sample)                                                                   
-                                                                                                                             
-      # Check which samples have the success marker                                                                          
-      samples_with_targets = []                                                                                              
-      for sample in SAMPLES:                                                                                                 
-          marker = f"{OUTDIR}/{sample}_VIRAL_TARGETS_FOUND"                                                                  
-          if os.path.exists(marker):                                                                                         
-              samples_with_targets.append(sample)                                                                            
-                                                                                                                             
-      return expand(f"{OUTDIR}/{{sample}}_rvhaplo_results_table.tsv",                                                        
-                    sample=samples_with_targets)
+def get_samples_with_viral_targets(wildcards):
+    """
+    Called after checkpoint get_viral_genomes completes.
+    Returns RVHaplo output paths only for samples that found viral targets.
+    """
+    # Force checkpoint evaluation for all samples
+    for sample in SAMPLES:
+        checkpoints.get_viral_genomes.get(sample=sample)
+
+    # Check which samples have the success marker
+    samples_with_targets = []
+    for sample in SAMPLES:
+        marker = f"{OUTDIR}/{sample}_VIRAL_TARGETS_FOUND"
+        if os.path.exists(marker):
+            samples_with_targets.append(sample)
+
+    return expand(
+        f"{OUTDIR}/{{sample}}_rvhaplo_results_table.tsv", sample=samples_with_targets
+    )
 
 
 ALL_INPUT = [
@@ -94,12 +95,12 @@ rule viral_bed:
         viruses=VIRUSES,
     output:
         bed=temp(f"{OUTDIR}/all_viral_targets.bed"),
-    conda:
-        "envs/alignment.yaml"
-    benchmark:
-        f"{BENCHDIR}/viral_bed.benchmark"
     log:
         f"{LOGDIR}/viral_bed_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/viral_bed.benchmark"
+    conda:
+        "envs/alignment.yaml"
     shell:
         "samtools faidx {input.viruses}; "
         "cat {input.viruses}.fai | "
@@ -113,12 +114,12 @@ rule concat_parts:
         reads=f"{READS}/{{sample}}",
     output:
         fastq=temp(f"{OUTDIR}/{{sample}}_concat.fastq.gz"),
-    conda:
-        "envs/default.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_concat_parts.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_concat_parts_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_concat_parts.benchmark"
+    conda:
+        "envs/default.yaml"
     shell:
         "cat {input.reads}/* > {output.fastq}"
 
@@ -129,12 +130,12 @@ rule start_read_count:
         fastq=rules.concat_parts.output.fastq,
     output:
         counts=f"{OUTDIR}/{{sample}}_start_read_count.txt",
-    conda:
-        "envs/default.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_read_counts.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_read_count_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_read_counts.benchmark"
+    conda:
+        "envs/default.yaml"
     shell:
         "bash workflow/scripts/start_counts.sh {input.fastq} {output.counts}"
 
@@ -146,15 +147,15 @@ rule trim_reads:
     output:
         logfile=f"{OUTDIR}/{{sample}}_trimmed.log",
         trimmed_reads=f"{OUTDIR}/{{sample}}_trimmed.fastq.gz",
+    log:
+        f"{LOGDIR}/{{sample}}_trim_reads_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_trim_reads.benchmark"
+    conda:
+        "envs/trimming.yaml"
     params:
         crop=CROPLEN,
         barcodes=BARCODES,
-    conda:
-        "envs/trimming.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_trim_reads.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_trim_reads_snakemake.log",
     shell:
         "python workflow/scripts/trim.py "
         "--infile {input.fastq} "
@@ -170,12 +171,12 @@ rule hard_trim_count:
         log=rules.trim_reads.output.logfile,
     output:
         counts=f"{OUTDIR}/{{sample}}_hard_trim_count.txt",
-    conda:
-        "envs/default.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_hard_trim_count.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_hard_trim_count_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_hard_trim_count.benchmark"
+    conda:
+        "envs/default.yaml"
     shell:
         "cat {input.log} | "
         "awk '{{ if ($0 ~ /short/) print }}' | "
@@ -187,12 +188,12 @@ rule chimeric_count:
         fastq=rules.trim_reads.output.trimmed_reads,
     output:
         counts=f"{OUTDIR}/{{sample}}_chimeric_count.txt",
-    conda:
-        "envs/default.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_chimer_count.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_chimer_count_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_chimer_count.benchmark"
+    conda:
+        "envs/default.yaml"
     shell:
         "zcat {input.fastq} | "
         "awk '{{ if ($0 ~ /_A/ || $0 ~ /_B/) print $0 }}' | "
@@ -205,14 +206,14 @@ rule bin_reads_by_length:
         fastq=rules.trim_reads.output.trimmed_reads,
     output:
         flag=touch(f"{OUTDIR}/{{sample}}_bin_reads.done"),
-    params:
-        outdir=f"{OUTDIR}/{{sample}}_read_bins",
-    conda:
-        "envs/deduplication.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_bin_reads.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_bin_reads_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_bin_reads.benchmark"
+    conda:
+        "envs/deduplication.yaml"
+    params:
+        outdir=f"{OUTDIR}/{{sample}}_read_bins",
     shell:
         "mkdir -p {params.outdir}; "
         "python workflow/scripts/bin_reads.py "
@@ -225,16 +226,16 @@ rule cluster_reads:
         flag=rules.bin_reads_by_length.output.flag,
     output:
         flag=touch(f"{OUTDIR}/{{sample}}_cluster_reads.done"),
+    log:
+        f"{LOGDIR}/{{sample}}_cluster_reads_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_cluster_reads.benchmark"
+    conda:
+        "envs/deduplication.yaml"
     params:
         similarity_threshold=config["silimarity_threshold"],
         indir=f"{OUTDIR}/{{sample}}_read_bins",
         outdir=f"{OUTDIR}/{{sample}}_read_clusters",
-    conda:
-        "envs/deduplication.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_cluster_reads.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_cluster_reads_snakemake.log",
     shell:
         "mkdir -p {params.outdir}; "
         "python workflow/scripts/cluster_reads.py "
@@ -250,16 +251,16 @@ rule blat_clustered_reads:
         flag=rules.cluster_reads.output.flag,
     output:
         flag=touch(f"{OUTDIR}/{{sample}}_blat.done"),
+    log:
+        f"{LOGDIR}/{{sample}}_blat_reads_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_blat.benchmark"
+    conda:
+        "envs/deduplication.yaml"
+    threads: 32
     params:
         rc=f"{OUTDIR}/{{sample}}_read_clusters/",
         o=f"{OUTDIR}/{{sample}}_psl_files/",
-    threads: 32
-    conda:
-        "envs/deduplication.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_blat.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_blat_reads_snakemake.log",
     shell:
         "mkdir -p {params.o}; "
         "python workflow/scripts/run_blat.py "
@@ -275,16 +276,16 @@ rule find_duplicates:
         flag=rules.blat_clustered_reads.output.flag,
     output:
         flag=touch(f"{OUTDIR}/{{sample}}_find_duplcates.done"),
+    log:
+        f"{LOGDIR}/{{sample}}_find_dups_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_find_dups.benchmark"
+    conda:
+        "envs/deduplication.yaml"
     params:
         similarity_threshold=SIMILARITY,
         pls_dir=f"{OUTDIR}/{{sample}}_psl_files/",
         outdir=f"{OUTDIR}/{{sample}}_duplicate_txts/",
-    conda:
-        "envs/deduplication.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_find_dups.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_find_dups_snakemake.log",
     shell:
         "mkdir -p {params.outdir}; "
         "bash workflow/scripts/run_find_duplicates.sh "
@@ -300,17 +301,16 @@ rule merge_duplicates_lists:
         flag=rules.find_duplicates.output.flag,
     output:
         dups=f"{OUTDIR}/{{sample}}_duplicates.txt",
-    params:
-        indir=f"{OUTDIR}/{{sample}}_duplicate_txts",
-    conda:
-        "envs/default.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_merge_dups_lists.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_merge_dup_lists_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_merge_dups_lists.benchmark"
+    conda:
+        "envs/default.yaml"
+    params:
+        indir=f"{OUTDIR}/{{sample}}_duplicate_txts",
     shell:
-        "cat {params.indir}/* > {output.dups}; "
-        "rm -rf {params.indir}"
+        "cat {params.indir}/* > {output.dups}; rm -rf {params.indir}"
 
 
 rule deduplicate:
@@ -320,12 +320,12 @@ rule deduplicate:
     output:
         reads=f"{OUTDIR}/{{sample}}_dedup.fastq.gz",
         dupes=f"{OUTDIR}/{{sample}}_dup_reads.fastq.gz",
-    conda:
-        "envs/deduplication.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_dedup.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_dedup_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_dedup.benchmark"
+    conda:
+        "envs/deduplication.yaml"
     shell:
         "python workflow/scripts/deduplicate.py "
         "--reads {input.reads} "
@@ -340,12 +340,12 @@ rule pre_dedup_read_lengths:
         fastq=rules.trim_reads.output.trimmed_reads,
     output:
         rl=f"{OUTDIR}/{{sample}}_pre_dedup_rl.tsv",
-    conda:
-        "envs/deduplication.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_pre_dedup_rl.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_pre_dedup_rl_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_pre_dedup_rl.benchmark"
+    conda:
+        "envs/deduplication.yaml"
     shell:
         "python workflow/scripts/read_lengths.py "
         "--infile {input.fastq} "
@@ -357,12 +357,12 @@ rule post_dedup_read_lengths:
         fastq=rules.deduplicate.output.reads,
     output:
         rl=f"{OUTDIR}/{{sample}}_post_dedup_rl.tsv",
-    conda:
-        "envs/deduplication.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_post_dedup_rl.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_post_dedup_rl_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_post_dedup_rl.benchmark"
+    conda:
+        "envs/deduplication.yaml"
     shell:
         "python workflow/scripts/read_lengths.py "
         "--infile {input.fastq} "
@@ -376,13 +376,13 @@ rule align_reads_to_host:
         samples=rules.deduplicate.output.reads,
     output:
         sam=temp(f"{OUTDIR}/{{sample}}_host.sam"),
+    log:
+        f"{LOGDIR}/{{sample}}_ato_host_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_ato_host.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_ato_host.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_ato_host_snakemake.log",
     shell:
         "minimap2 --secondary=no "
         "-t {threads} "
@@ -395,16 +395,15 @@ rule host_sam_to_bam:
         sam=rules.align_reads_to_host.output.sam,
     output:
         bam=temp(f"{OUTDIR}/{{sample}}_host_sorted.bam"),
+    log:
+        f"{LOGDIR}/{{sample}}_host_sam2bam_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_host_sam2bam.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_host_sam2bam.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_host_sam2bam_snakemake.log",
     shell:
-        "samtools view -Sb {input.sam} | "
-        "samtools sort -@ {threads} -o {output.bam}"
+        "samtools view -Sb {input.sam} | samtools sort -@ {threads} -o {output.bam}"
 
 
 rule remove_host_dna:
@@ -413,13 +412,13 @@ rule remove_host_dna:
     output:
         idx=temp(f"{OUTDIR}/{{sample}}_remove_host_samtools.idxstats"),
         bam=temp(f"{OUTDIR}/{{sample}}_host_removed_sorted.bam"),
+    log:
+        f"{LOGDIR}/{{sample}}_host_removal_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_host_removal.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 10
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_host_removal.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_host_removal_snakemake.log",
     shell:
         "samtools index {input.bam} && "
         "samtools view -h -F 2048 -b {input.bam} | "
@@ -433,13 +432,13 @@ rule non_host_reads:
         bam=rules.remove_host_dna.output.bam,
     output:
         fastq=f"{OUTDIR}/{{sample}}_non_host.fastq.gz",
+    log:
+        f"{LOGDIR}/{{sample}}_non_host_reads_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_non_host_reads.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 4
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_non_host_reads.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_non_host_reads_snakemake.log",
     shell:
         "samtools fastq {input.bam} | bgzip -@ {threads} -c > {output.fastq}"
 
@@ -450,12 +449,12 @@ rule host_removal_stats:
         expand(f"{OUTDIR}/{{sample}}_remove_host_samtools.idxstats", sample=SAMPLES),
     output:
         tsv=temp(f"{OUTDIR}/host_removal_stats.tsv"),
-    conda:
-        "envs/alignment.yaml"
-    benchmark:
-        f"{BENCHDIR}/host_removal_stats.benchmark"
     log:
         f"{LOGDIR}/host_removal_stats_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/host_removal_stats.benchmark"
+    conda:
+        "envs/alignment.yaml"
     shell:
         "python workflow/scripts/samtools_idxstats.py -i {input} -o {output}"
 
@@ -467,13 +466,13 @@ rule align_to_viruses_for_stats_no_secondary:
         samples=rules.non_host_reads.output.fastq,
     output:
         sam=temp(f"{OUTDIR}/{{sample}}_stats_viruses.sam"),
+    log:
+        f"{LOGDIR}/{{sample}}_ato_viruses_4stats_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_ato_viruses_4stats.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_ato_viruses_4stats.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_ato_viruses_4stats_snakemake.log",
     shell:
         "minimap2 "
         "--secondary=no "
@@ -490,17 +489,17 @@ rule viruses_alignment_stats:
         sam=rules.align_to_viruses_for_stats_no_secondary.output.sam,
     output:
         idx=temp(f"{OUTDIR}/{{sample}}_all_viruses_samtools.idxstats"),
+    log:
+        f"{LOGDIR}/{{sample}}_stat_align_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_stat_align.benchmark"
+    conda:
+        "envs/alignment.yaml"
+    threads: 32
     params:
         cutoff=CUTOFF,
         bam=f"{OUTDIR}/{{sample}}_stats_viruses_sorted.bam",
         sftbam=f"{OUTDIR}/{{sample}}_stats_viruses_sorted_sftclp.bam",
-    conda:
-        "envs/alignment.yaml"
-    threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_stat_align.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_stat_align_snakemake.log",
     shell:
         "samtools view -h -F 2048 -Sb {input.sam} | "
         "samtools sort -@ {threads} -o {params.bam}; "
@@ -520,12 +519,12 @@ rule merge_viral_alignment_stats:
         expand(f"{OUTDIR}/{{sample}}_all_viruses_samtools.idxstats", sample=SAMPLES),
     output:
         tsv=temp(f"{OUTDIR}/all_viruses_stats.tsv"),
-    conda:
-        "envs/alignment.yaml"
-    benchmark:
-        f"{BENCHDIR}/merge_viral_stats.benchmark"
     log:
         f"{LOGDIR}/merge_viral_stats_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/merge_viral_stats.benchmark"
+    conda:
+        "envs/alignment.yaml"
     shell:
         "python workflow/scripts/samtools_idxstats.py -i {input} -o {output}"
 
@@ -536,12 +535,12 @@ rule on_target_stats:
         host_stats=rules.host_removal_stats.output.tsv,
     output:
         tsv=f"{OUTDIR}/on_target_stats.tsv",
-    conda:
-        "envs/alignment.yaml"
-    benchmark:
-        f"{BENCHDIR}/on_target_stats.benchmark"
     log:
         f"{LOGDIR}/on_target_stats_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/on_target_stats.benchmark"
+    conda:
+        "envs/alignment.yaml"
     shell:
         "python workflow/scripts/merge_stats.py "
         "--host_stats {input.host_stats} "
@@ -556,13 +555,13 @@ rule align_to_viruses_with_secondary:
         samples=rules.non_host_reads.output.fastq,
     output:
         sam=temp(f"{OUTDIR}/{{sample}}_viruses.sam"),
+    log:
+        f"{LOGDIR}/{{sample}}_ato_viruses_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_ato_viruses.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_ato_viruses.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_ato_viruses_snakemake.log",
     shell:
         "minimap2 "
         "--q-occ-frac 0 "
@@ -578,16 +577,16 @@ rule viruses_sam_to_bam:
     output:
         bam=f"{OUTDIR}/{{sample}}_viruses_sorted_sftclp.bam",
         idx=temp(f"{OUTDIR}/{{sample}}_reads_per_strain_samtools.idxstats"),
-    params:
-        cutoff=CUTOFF,
-        tmp_bam=f"{OUTDIR}/{{sample}}_viruses_sorted.bam",
+    log:
+        f"{LOGDIR}/{{sample}}_viral_sam2bam_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_viral_sam2bam.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_viral_sam2bam.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_viral_sam2bam_snakemake.log",
+    params:
+        cutoff=CUTOFF,
+        tmp_bam=f"{OUTDIR}/{{sample}}_viruses_sorted.bam",
     shell:
         "samtools view -Sb {input.sam} | "
         "samtools sort -@ {threads} -o {params.tmp_bam}; "
@@ -609,12 +608,12 @@ rule reads_per_strain:
         strain_db=STRAIN_DB,
     output:
         tsv=f"{OUTDIR}/{{sample}}_reads_per_strain.tsv",
-    conda:
-        "envs/alignment.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_reads_per_strain.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_reads_per_strain_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_reads_per_strain.benchmark"
+    conda:
+        "envs/alignment.yaml"
     shell:
         "python workflow/scripts/summarize_idxstats.py "
         "--infile {input.stats} "
@@ -627,15 +626,14 @@ rule filter_reads_per_strain:
         tsv=rules.reads_per_strain.output.tsv,
     output:
         tsv=f"{OUTDIR}/{{sample}}_reads_per_strain_filtered.tsv",
-    conda:
-        "envs/default.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_filtered_reads_per_strain.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_filtered_reads_per_strain_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_filtered_reads_per_strain.benchmark"
+    conda:
+        "envs/default.yaml"
     shell:
-        "cat {input.tsv} | "
-        "awk -F'\t' '{{ if($3 > 0) print}}' > {output.tsv}"
+        "cat {input.tsv} | awk -F'\t' '{{ if($3 > 0) print}}' > {output.tsv}"
 
 
 # old `find_viral_targets.smk`
@@ -644,13 +642,13 @@ rule mpileup:
         bam=rules.viruses_sam_to_bam.output.bam,
     output:
         pileup=f"{OUTDIR}/{{sample}}.mpileup",
+    log:
+        f"{LOGDIR}/{{sample}}_mpileup_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_mpileup.benchmark"
     conda:
         "envs/alignment.yaml"
     threads: 10
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_mpileup.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_mpileup_snakemake.log",
     shell:
         "samtools mpileup --output-QNAME {input.bam} | "
         "awk '{{print $1\"\t\"$4}}' - > {output.pileup}"
@@ -665,14 +663,14 @@ rule find_viral_targets:
         bed=temp(f"{OUTDIR}/{{sample}}_viral_targets.bed"),
         logfile=f"{OUTDIR}/{{sample}}_viral_targets.log",
         selected_log=f"{OUTDIR}/{{sample}}_selected_viral_targets.log",
-    params:
-        email=EMAIL,
-    conda:
-        "envs/alignment.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_viral_targets.benchmark"
     log:
         f"{LOGDIR}/{{sample}}_viral_targets_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_viral_targets.benchmark"
+    conda:
+        "envs/alignment.yaml"
+    params:
+        email=EMAIL,
     shell:
         "python workflow/scripts/find_viral_targets.py "
         "--mpileup {input.pileup} "
@@ -693,15 +691,15 @@ checkpoint get_viral_genomes:
         bed=rules.find_viral_targets.output.bed,
     output:
         f"{OUTDIR}/{{sample}}_viral_target_genomes.fasta",
+    log:
+        f"{LOGDIR}/{{sample}}_get_viral_genomes_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_get_viral_genomes.benchmark"
+    conda:
+        "envs/alignment.yaml"
     params:
         succeed=f"{OUTDIR}/{{sample}}_VIRAL_TARGETS_FOUND",
         fail=f"{OUTDIR}/{{sample}}_NO_VIRAL_TARGETS",
-    conda:
-        "envs/alignment.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_get_viral_genomes.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_get_viral_genomes_snakemake.log",
     shell:
         "bedtools getfasta -fi {input.fasta} -bed {input.bed} -fo {output}; "
         "if grep -q . {output}; then touch {params.succeed}; else touch {params.fail}; fi"
@@ -718,15 +716,15 @@ rule add_sample_info:
         rules.find_viral_targets.output.selected_log,
     output:
         touch(f"{OUTDIR}/{{sample}}_add_sample_info.done"),
+    log:
+        f"{LOGDIR}/{{sample}}_sample_info_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_add_sample_info.benchmark"
+    conda:
+        "envs/default.yaml"
     params:
         run_id=RUNID,
         sample_id="{sample}",
-    conda:
-        "envs/default.yaml"
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_add_sample_info.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_sample_info_snakemake.log",
     shell:
         "python workflow/scripts/add_run_info.py "
         "--sample_id {params.sample_id} "
@@ -739,15 +737,15 @@ rule split_viral_genomes:
     input:
         fasta=f"{OUTDIR}/{{sample}}_viral_target_genomes.fasta",
     output:
-        flag=touch(f"{OUTDIR}/{{sample}}_viral_refs.done")
-    params:
-        outdir=f"{OUTDIR}/{{sample}}_viral_refs/"
-    conda:
-        "envs/alignment.yaml"
+        flag=touch(f"{OUTDIR}/{{sample}}_viral_refs.done"),
+    log:
+        f"{LOGDIR}/{{sample}}_split_viral_genomes_snakemake.log",
     benchmark:
         f"{BENCHDIR}/{{sample}}_split_viral_genomes.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_split_viral_genomes_snakemake.log"
+    conda:
+        "envs/alignment.yaml"
+    params:
+        outdir=f"{OUTDIR}/{{sample}}_viral_refs/",
     shell:
         "bash workflow/scripts/split_target_viruses.sh {input.fasta} {params.outdir}"
 
@@ -758,17 +756,17 @@ rule align_to_target_virus:
         reads=rules.non_host_reads.output.fastq,
     output:
         flag=touch(f"{OUTDIR}/{{sample}}_align_to_targets.done"),
+    log:
+        f"{LOGDIR}/{{sample}}_align_to_targets_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_align_to_targets.benchmark"
+    conda:
+        "envs/alignment.yaml"
+    threads: 32
     params:
         indir=f"{OUTDIR}/{{sample}}_viral_refs/",
         outdir=f"{OUTDIR}/{{sample}}_target_aligned/",
         sample="{sample}",
-    conda:
-        "envs/alignment.yaml"
-    threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_align_to_targets.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_align_to_targets_snakemake.log"
     shell:
         "bash workflow/scripts/align_to_targets.sh "
         "{params.outdir} "
@@ -783,19 +781,19 @@ rule run_rvhaplo:
         flag=rules.align_to_target_virus.output.flag,
     output:
         flag=touch(f"{OUTDIR}/{{sample}}_rvhaplo.done"),
+    log:
+        f"{LOGDIR}/{{sample}}_run_rvhaplo_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/{{sample}}_run_rvhaplo.benchmark"
+    conda:
+        "envs/rvhaplo.yaml"
+    threads: 32
     params:
         sample="{sample}",
         vir_indir=f"{OUTDIR}/{{sample}}_viral_refs/",
         sam_indir=f"{OUTDIR}/{{sample}}_target_aligned/",
         outdir=f"{OUTDIR}/{{sample}}_rvhaplo_out/",
         ref_length_limit=REF_LENGTH_LIMIT,
-    conda:
-        "envs/rvhaplo.yaml"
-    threads: 32
-    benchmark:
-        f"{BENCHDIR}/{{sample}}_run_rvhaplo.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_run_rvhaplo_snakemake.log"
     shell:
         "bash workflow/scripts/run_rvhaplo.sh "
         "{params.outdir} "
@@ -811,15 +809,15 @@ rule parse_rvhaplo_out:
         flag=rules.run_rvhaplo.output.flag,
         strain_db=STRAIN_DB,
     output:
-        tsv=f"{OUTDIR}/{{sample}}_rvhaplo_results_table.tsv"
-    params:
-        indir=f"{OUTDIR}/{{sample}}_rvhaplo_out/"
-    conda:
-        "envs/rvhaplo.yaml"
+        tsv=f"{OUTDIR}/{{sample}}_rvhaplo_results_table.tsv",
+    log:
+        f"{LOGDIR}/{{sample}}_parse_rvhaplo_snakemake.log",
     benchmark:
         f"{BENCHDIR}/{{sample}}_parse_rvhaplo.benchmark"
-    log:
-        f"{LOGDIR}/{{sample}}_parse_rvhaplo_snakemake.log"
+    conda:
+        "envs/rvhaplo.yaml"
+    params:
+        indir=f"{OUTDIR}/{{sample}}_rvhaplo_out/",
     shell:
         "python workflow/scripts/parse_rvhaplo.py "
         "--indir {params.indir} "

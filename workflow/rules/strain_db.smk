@@ -3,14 +3,14 @@ rule gen_strain_db:
         VIRUSES,
     output:
         f"{REF_DOWNLOADS}/strain_db.tsv",
-    params:
-        email=config["email"],
-    conda:
-        "../envs/strain_db.yaml"
-    benchmark:
-        f"{BENCHDIR}/gen_strain_db.benchmark"
     log:
         f"{LOGDIR}/gen_strain_db_snakemake.log",
+    benchmark:
+        f"{BENCHDIR}/gen_strain_db.benchmark"
+    conda:
+        "../envs/strain_db.yaml"
+    params:
+        email=config["email"],
     shell:
         "python workflow/scripts/gen_strain_source_db.py "
         "--infile {input} "
