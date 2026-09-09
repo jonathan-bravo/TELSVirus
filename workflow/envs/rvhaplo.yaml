@@ -1,0 +1,16 @@
+name: rvhaplo
+channels:
+  - conda-forge
+  - bioconda
+  - anaconda
+dependencies:
+  - python
+  - samtools
+  - medaka<2
+  - scipy<1.12
+  - pandas
+  - tqdm
+  - pysam
+  - mcl
+  - biopython
+  - setuptools=69.5.1

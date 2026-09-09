@@ -3,7 +3,7 @@ cluster:
   sbatch
     --account={resources.account}
     --qos={resources.qos}
-    --cpus-per-task="1"
+    --cpus-per-task={threads}
     --nodes=1
     --mem={resources.mem_mb}
     --time="72:00:00"

@@ -15,6 +15,7 @@ To configure this workflow, modify `config/config.yaml` according to your needs,
 | `similarity_threshold` | 0.9 |
 | `crop_len` | 37 |
 | `sftclp_cutoff` | 0.5 |
+| `ref_length_limit` | 12000 |
 
 > *NOTE: All files can exist outside of the TELSVirus directory as long as paths are correct. Alternatively files can be symbolically linked or copied to the desired location.*
 
@@ -72,3 +73,7 @@ This value determines how similar two sequences have to be to eachother to be co
 ## Soft Clip Cutoff
 
 This value is the percentage threshold of a read that must be soft-clipped in an alignment for that particular alignment to be removed from further processing.
+
+## Reference Length Limit
+
+This value sets the cutoff length for references to be processed through RVHaplo. The ref_length_limit can be raised to process longer references, however, compute time increases exponentially with reference length and total read count. Best practice would be to leave the default in place and process additional samples independently using the alignment outputs already produced by the pipeline.

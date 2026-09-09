@@ -1,5 +1,5 @@
-cores: 6
+cores: 8
 use-conda: True
 conda-frontend: conda
-latency-wait: 20
+latency-wait: 5
 rerun-incomplete: True
