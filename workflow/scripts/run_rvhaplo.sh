@@ -6,7 +6,6 @@ sam_indir=$3
 barcode=$4
 threads=$5
 ref_length_limit=$6
-sub_graph=1
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
@@ -44,6 +43,8 @@ do
         continue
     fi
 
+    # Partitioning is independent for each reference, not inherited from the last.
+    sub_graph=1
     if [ ${read_count} -gt 50000 ];
     then
         sub_graph=$(echo ${read_count}/25000 | bc)
@@ -59,6 +60,8 @@ do
         touch ${abs_out}/rvhaplo_${barcode}_${vir}/viral-ref-too-long.flag
         continue
     fi
+
+    echo "RVHaplo target=${vir} counted_alignments=${read_count} reference_length=${ref_length} subgraphs=${sub_graph} threads=${threads}"
 
     # Run RVHaplo from its source directory so ./src/ relative paths resolve correctly
     # old `-l 0` meaning that all values are included in clustering, default `-l 50`
