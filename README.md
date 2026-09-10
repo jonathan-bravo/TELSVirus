@@ -43,14 +43,32 @@ git clone https://github.com/jonathan-bravo/TELSVirus.git
 
 **Initialize the RVHaplo submodule:**
 
-The workflow uses [RVHaplo](https://github.com/dhcai21/RVHaplo) for viral
-haplotype reconstruction. After cloning the repository, initialize the submodule:
+The workflow uses the [TELSVirus RVHaplo compatibility fork](https://github.com/jonathan-bravo/RVHaplo)
+for viral haplotype reconstruction, based on [upstream RVHaplo](https://github.com/dhcai21/RVHaplo).
+The fork includes threadpool compatibility fixes and handles zero nucleotide
+observations in the second binomial test. These fixes are built in; TELSVirus
+no longer applies a runtime patch. The submodule pins a specific commit for
+reproducibility; see the fork README for details and the original citation.
+After cloning the repository, initialize the submodule:
 
 ```bash
 cd TELSVirus
 
 git submodule update --init --recursive
 ```
+
+For an existing clone switching from upstream RVHaplo to the fork, first stop
+any running workflow. If `git -C RVHaplo status --short` shows local runtime
+patch edits, preserve them with `git -C RVHaplo stash push` before updating.
+Do not reapply that old patch to the fork.
+
+```bash
+git submodule sync --recursive
+git submodule update --init --recursive
+```
+
+This checks out the commit recorded by TELSVirus, not the latest upstream
+commit. Do not add `--remote` for a reproducible workflow run.
 
 ### Update Config
 
@@ -64,7 +82,7 @@ if a different number of CPU cores is available on your system.
 
 | Profile | Profile Variable | Default Value |
 | - | - | - |
-| `local` | `cores` | 6 |
+| `local` | `cores` | 16 |
 | `hpc` | `cores` | 120 |
 
 **Running the workflow locally:**

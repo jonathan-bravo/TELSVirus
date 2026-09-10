@@ -10,24 +10,15 @@ sub_graph=1
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-PATCH_FILE="${REPO_ROOT}/resources/rvhaplo-threadpool.patch"
 
-# Accept only a clean application or a verified already-applied patch.
-# A failed patch must not silently leave RVHaplo running incompatible code.
-(
-    cd "${REPO_ROOT}/RVHaplo" || exit 1
-    if git apply --reverse --check "${PATCH_FILE}" 2>/dev/null; then
-        echo "RVHaplo threadpool patch already applied"
-    elif git apply "${PATCH_FILE}"; then
-        echo "Applied RVHaplo threadpool patch"
-    elif git apply --reverse --check "${PATCH_FILE}" 2>/dev/null; then
-        # Another sample may have applied the same patch concurrently.
-        echo "RVHaplo threadpool patch applied by another job"
-    else
-        echo "ERROR: Cannot apply RVHaplo threadpool patch; inspect the submodule changes." >&2
-        exit 1
-    fi
-) || exit 1
+# Compatibility fixes are built into the pinned TELSVirus RVHaplo fork.
+# Refuse stale checkouts rather than silently mixing code and environment versions.
+expected_revision=$(git -C "${REPO_ROOT}" rev-parse :RVHaplo) || exit 1
+actual_revision=$(git -C "${REPO_ROOT}/RVHaplo" rev-parse HEAD) || exit 1
+if [ "${actual_revision}" != "${expected_revision}" ]; then
+    echo "ERROR: RVHaplo checkout does not match TELSVirus. Run git submodule sync --recursive and git submodule update --init --recursive." >&2
+    exit 1
+fi
 
 mkdir -p ${outdir};
 
@@ -72,7 +63,7 @@ do
     # Run RVHaplo from its source directory so ./src/ relative paths resolve correctly
     # old `-l 0` meaning that all values are included in clustering, default `-l 50`
     ## trying default, value but will have to tune parameter depending on data 
-    (cd RVHaplo && bash rvhaplo.sh \
+    (cd "${REPO_ROOT}/RVHaplo" && bash rvhaplo.sh \
         -i "${abs_sam}" \
         -r "${abs_ref}" \
         -t ${threads} \
