@@ -1,39 +1,44 @@
 diff --git a/src/mcp_read_graph.py b/src/mcp_read_graph.py
 --- a/src/mcp_read_graph.py
 +++ b/src/mcp_read_graph.py
-@@ -5,7 +5,6 @@ import pysam
+@@ -4,8 +4,6 @@
+ import pysam
  import numpy as np
  import pickle
- import multiprocessing as mp
+-import multiprocessing as mp
 -mp.set_start_method("fork")
-
+ 
  ### load data
  file_in=sys.argv[1]
-@@ -56,7 +55,8 @@ print("Generate sequence matrix at candidate SNV sites")
-
+@@ -57,7 +55,8 @@
+ print("Generate sequence matrix at candidate SNV sites")
+ 
  query_list = [(r.get_aligned_pairs(matches_only=True),r.query_sequence,r.query_name,r.mapping_quality,ref_length,snv_sites) for r in bamfile.fetch()]
 -with concurrent.futures.ProcessPoolExecutor(thread) as executor:
 +bamfile.close()
 +with concurrent.futures.ThreadPoolExecutor(thread) as executor:
      res = list(tqdm(executor.map(call_seq_mat, query_list), total=len(query_list)))
-
-@@ -85,7 +85,7 @@ def count_acgt(para):
-
+ 
+ Map_acc = {}
+@@ -85,7 +84,7 @@
+ 
  print("Count base number at each candidate SNV site")
  query_list = [seq_mat[:,i] for i in range(len(snv_sites))]
 -with concurrent.futures.ProcessPoolExecutor(thread) as executor:
 +with concurrent.futures.ThreadPoolExecutor(thread) as executor:
      res = list(tqdm(executor.map(count_acgt, query_list), total=len(query_list)))
-
-@@ -193,7 +193,7 @@ def verify_snv_site(site_id,to_be_verified_sites=to_be_verified_sites,seq_snv_fl
+ 
+ Coun = np.array(res)
+@@ -194,7 +193,7 @@
  print("maximum conditional probability")
  query_list = [i for i in to_be_verified_sites]
-
+ 
 -with concurrent.futures.ProcessPoolExecutor(thread) as executor:
 +with concurrent.futures.ThreadPoolExecutor(thread) as executor:
          snv_max_pro = list(tqdm(executor.map(verify_snv_site, query_list), total=len(query_list)))
-
-@@ -291,7 +291,7 @@ def writeedge(index_and_file):
+ 
+ print(len(snv_max_pro))
+@@ -292,7 +291,7 @@
  if sub_graph == 1:
      file = f'{file_prefix}_reads_graph.txt'
      query_list = [[i,file] for i in range(len(index_r)-1)]
@@ -42,21 +47,42 @@ diff --git a/src/mcp_read_graph.py b/src/mcp_read_graph.py
          results = list(tqdm(executor.map(writeedge, query_list), total=len(query_list)))
  else:
      for k in range(sub_graph):
-@@ -302,7 +302,7 @@ else:
+@@ -303,7 +302,7 @@
   #           temp = query_list[-1][0]+1
   #           for i in range(temp,len(index_r)-1):
   #               query_list.append([i,file])
 -        with concurrent.futures.ProcessPoolExecutor(thread) as executor:
 +        with concurrent.futures.ThreadPoolExecutor(thread) as executor:
              results = list(tqdm(executor.map(writeedge, query_list), total=len(query_list)))
-
+ 
+ 
 diff --git a/src/two_binomial.py b/src/two_binomial.py
 --- a/src/two_binomial.py
 +++ b/src/two_binomial.py
-@@ -7,7 +7,6 @@ from scipy import stats
+@@ -5,8 +5,6 @@
  import numpy as np
- import multiprocessing as mp
+ from scipy import stats
+ import numpy as np
+-import multiprocessing as mp
 -mp.set_start_method("fork")
-
+ 
  #### input parameters
  error = float(sys.argv[1])
+@@ -35,7 +33,7 @@
+ 
+ query_list = [i for i in range(pos_length)]
+ print("first binomial test")
+-with concurrent.futures.ProcessPoolExecutor(thread) as executor:
++with concurrent.futures.ThreadPoolExecutor(thread) as executor:
+     p_values = list(tqdm(executor.map(first_binomial, query_list), total=len(query_list)))
+ 
+ 
+@@ -71,7 +69,7 @@
+     return p_value
+ 
+ print("second binomial test")
+-with concurrent.futures.ProcessPoolExecutor(thread) as executor:
++with concurrent.futures.ThreadPoolExecutor(thread) as executor:
+     p_values = list(tqdm(executor.map(second_binomial, query_list), total=len(query_list)))
+ 
+ SNV_final = []

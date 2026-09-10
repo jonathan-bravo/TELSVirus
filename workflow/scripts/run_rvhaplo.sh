@@ -12,8 +12,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 PATCH_FILE="${REPO_ROOT}/resources/rvhaplo-threadpool.patch"
 
-# Apply patch to RVHaplo submodule if not already applied
-(cd "${REPO_ROOT}/RVHaplo" && git apply --ignore-whitespace "${PATCH_FILE}" 2>/dev/null || true)
+# Accept only a clean application or a verified already-applied patch.
+# A failed patch must not silently leave RVHaplo running incompatible code.
+(
+    cd "${REPO_ROOT}/RVHaplo" || exit 1
+    if git apply --reverse --check "${PATCH_FILE}" 2>/dev/null; then
+        echo "RVHaplo threadpool patch already applied"
+    elif git apply "${PATCH_FILE}"; then
+        echo "Applied RVHaplo threadpool patch"
+    elif git apply --reverse --check "${PATCH_FILE}" 2>/dev/null; then
+        # Another sample may have applied the same patch concurrently.
+        echo "RVHaplo threadpool patch applied by another job"
+    else
+        echo "ERROR: Cannot apply RVHaplo threadpool patch; inspect the submodule changes." >&2
+        exit 1
+    fi
+) || exit 1
 
 mkdir -p ${outdir};
 

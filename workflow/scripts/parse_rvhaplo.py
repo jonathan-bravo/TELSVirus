@@ -60,7 +60,8 @@ def parse_haplotype(strain, hap, strains):
             'Strain': strain,
             'Name': get_strain_name(strain, strains),
             'Haplotype': data[1],
-            'Length': data[3],
+            # Medaka can change sequence length without updating the FASTA header.
+            'Length': len(hap.seq),
             'Abundance': data[5],
             'Reads#': data[9],
             'Depth': data[11],
