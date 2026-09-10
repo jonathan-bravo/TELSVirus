@@ -17,11 +17,11 @@ def parse_args():
 
 
 def get_read_clusters(directory):
-    return sorted(str(p.resolve()) for p in Path(directory).glob('*_rl_clusters.fasta.gz'))
+    return sorted(str(p.resolve()) for p in Path(directory).glob('*_rl_clusters.fasta'))
 
 
 def run_blat(cluster, outdir, fast_map):
-    cluster_id = Path(cluster).name.split('_rl_clusters.fasta.gz')[0]
+    cluster_id = Path(cluster).name.split('_rl_clusters.fasta')[0]
     output = Path(outdir) / f'{cluster_id}.psl'
     cmd = ['blat']
     if fast_map:

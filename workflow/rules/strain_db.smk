@@ -13,6 +13,6 @@ rule gen_strain_db:
         email=config["email"],
     shell:
         "python workflow/scripts/gen_strain_source_db.py "
-        "--infile {input} "
-        "--email {params.email} "
-        "--outfile {output}"
+        "--infile {input:q} "
+        "--email {params.email:q} "
+        "--outfile {output:q}"

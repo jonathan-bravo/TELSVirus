@@ -6,8 +6,8 @@ channels:
 dependencies:
   - python
   - samtools
-  - medaka<2
-  - scipy<1.12
+  - medaka=2.2.2
+  - scipy=1.15.3
   - pandas
   - tqdm
   - pysam

@@ -2,7 +2,10 @@
 
 import argparse
 from math import ceil
-from os import listdir, system
+from os import listdir
+from pathlib import Path
+import gzip
+import shutil
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -27,11 +30,17 @@ def get_clusters(bins, threshold):
     return clusters
 
 def cat_files(clusters, indir, outdir):
+    """Stream compressed bins into plain FASTA for BLAT (no gzip subprocesses)."""
+    Path(outdir).mkdir(parents=True, exist_ok=True)
     for cluster in clusters:
         start = cluster[0]
         end = cluster[-1]
-        files = ' '.join([f'{indir}/{x}_rl_bins.fasta.gz' for x in cluster])
-        system(f'cat {files} > {outdir}/{start}_to_{end}_rl_clusters.fasta.gz')
+        outfile = Path(outdir) / f'{start}_to_{end}_rl_clusters.fasta'
+        with outfile.open('wb') as output:
+            for length in cluster:
+                infile = Path(indir) / f'{length}_rl_bins.fasta.gz'
+                with gzip.open(infile, 'rb') as source:
+                    shutil.copyfileobj(source, output)
 
 def main():
     args = parse_args()

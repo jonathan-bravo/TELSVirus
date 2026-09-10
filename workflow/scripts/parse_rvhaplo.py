@@ -60,7 +60,8 @@ def parse_haplotype(strain, hap, strains):
             'Strain': strain,
             'Name': get_strain_name(strain, strains),
             'Haplotype': data[1],
-            'Length': data[3],
+            # Medaka can change sequence length without updating the FASTA header.
+            'Length': len(hap.seq),
             'Abundance': data[5],
             'Reads#': data[9],
             'Depth': data[11],
@@ -73,6 +74,10 @@ def parse_haplotype(strain, hap, strains):
 
 def parse_rvhaplo_out(indir, directory, strains):
     """Parse RVHaplo output directory, return list of haplotype records."""
+    # A previous run's FASTA must not turn a resource skip or failure into a result.
+    if any(exists(join(indir, directory, marker)) for marker in
+           ('rvhaplo-skipped.flag', 'rvhaplo-failed.flag')):
+        return []
     strain = directory.split('_')[-1]
     fasta_path = join(indir, directory, 'rvhaplo_haplotypes.fasta')
     haplotypes = get_haplotypes(fasta_path)

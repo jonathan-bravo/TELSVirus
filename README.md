@@ -43,8 +43,13 @@ git clone https://github.com/jonathan-bravo/TELSVirus.git
 
 **Initialize the RVHaplo submodule:**
 
-The workflow uses [RVHaplo](https://github.com/dhcai21/RVHaplo) for viral
-haplotype reconstruction. After cloning the repository, initialize the submodule:
+The workflow uses the [TELSVirus RVHaplo compatibility fork](https://github.com/jonathan-bravo/RVHaplo)
+for viral haplotype reconstruction, based on [upstream RVHaplo](https://github.com/dhcai21/RVHaplo).
+The fork includes threadpool compatibility fixes and handles zero nucleotide
+observations in the second binomial test. These fixes are built in; TELSVirus
+no longer applies a runtime patch. The submodule pins a specific commit for
+reproducibility; see the fork README for details and the original citation.
+After cloning the repository, initialize the submodule:
 
 ```bash
 cd TELSVirus
@@ -52,9 +57,38 @@ cd TELSVirus
 git submodule update --init --recursive
 ```
 
+For an existing clone switching from upstream RVHaplo to the fork, first stop
+any running workflow. If `git -C RVHaplo status --short` shows local runtime
+patch edits, preserve them with `git -C RVHaplo stash push` before updating.
+Do not reapply that old patch to the fork.
+
+```bash
+git submodule sync --recursive
+git submodule update --init --recursive
+```
+
+This checks out the commit recorded by TELSVirus, not the latest upstream
+commit. Do not add `--remote` for a reproducible workflow run.
+
 ### Update Config
 
 Instructions on updating the configuration can be found [here](config/README.md).
+
+### RVHaplo Resource Limits
+
+RVHaplo can become expensive even for short viral references. By default, each
+sample–reference pair must have at most **75,000 mapped primary alignments** and
+an **alignment-count × reference-length product of at most 1 billion**. These 
+are user-configurable limits.
+
+The defaults are provisional, informed by completed runs and an oversized target 
+that spent over nine hours in conditional SNV filtering. They are workload 
+safeguards, not guaranteed time or memory limits. Adjust them for your resources 
+and acceptable runtime; see [configuration details and calibration](config/README.md#rvhaplo-resource-cutoffs).
+
+Decisions are recorded in `{sample}_rvhaplo_out/rvhaplo_preflight.tsv`. Resource-
+skipped targets are omitted from the haplotype results table: **a skip is not
+absence of viral haplotypes**. The preflight report survives log cleanup.
 
 ### Usage on Local Desktop or Interactive HPC Run
 
@@ -64,7 +98,7 @@ if a different number of CPU cores is available on your system.
 
 | Profile | Profile Variable | Default Value |
 | - | - | - |
-| `local` | `cores` | 6 |
+| `local` | `cores` | 16 |
 | `hpc` | `cores` | 120 |
 
 **Running the workflow locally:**

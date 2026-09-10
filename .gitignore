@@ -1,4 +1,6 @@
 .DS_Store
+__pycache__/
+*.py[cod]
 .snakemake/
 resources/downloaded_ref_files/
 results/
