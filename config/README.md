@@ -80,7 +80,7 @@ Older configs must rename `silimarity_threshold` to `similarity_threshold`.
 
 ## Runtime and Logs
 
-The local profile defaults to 16 cores. Read binning buffers sequences in memory to reduce repeated gzip writes; larger inputs therefore require more RAM. Duplicate filtering processes independent PSL files in parallel, and worker/BLAT failures stop the workflow.
+The local profile defaults to 16 cores. Read binning buffers sequences in memory to reduce repeated gzip writes; larger inputs therefore require more RAM. Cluster assembly streams those compressed bins into uncompressed FASTA files, avoiding BLAT's internal gzip subprocesses. This requires more temporary disk space; the workflow removes the cluster directory after BLAT succeeds. Duplicate filtering processes independent PSL files in parallel, and worker/BLAT failures stop the workflow.
 
 After successful completion, the entire run-specific `snakemake_logs` directory is deleted, including nonempty logs. Capture console output separately if needed. Benchmark files in `snakemake_benchmarks` are retained.
 
