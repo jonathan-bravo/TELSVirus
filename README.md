@@ -195,6 +195,7 @@ A negative and positive sample are included in `resources/test/reads/`.
 | `{sample}_target_aligned/` | Directory containing SAM alignment files for each viral target. Only generated for samples with viral targets found. |
 | `{sample}_rvhaplo.done` | A flag file ensuring RVHaplo haplotype reconstruction has completed. Only generated for samples with viral targets found. |
 | `{sample}_rvhaplo_out/` | Directory containing raw RVHaplo output for each viral target. Only generated for samples with viral targets found. |
+| `{sample}_rvhaplo_out/rvhaplo_preflight.tsv` | Per-target resource decisions, including mapped primary alignment count, reference length, their product, configured limits, run/skip decision and reason, subgraph count, and allocated threads. A `run` decision means the target passed preflight, not that reconstruction succeeded; a resource skip is not a biological negative result. |
 | `{sample}_rvhaplo_results_table.tsv` | Parsed RVHaplo haplotype reconstruction results containing strain, haplotype ID, length, abundance, read count, depth, and sequence for each reconstructed haplotype. Only generated for samples with viral targets found. May be empty (headers only) if RVHaplo did not produce clusters. |
 | `{sample}_viruses_sorted_sftclp_REMOVED.bam` | Alignments that were removed from the `{sample}_viruses_sorted_sftclp.bam` for failing the soft-clip check. |
 | `{sample}_viruses_sorted_sftclp.bam` | The alignment files used for determing all viral targets. |
