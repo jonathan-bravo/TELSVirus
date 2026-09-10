@@ -74,6 +74,10 @@ def parse_haplotype(strain, hap, strains):
 
 def parse_rvhaplo_out(indir, directory, strains):
     """Parse RVHaplo output directory, return list of haplotype records."""
+    # A previous run's FASTA must not turn a resource skip or failure into a result.
+    if any(exists(join(indir, directory, marker)) for marker in
+           ('rvhaplo-skipped.flag', 'rvhaplo-failed.flag')):
+        return []
     strain = directory.split('_')[-1]
     fasta_path = join(indir, directory, 'rvhaplo_haplotypes.fasta')
     haplotypes = get_haplotypes(fasta_path)

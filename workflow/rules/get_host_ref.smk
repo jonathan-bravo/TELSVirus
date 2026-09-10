@@ -11,5 +11,5 @@ rule get_host_ref:
         organism=HOST,
     shell:
         "python workflow/scripts/get_ref.py "
-        "--organism '{params.organism}' "
-        "--outfile {output}"
+        "--organism {params.organism:q} "
+        "--outfile {output:q}"

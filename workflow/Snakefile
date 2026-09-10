@@ -21,7 +21,8 @@ SIMILARITY = config["similarity_threshold"]
 FASTMAP = config.get("blat_fast_map", True)
 CROPLEN = config["crop_len"]
 CUTOFF = config["sftclp_cutoff"]
-REF_LENGTH_LIMIT = config["ref_length_limit"]
+RVHAPLO_MAX_ALIGNMENTS = config["rvhaplo_max_alignments"]
+RVHAPLO_MAX_ALIGNMENT_BASES = config["rvhaplo_max_alignment_bases"]
 OUTDIR = OUTPUT + RUNID
 LOGDIR = f"{OUTDIR}/snakemake_logs"
 BENCHDIR = f"{OUTDIR}/snakemake_benchmarks"
@@ -103,10 +104,10 @@ rule viral_bed:
     conda:
         "envs/alignment.yaml"
     shell:
-        "samtools faidx {input.viruses}; "
-        "cat {input.viruses}.fai | "
-        "awk '{{print $1\"\t0\t\"$2}}' >  {output.bed}; "
-        "rm {input.viruses}.fai"
+        "samtools faidx {input.viruses:q}; "
+        "cat {input.viruses:q}.fai | "
+        "awk '{{print $1\"\t0\t\"$2}}' >  {output.bed:q}; "
+        "rm {input.viruses:q}.fai"
 
 
 # old `concat_parts.smk`
@@ -122,7 +123,7 @@ rule concat_parts:
     conda:
         "envs/default.yaml"
     shell:
-        "cat {input.reads}/* > {output.fastq}"
+        "cat {input.reads:q}/* > {output.fastq:q}"
 
 
 # old `start_read_counts.smk`
@@ -138,7 +139,7 @@ rule start_read_count:
     conda:
         "envs/default.yaml"
     shell:
-        "bash workflow/scripts/start_counts.sh {input.fastq} {output.counts}"
+        "bash workflow/scripts/start_counts.sh {input.fastq:q} {output.counts:q}"
 
 
 # old `trim_reads.smk`
@@ -159,10 +160,10 @@ rule trim_reads:
         barcodes=BARCODES,
     shell:
         "python workflow/scripts/trim.py "
-        "--infile {input.fastq} "
-        "--logfile {output.logfile} "
-        "--outfile {output.trimmed_reads} "
-        "--barcodes {params.barcodes} "
+        "--infile {input.fastq:q} "
+        "--logfile {output.logfile:q} "
+        "--outfile {output.trimmed_reads:q} "
+        "--barcodes {params.barcodes:q} "
         "--crop {params.crop}"
 
 
@@ -179,9 +180,9 @@ rule hard_trim_count:
     conda:
         "envs/default.yaml"
     shell:
-        "cat {input.log} | "
+        "cat {input.log:q} | "
         "awk '{{ if ($0 ~ /short/) print }}' | "
-        "wc -l > {output.counts}"
+        "wc -l > {output.counts:q}"
 
 
 rule chimeric_count:
@@ -198,7 +199,7 @@ rule chimeric_count:
     shell:
         "gzip -dc {input.fastq:q} | "
         "awk '{{ if ($0 ~ /_A/ || $0 ~ /_B/) print $0 }}' | "
-        "wc -l > {output.counts}"
+        "wc -l > {output.counts:q}"
 
 
 # old `deduplicate.smk`
@@ -216,10 +217,10 @@ rule bin_reads_by_length:
     params:
         outdir=f"{OUTDIR}/{{sample}}_read_bins",
     shell:
-        "mkdir -p {params.outdir}; "
+        "mkdir -p {params.outdir:q}; "
         "python workflow/scripts/bin_reads.py "
-        "--infile {input.fastq} "
-        "--outdir {params.outdir}"
+        "--infile {input.fastq:q} "
+        "--outdir {params.outdir:q}"
 
 
 rule cluster_reads:
@@ -238,13 +239,13 @@ rule cluster_reads:
         indir=f"{OUTDIR}/{{sample}}_read_bins",
         outdir=f"{OUTDIR}/{{sample}}_read_clusters",
     shell:
-        "mkdir -p {params.outdir}; "
+        "mkdir -p {params.outdir:q}; "
         "python workflow/scripts/cluster_reads.py "
         "--threshold {params.similarity_threshold} "
-        "--indir {params.indir} "
-        "--outdir {params.outdir}; "
-        "rm -rf {params.indir}; "
-        "rm {input}"
+        "--indir {params.indir:q} "
+        "--outdir {params.outdir:q}; "
+        "rm -rf {params.indir:q}; "
+        "rm {input:q}"
 
 
 rule blat_clustered_reads:
@@ -264,14 +265,14 @@ rule blat_clustered_reads:
         o=f"{OUTDIR}/{{sample}}_psl_files/",
         fast_map_flag=lambda wildcards: "--fast_map" if FASTMAP else "",
     shell:
-        "mkdir -p {params.o}; "
+        "mkdir -p {params.o:q}; "
         "python workflow/scripts/run_blat.py "
-        "--outdir {params.o} "
+        "--outdir {params.o:q} "
         "--threads {threads} "
-        "--read_clusters {params.rc} "
+        "--read_clusters {params.rc:q} "
         "{params.fast_map_flag}; "
-        "rm -rf {params.rc}; "
-        "rm {input}"
+        "rm -rf {params.rc:q}; "
+        "rm {input:q}"
 
 
 rule find_duplicates:
@@ -292,12 +293,12 @@ rule find_duplicates:
         outdir=f"{OUTDIR}/{{sample}}_duplicate_txts/",
     shell:
         "python workflow/scripts/find_duplicates.py "
-        "-p {params.pls_dir} "
-        "-o {params.outdir} "
+        "-p {params.pls_dir:q} "
+        "-o {params.outdir:q} "
         "-s {params.similarity_threshold} "
         "-t {threads}; "
-        "rm -rf {params.pls_dir}; "
-        "rm {input}"
+        "rm -rf {params.pls_dir:q}; "
+        "rm {input:q}"
 
 
 rule merge_duplicates_lists:
@@ -314,7 +315,7 @@ rule merge_duplicates_lists:
     params:
         indir=f"{OUTDIR}/{{sample}}_duplicate_txts",
     shell:
-        "cat {params.indir}/* > {output.dups}; rm -rf {params.indir}"
+        "cat {params.indir:q}/* > {output.dups:q}; rm -rf {params.indir:q}"
 
 
 rule deduplicate:
@@ -332,10 +333,10 @@ rule deduplicate:
         "envs/deduplication.yaml"
     shell:
         "python workflow/scripts/deduplicate.py "
-        "--reads {input.reads} "
-        "--duplicates {input.duplicates_list} "
-        "--out_reads {output.reads} "
-        "--out_dupes {output.dupes}"
+        "--reads {input.reads:q} "
+        "--duplicates {input.duplicates_list:q} "
+        "--out_reads {output.reads:q} "
+        "--out_dupes {output.dupes:q}"
 
 
 # old `dup_read_lengths.smk
@@ -352,8 +353,8 @@ rule pre_dedup_read_lengths:
         "envs/deduplication.yaml"
     shell:
         "python workflow/scripts/read_lengths.py "
-        "--infile {input.fastq} "
-        "--outfile {output.rl}"
+        "--infile {input.fastq:q} "
+        "--outfile {output.rl:q}"
 
 
 rule post_dedup_read_lengths:
@@ -369,8 +370,8 @@ rule post_dedup_read_lengths:
         "envs/deduplication.yaml"
     shell:
         "python workflow/scripts/read_lengths.py "
-        "--infile {input.fastq} "
-        "--outfile {output.rl}"
+        "--infile {input.fastq:q} "
+        "--outfile {output.rl:q}"
 
 
 # old `host_removal.smk`
@@ -390,8 +391,8 @@ rule align_reads_to_host:
     shell:
         "minimap2 --secondary=no "
         "-t {threads} "
-        "-o {output.sam} "
-        "-a {input.host} {input.samples}"
+        "-o {output.sam:q} "
+        "-a {input.host:q} {input.samples:q}"
 
 
 rule host_sam_to_bam:
@@ -407,7 +408,7 @@ rule host_sam_to_bam:
         "envs/alignment.yaml"
     threads: 32
     shell:
-        "samtools view -Sb {input.sam} | samtools sort -@ {threads} -o {output.bam}"
+        "samtools view -Sb {input.sam:q} | samtools sort -@ {threads} -o {output.bam:q}"
 
 
 rule remove_host_dna:
@@ -424,11 +425,11 @@ rule remove_host_dna:
         "envs/alignment.yaml"
     threads: 10
     shell:
-        "samtools index {input.bam} && "
-        "samtools view -h -F 2048 -b {input.bam} | "
-        "samtools idxstats - > {output.idx}; "
-        "samtools view -h -f 4 -b {input.bam} -o {output.bam}; "
-        "rm {input.bam}.bai"
+        "samtools index {input.bam:q} && "
+        "samtools view -h -F 2048 -b {input.bam:q} | "
+        "samtools idxstats - > {output.idx:q}; "
+        "samtools view -h -f 4 -b {input.bam:q} -o {output.bam:q}; "
+        "rm {input.bam:q}.bai"
 
 
 rule non_host_reads:
@@ -444,7 +445,7 @@ rule non_host_reads:
         "envs/alignment.yaml"
     threads: 4
     shell:
-        "samtools fastq {input.bam} | bgzip -@ {threads} -c > {output.fastq}"
+        "samtools fastq {input.bam:q} | bgzip -@ {threads} -c > {output.fastq:q}"
 
 
 # old `host_removal_stats.smk`
@@ -460,7 +461,7 @@ rule host_removal_stats:
     conda:
         "envs/alignment.yaml"
     shell:
-        "python workflow/scripts/samtools_idxstats.py -i {input} -o {output}"
+        "python workflow/scripts/samtools_idxstats.py -i {input:q} -o {output:q}"
 
 
 # old `stats_alignment.smk`
@@ -483,8 +484,8 @@ rule align_to_viruses_for_stats_no_secondary:
         "--q-occ-frac 0 "
         "-f 0 "
         "-t {threads} "
-        "-o {output.sam} "
-        "-a {input.viruses} {input.samples}"
+        "-o {output.sam:q} "
+        "-a {input.viruses:q} {input.samples:q}"
 
 
 # old `on_target_stats.smk`
@@ -505,17 +506,17 @@ rule viruses_alignment_stats:
         bam=f"{OUTDIR}/{{sample}}_stats_viruses_sorted.bam",
         sftbam=f"{OUTDIR}/{{sample}}_stats_viruses_sorted_sftclp.bam",
     shell:
-        "samtools view -h -F 2048 -Sb {input.sam} | "
-        "samtools sort -@ {threads} -o {params.bam}; "
-        "samtools index -@ {threads} {params.bam}; "
+        "samtools view -h -F 2048 -Sb {input.sam:q} | "
+        "samtools sort -@ {threads} -o {params.bam:q}; "
+        "samtools index -@ {threads} {params.bam:q}; "
         "python workflow/scripts/sftclipper.py "
         "--cutoff {params.cutoff} "
-        "--bam {params.bam} "
-        "--outfile {params.sftbam}; "
-        "samtools index -@ {threads} {params.sftbam}; "
-        "samtools idxstats {params.sftbam} > {output.idx}; "
-        "rm {params.bam} {params.bam}.bai; "
-        "rm {params.sftbam} {params.sftbam}.bai"
+        "--bam {params.bam:q} "
+        "--outfile {params.sftbam:q}; "
+        "samtools index -@ {threads} {params.sftbam:q}; "
+        "samtools idxstats {params.sftbam:q} > {output.idx:q}; "
+        "rm {params.bam:q} {params.bam:q}.bai; "
+        "rm {params.sftbam:q} {params.sftbam:q}.bai"
 
 
 rule merge_viral_alignment_stats:
@@ -530,7 +531,7 @@ rule merge_viral_alignment_stats:
     conda:
         "envs/alignment.yaml"
     shell:
-        "python workflow/scripts/samtools_idxstats.py -i {input} -o {output}"
+        "python workflow/scripts/samtools_idxstats.py -i {input:q} -o {output:q}"
 
 
 rule on_target_stats:
@@ -547,9 +548,9 @@ rule on_target_stats:
         "envs/alignment.yaml"
     shell:
         "python workflow/scripts/merge_stats.py "
-        "--host_stats {input.host_stats} "
-        "--viral_stats {input.viral_stats} "
-        "--outfile {output.tsv}"
+        "--host_stats {input.host_stats:q} "
+        "--viral_stats {input.viral_stats:q} "
+        "--outfile {output.tsv:q}"
 
 
 # old `viral_alignment.smk`
@@ -571,8 +572,8 @@ rule align_to_viruses_with_secondary:
         "--q-occ-frac 0 "
         "-f 0 "
         "-t {threads} "
-        "-o {output.sam} "
-        "-a {input.viruses} {input.samples}"
+        "-o {output.sam:q} "
+        "-a {input.viruses:q} {input.samples:q}"
 
 
 rule viruses_sam_to_bam:
@@ -592,17 +593,17 @@ rule viruses_sam_to_bam:
         cutoff=CUTOFF,
         tmp_bam=f"{OUTDIR}/{{sample}}_viruses_sorted.bam",
     shell:
-        "samtools view -Sb {input.sam} | "
-        "samtools sort -@ {threads} -o {params.tmp_bam}; "
-        "samtools index -@ {threads} {params.tmp_bam}; "
+        "samtools view -Sb {input.sam:q} | "
+        "samtools sort -@ {threads} -o {params.tmp_bam:q}; "
+        "samtools index -@ {threads} {params.tmp_bam:q}; "
         "python workflow/scripts/sftclipper.py "
         "--cutoff {params.cutoff} "
-        "--bam {params.tmp_bam} "
-        "--outfile {output.bam}; "
-        "samtools index -@ {threads} {output.bam}; "
-        "samtools view -h -F 2048 -b {output.bam} | "
-        "samtools idxstats - > {output.idx}; "
-        "rm {params.tmp_bam} {params.tmp_bam}.bai"
+        "--bam {params.tmp_bam:q} "
+        "--outfile {output.bam:q}; "
+        "samtools index -@ {threads} {output.bam:q}; "
+        "samtools view -h -F 2048 -b {output.bam:q} | "
+        "samtools idxstats - > {output.idx:q}; "
+        "rm {params.tmp_bam:q} {params.tmp_bam:q}.bai"
 
 
 # old `reads_per_strain.smk`
@@ -620,9 +621,9 @@ rule reads_per_strain:
         "envs/alignment.yaml"
     shell:
         "python workflow/scripts/summarize_idxstats.py "
-        "--infile {input.stats} "
-        "--strains {input.strain_db} "
-        "--outfile {output.tsv}"
+        "--infile {input.stats:q} "
+        "--strains {input.strain_db:q} "
+        "--outfile {output.tsv:q}"
 
 
 rule filter_reads_per_strain:
@@ -637,7 +638,7 @@ rule filter_reads_per_strain:
     conda:
         "envs/default.yaml"
     shell:
-        "cat {input.tsv} | awk -F'\t' '{{ if($3 > 0) print}}' > {output.tsv}"
+        "cat {input.tsv:q} | awk -F'\t' '{{ if($3 > 0) print}}' > {output.tsv:q}"
 
 
 # old `find_viral_targets.smk`
@@ -654,8 +655,8 @@ rule mpileup:
         "envs/alignment.yaml"
     threads: 10
     shell:
-        "samtools mpileup --output-QNAME {input.bam} | "
-        "awk '{{print $1\"\t\"$4}}' - > {output.pileup}"
+        "samtools mpileup --output-QNAME {input.bam:q} | "
+        "awk '{{print $1\"\t\"$4}}' - > {output.pileup:q}"
 
 
 rule find_viral_targets:
@@ -677,16 +678,16 @@ rule find_viral_targets:
         email=EMAIL,
     shell:
         "python workflow/scripts/find_viral_targets.py "
-        "--mpileup {input.pileup} "
-        "--bed {input.all_viruses_bed} "
-        "--strains {input.strain_db} "
-        "--logfile {output.logfile} "
-        "--outfile {output.bed}; "
+        "--mpileup {input.pileup:q} "
+        "--bed {input.all_viruses_bed:q} "
+        "--strains {input.strain_db:q} "
+        "--logfile {output.logfile:q} "
+        "--outfile {output.bed:q}; "
         "python workflow/scripts/add_viral_segments.py "
-        "--infile {output.logfile} "
-        "--email {params.email}; "
-        "awk -F'\t' '{{ if($3 > 80.0) print}}' {output.logfile} "
-        "> {output.selected_log}"
+        "--infile {output.logfile:q} "
+        "--email {params.email:q}; "
+        "awk -F'\t' '{{ if($3 > 80.0) print}}' {output.logfile:q} "
+        "> {output.selected_log:q}"
 
 
 checkpoint get_viral_genomes:
@@ -705,8 +706,8 @@ checkpoint get_viral_genomes:
         succeed=f"{OUTDIR}/{{sample}}_VIRAL_TARGETS_FOUND",
         fail=f"{OUTDIR}/{{sample}}_NO_VIRAL_TARGETS",
     shell:
-        "bedtools getfasta -fi {input.fasta} -bed {input.bed} -fo {output}; "
-        "if grep -q . {output}; then touch {params.succeed}; else touch {params.fail}; fi"
+        "bedtools getfasta -fi {input.fasta:q} -bed {input.bed:q} -fo {output:q}; "
+        "if grep -q . {output:q}; then touch {params.succeed:q}; else touch {params.fail:q}; fi"
 
 
 # old `add_sample_info.smk`
@@ -731,9 +732,9 @@ rule add_sample_info:
         sample_id="{sample}",
     shell:
         "python workflow/scripts/add_run_info.py "
-        "--sample_id {params.sample_id} "
-        "--run_id {params.run_id} "
-        "--infiles {input}"
+        "--sample_id {params.sample_id:q} "
+        "--run_id {params.run_id:q} "
+        "--infiles {input:q}"
 
 
 ## HAPLOTYPE GENERATION ########################################################
@@ -751,7 +752,7 @@ rule split_viral_genomes:
     params:
         outdir=f"{OUTDIR}/{{sample}}_viral_refs/",
     shell:
-        "bash workflow/scripts/split_target_viruses.sh {input.fasta} {params.outdir}"
+        "bash workflow/scripts/split_target_viruses.sh {input.fasta:q} {params.outdir:q}"
 
 
 rule align_to_target_virus:
@@ -773,10 +774,10 @@ rule align_to_target_virus:
         sample="{sample}",
     shell:
         "bash workflow/scripts/align_to_targets.sh "
-        "{params.outdir} "
-        "{params.indir} "
-        "{params.sample} "
-        "{input.reads} "
+        "{params.outdir:q} "
+        "{params.indir:q} "
+        "{params.sample:q} "
+        "{input.reads:q} "
         "{threads}"
 
 
@@ -785,6 +786,7 @@ rule run_rvhaplo:
         flag=rules.align_to_target_virus.output.flag,
     output:
         flag=touch(f"{OUTDIR}/{{sample}}_rvhaplo.done"),
+        preflight=f"{OUTDIR}/{{sample}}_rvhaplo_out/rvhaplo_preflight.tsv",
     log:
         f"{LOGDIR}/{{sample}}_run_rvhaplo_snakemake.log",
     benchmark:
@@ -797,15 +799,17 @@ rule run_rvhaplo:
         vir_indir=f"{OUTDIR}/{{sample}}_viral_refs/",
         sam_indir=f"{OUTDIR}/{{sample}}_target_aligned/",
         outdir=f"{OUTDIR}/{{sample}}_rvhaplo_out/",
-        ref_length_limit=REF_LENGTH_LIMIT,
+        max_alignments=RVHAPLO_MAX_ALIGNMENTS,
+        max_alignment_bases=RVHAPLO_MAX_ALIGNMENT_BASES,
     shell:
         "bash workflow/scripts/run_rvhaplo.sh "
-        "{params.outdir} "
-        "{params.vir_indir} "
-        "{params.sam_indir} "
-        "{params.sample} "
+        "{params.outdir:q} "
+        "{params.vir_indir:q} "
+        "{params.sam_indir:q} "
+        "{params.sample:q} "
         "{threads} "
-        "{params.ref_length_limit}"
+        "{params.max_alignments:q} "
+        "{params.max_alignment_bases:q}"
 
 
 rule parse_rvhaplo_out:
@@ -824,9 +828,9 @@ rule parse_rvhaplo_out:
         indir=f"{OUTDIR}/{{sample}}_rvhaplo_out/",
     shell:
         "python workflow/scripts/parse_rvhaplo.py "
-        "--indir {params.indir} "
-        "--strains {input.strain_db} "
-        "--outfile {output}"
+        "--indir {params.indir:q} "
+        "--strains {input.strain_db:q} "
+        "--outfile {output:q}"
 
 
 onsuccess:

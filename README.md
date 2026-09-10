@@ -74,6 +74,22 @@ commit. Do not add `--remote` for a reproducible workflow run.
 
 Instructions on updating the configuration can be found [here](config/README.md).
 
+### RVHaplo Resource Limits
+
+RVHaplo can become expensive even for short viral references. By default, each
+sample–reference pair must have at most **75,000 mapped primary alignments** and
+an **alignment-count × reference-length product of at most 1 billion**. These 
+are user-configurable limits.
+
+The defaults are provisional, informed by completed runs and an oversized target 
+that spent over nine hours in conditional SNV filtering. They are workload 
+safeguards, not guaranteed time or memory limits. Adjust them for your resources 
+and acceptable runtime; see [configuration details and calibration](config/README.md#rvhaplo-resource-cutoffs).
+
+Decisions are recorded in `{sample}_rvhaplo_out/rvhaplo_preflight.tsv`. Resource-
+skipped targets are omitted from the haplotype results table: **a skip is not
+absence of viral haplotypes**. The preflight report survives log cleanup.
+
 ### Usage on Local Desktop or Interactive HPC Run
 
 Make sure to update the `core` value `local` or `hpc` profiles located at
